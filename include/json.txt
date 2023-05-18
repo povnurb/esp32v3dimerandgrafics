@@ -1,0 +1,99 @@
+[json general] 
+{
+  "device_id": "ESP3263A7DBCC2CC1",
+  "device_name": "espadbcccc",
+  "device_user": "admin",
+  "device_password": "personal",
+  "wifi": {
+    "wifi_mode": false,
+    "wifi_ssid": "INFINITUM59W1_2.4",
+    "wifi_password": "unJvpTX5Vp",
+    "wifi_ssid2": "INFINITUMD378",
+    "wifi_password2": "Pm2Kj1Jg6j",
+    "wifi_ip_static": false,
+    "wifi_ipv4": "192.168.1.69",
+    "wifi_subnet": "255.255.255.0",
+    "wifi_gateway": "192.168.1.1",
+    "wifi_dns_primary": "8.8.8.8",
+    "wifi_dns_secondary": "8.8.4.4",
+    "ap_ssid": "ESP3263A7DBCC2CC1",
+    "ap_password": "personal",
+    "ap_chanel": 9,
+    "ap_visibility": 0,
+    "ap_connect": 4
+  },
+  "mqtt": {
+    "mqtt_enable": false,
+    "mqtt_server": "demo.iotmx.com",
+    "mqtt_port": 1883,
+    "mqtt_retain": true,
+    "mqtt_qos": 0,
+    "mqtt_id": "ESP3263A7DBCC2CC1",
+    "mqtt_user": "lalo",
+    "mqtt_password": "public",
+    "mqtt_clean_sessions": false,
+    "mqtt_willTopic": "lalo/ESP3263A7DBCC2CC1/status",
+    "mqtt_extraTopic": "",
+    "mqtt_willMessage": "{\"connected\":false}",
+    "mqtt_willQoS": 0,
+    "mqtt_willRetain": true,
+    "mqtt_time_send": true,
+    "mqtt_time_interval": 60000,
+    "mqtt_status_send": true
+  },
+  "file_version": "3.0.0"
+}
+
+[json especial] 
+{
+  "RELAY": {
+    "R_NAME1": "RELAY1",
+    "R_NAME2": "RELAY2",
+    "R_STATUS1": false,
+    "R_STATUS2": false,
+    "R_LOGIC1": true,
+    "R_LOGIC2": true,
+    "R_DESCRIPTION1": "Control D33",
+    "R_DESCRIPTION2": "control D15"
+  },
+  "ALRMS": {
+    "ALRM_LOGIC1": false,
+    "ALRM_NAME1": "ALARMA_1",
+    "ALRM_CONT1": 0,
+    "ALRM_TON1": "",
+    "ALRM_TOFF1": "",
+    "ALRM_LOGIC2": false,
+    "ALRM_NAME2": "ALARMA_2",
+    "ALRM_CONT2": 0,
+    "ALRM_TON2": "",
+    "ALRM_TOFF2": "",
+    "ALRM_LOGIC3": false,
+    "ALRM_NAME3": "ALARMA_3",
+    "ALRM_CONT3": 0,
+    "ALRM_TON3": "",
+    "ALRM_TOFF3": "",
+    "ALRM_LOGIC4": false,
+    "ALRM_NAME4": "ALARMA_4",
+    "ALRM_CONT4": 0,
+    "ALRM_TON4": "",
+    "ALRM_TOFF4": "",
+    "ALRM_LOGIC5": false,
+    "ALRM_NAME5": "ALARMA_5",
+    "ALRM_CONT5": 0,
+    "ALRM_TON5": "",
+    "ALRM_TOFF5": "",
+    "ALRM_LOGIC6": false,
+    "ALRM_NAME6": "ALARMA_6",
+    "ALRM_CONT6": 0,
+    "ALRM_TON6": "",
+    "ALRM_TOFF6": "",
+    "ALRM_LOGIC7": false,
+    "ALRM_NAME7": "ALARMA_7",
+    "ALRM_CONT7": 0,
+    "ALRM_TON7": "",
+    "ALRM_TOFF7": ""
+  },
+  "DIMER": {
+    "dim_value": 0
+  }
+}
