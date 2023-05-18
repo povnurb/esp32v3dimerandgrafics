@@ -105,7 +105,9 @@ void setup() {
   xTaskCreate(TaskWifiReconnect, "TaskWifiReconnect", 1024*6, NULL, 2, NULL);
   //crear Tarea de reconexión MQTT
   xTaskCreate(TaskMqttReconnect, "TaskWifiReconnect", 1024*6, NULL, 2, NULL);
-  setupEspnow(); //hasta que este wifi configurado
+  //LED MQTT Task  
+  xTaskCreate(TaskMQTTLed, "TaskMQTTLed", 1024*2, NULL, 1, NULL);
+  setupEspnow(); //hasta que este wifi configurado pero hace falta su task
 }
 
 void loop() {

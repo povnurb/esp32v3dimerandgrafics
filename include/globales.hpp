@@ -36,6 +36,10 @@ char        device_id[30];          //ID del dispositivo
 char        device_name[30];        //Nombre del dispositivo
 char        device_user[15];        //Usuario para acceso al servidor web
 char        device_password[15];    //Contraseña del usuario servidor web
+int         CONTRASENA_REINICIAR;   //= 211179;   //contraseña de 6 digitos para reiniciar el sistema (211179) Guarda informacion aun por hacer ------------
+int         CONTRASENA_DE_FABRICA;  //= 21111979;  //Contraseña de 8 digitos para reinicar de fabrica  (21111979) borra toda la informacion ---------------
+bool        REINICIAR = false;
+bool        DEFABRICA = false;
 //----------------------------------------------------------------------------
 //Zona configuraciín WIFI modo CLiente
 //----------------------------------------------------------------------------

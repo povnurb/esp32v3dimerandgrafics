@@ -6,6 +6,8 @@ void especialReset();
 // Valores de Fábrica de las variables
 // -------------------------------------------------------------------
 void settingsReset(){
+    CONTRASENA_REINICIAR = 211179;   //contraseña de 6 digitos para reiniciar el sistema (211179) Guarda informacion aun por hacer ------------
+    CONTRASENA_DE_FABRICA = 21111979; //Contraseña de 8 digitos para reinicar de fabrica  (21111979) borra toda la informacion ---------------
     /********************************************************************************
      * Zona configuracion Dispositivo settings.json asignando nuevo valores         *
      * a las variables que se encuentran en el archivo globales.hpp                 *
