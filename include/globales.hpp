@@ -16,6 +16,8 @@
 // Documentacion: https://arduinojson.org/v6/api/json/deserializejson/
 //--------------------------------------------------------------------------
 const size_t capacitySettings = 1024*5;  //1024*5 = 5KB
+StaticJsonDocument<2000> board; //verificar con mas capacidad pare espnow
+String jsonStringApi = "{\"info\":\"null\"}";
 //------------------------------------------------------------------
 // Versión de firmware desde las variables de entorno platformio.ini
 //------------------------------------------------------------------
@@ -58,6 +60,7 @@ char        wifi_gateway[16];           //direccion Gateway
 char        wifi_subnet[16];            //Dir ipv4 subred
 char        wifi_dns_primary[16];       //Dir Ipv4 DNS primario
 char        wifi_dns_secondary[16];     //Dir ipv4 DNS secundario
+int         wifi_chanel;                //mostrará el canal donde se tiene que comunicar el protocolo espnow
 //----------------------------------------------------------------
 //Zona configuracion WIFI modo AP
 //----------------------------------------------------------------
@@ -106,15 +109,30 @@ float max2;
 //Zona RELAY
 //------------------------------------------------------------------------------
 char        R_NAME1[20];        //nombre de los Relays
-char        R_TIME1[18];        //tiempo que permanecio el relay operando ON
+int         R_TIME1;            //tiempo que permanecio el relay operando ON en minutos
 bool        R_STATUS1;          //Estado del pin
-char        R_NAME2[20];        //nombre de los Relays
-char        R_TIME2[18];        //tiempo que permanecio el relay operando ON
-bool        R_STATUS2;          //Estado del pin
+bool        R_TIMERON1;         //indica si se activa el timer del relevador1
+int         R_TIMER1;           //contador regresivo por minuto
 bool        R_LOGIC1;           //por si trabaja energizado
+String      R_DESCRIPTION1;     //indica que es lo que controla   
+bool        TEMPORIZADOR1;      //indica si hay un control por tiempo
+bool        R_EVERYDAY1;           //si el control por tiempo solo activa una vez
+String      TIMEONRELAY1;       //indica a que horas se prende
+String      TIMEOFFRELAY1;      //indica a que horas se apaga
+
+
+char        R_NAME2[20];        //nombre de los Relays
+int         R_TIME2;            //tiempo que permanecio el relay operando ON en minutos
+bool        R_STATUS2;          //Estado del pin
+bool        R_TIMERON2;         //indica si se activa el timer del relevador2
+int         R_TIMER2;           //contador regresivo por minuto 
 bool        R_LOGIC2;           //por si trabaja energizado
-String      R_DESCRIPTION1;     //indica que el lo que controla
 String      R_DESCRIPTION2;     //breve descripcion 
+bool        TEMPORIZADOR2;      //indica si hay un control por tiempo
+bool        R_EVERYDAY2;          //si el control por tiempo solo activa una vez
+String      TIMEONRELAY2;       //indica a que horas se prende
+String      TIMEOFFRELAY2;      //indica a que horas se apaga
+
 bool        BUZZER_STATUS;      //estado del buzzer
 //----------------------------------------------------------------------------
 //Zona PWM
@@ -144,6 +162,10 @@ int time_yr;                // Año 2023
 // NTP Server
 WiFiUDP ntpUDP;
 NTPClient ntpClient(ntpUDP);
+//-----------------------------------------------------------------
+// Zona ESPNOW
+//-----------------------------------------------------------------
+//int aux1,aux2,aux3,aux4;    //variables auxiliares que ayudaran a separa la informacion reciviba por espnow //ya no se van a usar
 
 //-----------------------------------------------------------------
 // Zona Otras

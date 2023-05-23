@@ -40,6 +40,7 @@
 #include "wifi.hpp"
 #include "espnow.hpp" 
 #include "mqtt.hpp"
+#include "server.hpp"
 
 
 #include "tareas.hpp"
@@ -100,7 +101,8 @@ void setup() {
   ledcWrite(ledChanel, dim * 2.55); //dim va de 0 a 100
   //inicial el wifi
   wifi_setup();
-
+  //iniciamos el servidor
+  initServer();
   //crear Tarea Reconexión WIFI
   xTaskCreate(TaskWifiReconnect, "TaskWifiReconnect", 1024*6, NULL, 2, NULL);
   //crear Tarea de reconexión MQTT
@@ -108,6 +110,7 @@ void setup() {
   //LED MQTT Task  
   xTaskCreate(TaskMQTTLed, "TaskMQTTLed", 1024*2, NULL, 1, NULL);
   setupEspnow(); //hasta que este wifi configurado pero hace falta su task
+  esp_now_register_recv_cb(OnDataRecv); //no se si va o no va
 }
 
 void loop() {

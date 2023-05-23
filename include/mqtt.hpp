@@ -130,7 +130,7 @@ String Json(){
     // Capturar el valor de temperatura
     //readSensor(); //toma lecturas del sensor DS18B20
     // Crear JSON
-    jsonDoc["deviceSerial"] = DeviceID();
+    jsonDoc["serial"] = DeviceID();
     jsonDoc["MACWiFi"] = String(WiFi.macAddress());
     //jsonDoc["deviceManufacturer"] = String(device_manufacturer);
     //jsonDoc["deviceFwVersion"] = device_fw_version;
@@ -149,7 +149,7 @@ String Json(){
 	//dataObj["deviceDS18B20TempC"] = temperatureC; //se requiere libreria adicional comentada en platformio.ini
     //dataObj["deviceDS18B20TempF"] = temperatureF; //se requiere libreria adicional comentada en platformio.ini
     dataObj["tC"] = String(Temperatura());
-    dataObj["hum"] = String(Humedad()); //tempMin() //tempMax()
+    dataObj["hum"] = String(Humedad()); 
     dataObj["tmin"] = String(tempMin());
     dataObj["tmax"] = String(tempMax());
     //dataObj["activeTime"] = longTimeStr(millis() / 1000);

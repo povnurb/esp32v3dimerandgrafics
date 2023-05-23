@@ -102,6 +102,18 @@ bool especialSave(){
         relayObj["R_LOGIC2"] = R_LOGIC2;
         relayObj["R_DESCRIPTION1"] = R_DESCRIPTION1;
         relayObj["R_DESCRIPTION2"] = R_DESCRIPTION2;
+        relayObj["R_TIMERON1"]=R_TIMERON1;       //indica si se activa el timer del relevador1
+        relayObj["R_TIMERON2"]=R_TIMERON2;       //indica si se activa el timer del relevador2
+        relayObj["R_TIME1"]=R_TIME1;       //tiempo que permanecio el relay operando ON por minutos 
+        relayObj["R_TIME2"]=R_TIME2;        //tiempo que permanecio el relay operando ON en minutos
+        relayObj["TEMPORIZADOR1"]=TEMPORIZADOR1;    //indica si hay un control por horario
+        relayObj["TEMPORIZADOR2"]=TEMPORIZADOR2;    //indica si hay un control por hirario
+        relayObj["R_EVERYDAY1"]=R_EVERYDAY1;        //si el control por tiempo solo se activa una vez en caso de false queda establecido todos los dias
+        relayObj["R_EVERYDAY2"]=R_EVERYDAY2;        //si el control por tiempo solo se activa una vez
+        relayObj["TIMEONRELAY1"]=TIMEONRELAY1;       //indica a que horas se prende
+        relayObj["TIMEOFFRELAY1"]=TIMEOFFRELAY1;      //indica a que horas se apaga
+        relayObj["TIMEONRELAY2"]=TIMEONRELAY2;       //indica a que horas se prende
+        relayObj["TIMEOFFRELAY2"]=TIMEOFFRELAY2;      //indica a que horas se apaga
         /************************************************************************************************
          * Zona configuracion Dispositivo especial.json asignando nuevo valores                         *
          * a las variables que se encuentran en el archivo globales.hpp                                 *

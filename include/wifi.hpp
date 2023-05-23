@@ -93,6 +93,7 @@ void wifi_setup(){
         if(MDNS.begin(esp_hostname)){
             MDNS.addService("http","tcp",80);
         }
+        
     }
 }
 //------------------------------------------------------------------------

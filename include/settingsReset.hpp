@@ -48,7 +48,7 @@ void settingsReset(){
      * variables para el MQTT:                                                                      *
      * *********************************************************************************************/  
     mqtt_enable = true; //estaba en false
-    strlcpy(mqtt_server, "demo.iotmx.com",sizeof(mqtt_server));
+    strlcpy(mqtt_server, "iotmx.com",sizeof(mqtt_server));
     mqtt_port = 1883;       //verificar
     mqtt_retain = true;     //verificar false
     mqtt_qos = 0;
@@ -89,6 +89,19 @@ void especialReset(){
     R_LOGIC2 = true;   //verificar si no es true ------------------------------------------
     R_DESCRIPTION1 = "Control D33";
     R_DESCRIPTION2 = "control D15";
+    R_TIME1=0;        //tiempo que permanecio el relay operando ON por minutos 
+    R_TIME2=0;        //tiempo que permanecio el relay operando ON en minutos
+    R_TIMERON1=false;         //indica si se activa el timer del relevador1
+    R_TIMERON2=false;         //indica si se activa el timer del relevador2
+    TEMPORIZADOR1=false;      //indica si hay un control por horario
+    TEMPORIZADOR2=false;      //indica si hay un control por hirario
+    R_EVERYDAY1=true;          //si el control se activa todos los dias
+    R_EVERYDAY2=true;          //si el control se activa todos los dias
+    TIMEONRELAY1="00:00";       //indica a que horas se prende
+    TIMEOFFRELAY1="00:00";      //indica a que horas se apaga
+    TIMEONRELAY2="00:00";       //indica a que horas se prende
+    TIMEOFFRELAY2="00:00";      //indica a que horas se apaga
+
     /************************************************************************************************
      * Zona configuracion Dispositivo especial.json asignando nuevo valores                         *
      * a las variables que se encuentran en el archivo globales.hpp                                 *
