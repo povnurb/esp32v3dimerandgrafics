@@ -16,9 +16,9 @@
 // /api/connection/mqtt                 POST        ----        OK
 // /api/device/download                 GET         ----        OK
 // /api/especial/download               GET         ----        OK
-// /api/device/download                 POST        ----
-// /api/especial/download               POST        ----
-
+// /api/device/upload                   POST        ----        OK
+// /api/especial/upload                 POST        ----        OK
+// /api/device/firmware                 POST        ----
 
 
 
@@ -1004,35 +1004,46 @@ void handleApiEspecialUpload(AsyncWebServerRequest *request, String filename, si
         ESP.restart(); //necesario para guardar las configuraciones
     }
 }
+
 // -------------------------------------------------------------------
 // Manejo de la actualización del Firmware a FileSystem
 // url: /api/device/firmware
 // Método: POST
 // -------------------------------------------------------------------
-/*
 void handleApiFirmware(AsyncWebServerRequest *request, const String &filename, size_t index, uint8_t *data, size_t len, bool final){
     if (security){
         if (!request->authenticate(device_user, device_password))
             return request->requestAuthentication();
     }
 
-    // Si el nombre de archivo incluye ( spiffs ), actualiza la partición de spiffs
-    int cmd = (filename.indexOf("spiffs") > -1) ? U_PART : U_FLASH;
+    // Si el nombre de archivo incluye ( spiffs ), actualiza la partición de spiffs que es U_PART
+    int cmd = (filename.indexOf("spiffs") > -1) ? U_PART : U_FLASH; //U_FLASH es el firmware
     String updateSystem = cmd == U_PART ? "FileSystem" : "Firmware";
 
+    if(filename!="firmware.bin"){
+        if(filename!="spiffs.bin"){
+            log("ERROR","api.hpp","No es el archivo valido:" + filename + " \" se espera firmware.bin o spiffs.bin");
+                request->send(500, dataType, "{ \"save\": false, \"msg\": \"¡Error, No es el archivo valido: " + filename + " !\"}");
+                return;
+        }
+    }
+    
+
     if (!index){
-        content_len = request->contentLength();
-        log("INFO", "Actualización del " + updateSystem + " iniciada...");
-        if (!Update.begin(UPDATE_SIZE_UNKNOWN, cmd)){
+        content_len = request->contentLength(); //se captura el tamaño del archivo
+        log("INFO","api.hpp","Actualización del " + updateSystem + " iniciada...");
+        if (!Update.begin(UPDATE_SIZE_UNKNOWN, cmd)){   //si da un error
             AsyncWebServerResponse *response = request->beginResponse(500, dataType, "{ \"save\": false, \"msg\": \"¡Error, No se pudo actualizar el " + updateSystem + " Index: " + filename + " !\"}");
             request->send(response);
             Update.printError(Serial);
-            log("ERROR", "Update del " + updateSystem + " ternimado");
+            log("ERROR","api.hpp","Update del " + updateSystem + " no ejecutado.");
         }
     }
+    //si hasta aqui todo ok
     // escribir e firmware o el filesystem
     if (Update.write(data, len) != len){
         Update.printError(Serial);
+        log("ERROR","api.hpp","Update del " + updateSystem + " no ejecutado.");
     }
     // Terminado
     if (final){
@@ -1040,12 +1051,13 @@ void handleApiFirmware(AsyncWebServerRequest *request, const String &filename, s
             AsyncWebServerResponse *response = request->beginResponse(500, dataType, "{ \"save\": false, \"msg\": \"¡Error, No se pudo actualizar el " + updateSystem + " Final: " + filename + " !\"}");
             request->send(response);
             Update.printError(Serial);
+            log("ERROR","api.hpp","Update del " + updateSystem + " no ejecutado.");
         }else{
             AsyncWebServerResponse *response = request->beginResponse(201, dataType, "{ \"save\": true, \"type\": \"" + updateSystem + "\"}");
             response->addHeader("Cache-Control", "no-cache");
             response->addHeader("Location", "root@" + updateSystem + "");
             request->send(response);
-            log("INFO", "Update del " + updateSystem + " completado");
+            log("INFO","api.hpp","Update del " + updateSystem + " completado");
             // Esperar la Transmisión de los datos seriales
             Serial.flush();
             ESP.restart();
@@ -1057,6 +1069,7 @@ void handleApiFirmware(AsyncWebServerRequest *request, const String &filename, s
 // url: /api/device/status
 // Método: GET
 // -------------------------------------------------------------------
+/*
 void handleApiGetStatus(AsyncWebServerRequest *request){
     if (security){
         if (!request->authenticate(device_user, device_password))

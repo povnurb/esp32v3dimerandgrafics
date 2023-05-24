@@ -148,12 +148,12 @@ void initServer(){
     // url: /api/device/firmware
     // Método: POST
     // -------------------------------------------------------------------
-    /*server.on("/api/device/firmware", HTTP_POST, [](AsyncWebServerRequest *request) {},
+    server.on("/api/device/firmware", HTTP_POST, [](AsyncWebServerRequest *request) {},
         [](AsyncWebServerRequest *request, const String &filename, size_t index, uint8_t *data, size_t len, bool final)
         {
             handleApiFirmware(request, filename, index, data, len, final);
         });
-    */
+
 
     // -------------------------------------------------------------------
     // Manejo de parámetros de estados Globales

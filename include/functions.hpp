@@ -415,6 +415,7 @@ bool especial(String command){
         if(JsonCommand["value"] == CONTRASENA_REINICIAR){
             
             REINICIAR=especialSave();     //falta aplicar si no puede salvar no reiniciará
+            
             if(REINICIAR){
                 log("INFO","functions.hpp","Se va a reinicial el dispositivo");
                 // Esperar la transmisión de los datos seriales
