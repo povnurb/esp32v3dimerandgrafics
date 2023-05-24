@@ -6,8 +6,6 @@ void especialReset();
 // Valores de Fábrica de las variables
 // -------------------------------------------------------------------
 void settingsReset(){
-    CONTRASENA_REINICIAR = 211179;   //contraseña de 6 digitos para reiniciar el sistema (211179) Guarda informacion aun por hacer ------------
-    CONTRASENA_DE_FABRICA = 21111979; //Contraseña de 8 digitos para reinicar de fabrica  (21111979) borra toda la informacion ---------------
     /********************************************************************************
      * Zona configuracion Dispositivo settings.json asignando nuevo valores         *
      * a las variables que se encuentran en el archivo globales.hpp                 *
@@ -62,7 +60,7 @@ void settingsReset(){
     mqtt_willQoS = 0;
     mqtt_willRetain = true;   //verificar false
     mqtt_time_send = true;
-    mqtt_time_interval = 60000;   
+    mqtt_time_interval = 60000;   //esta en milisegundo
     mqtt_status_send = true;  
     /**
      * Zona de Relay
@@ -121,6 +119,17 @@ void especialReset(){
     ALRM_NAME6 = "ALARMA_6";
     ALRM_LOGIC7 = false;
     ALRM_NAME7 = "ALARMA_7";
+    /************************************************************************************************
+     * Zona configuracion Dispositivo especial.json asignando nuevo valores                         *
+     * a las variables que se encuentran en el archivo globales.hpp                                 *
+     * variables para los nombres de las alarmas emitidos por el protocolo espnow                   *
+     ***********************************************************************************************/
+
+    cambio11="";cambio21="";cambio31="";cambio41="";cambio51="";cambio61="";cambio71="";cambio81="";
+    cambio12="";cambio22="";cambio32="";cambio42="";cambio52="";cambio62="";cambio72="";cambio82="";
+    cambio13="";cambio23="";cambio33="";cambio43="";cambio53="";cambio63="";cambio73="";cambio83="";
+    cambio14="";cambio24="";cambio34="";cambio44="";cambio54="";cambio64="";cambio74="";cambio84="";
+
     //-------------------------------------------------------------------
     // Zona Dimer
     //-------------------------------------------------------------------

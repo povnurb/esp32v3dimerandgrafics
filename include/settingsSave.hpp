@@ -73,7 +73,7 @@ bool settingsSave(){
         serializeJsonPretty(jsonSettings,file); //escribe en el archivo file
         file.close();// ya que todo se leera se cierra el archivo
         log("INFO","settingsSave.hpp","Configuración general guardada correctamente.");
-        serializeJsonPretty(jsonSettings,Serial); //lo escribe en el monitor serial
+        //serializeJsonPretty(jsonSettings,Serial); //lo escribe en el monitor serial
         return true;
     }else{
         log("ERROR","settingsSave.hpp","Falló el guardado de la configuracion General.");
@@ -125,43 +125,79 @@ bool especialSave(){
         alrmsObj["ALRM_CONT1"] = ALRM_CONT1;
         alrmsObj["ALRM_TON1"] = ALRM_TON1;
         alrmsObj["ALRM_TOFF1"] = ALRM_TOFF1;
-
         alrmsObj["ALRM_LOGIC2"] = ALRM_LOGIC2;
         alrmsObj["ALRM_NAME2"] = ALRM_NAME2;
         alrmsObj["ALRM_CONT2"] = ALRM_CONT2;
         alrmsObj["ALRM_TON2"] = ALRM_TON2;
         alrmsObj["ALRM_TOFF2"] = ALRM_TOFF2;
-
         alrmsObj["ALRM_LOGIC3"] = ALRM_LOGIC3;
         alrmsObj["ALRM_NAME3"] = ALRM_NAME3;
         alrmsObj["ALRM_CONT3"] = ALRM_CONT3;
         alrmsObj["ALRM_TON3"] = ALRM_TON3;
         alrmsObj["ALRM_TOFF3"] = ALRM_TOFF3;
-
         alrmsObj["ALRM_LOGIC4"] = ALRM_LOGIC4;
         alrmsObj["ALRM_NAME4"] = ALRM_NAME4;
         alrmsObj["ALRM_CONT4"] = ALRM_CONT4;
         alrmsObj["ALRM_TON4"] = ALRM_TON4;
         alrmsObj["ALRM_TOFF4"] = ALRM_TOFF4;
-
         alrmsObj["ALRM_LOGIC5"] = ALRM_LOGIC5;
         alrmsObj["ALRM_NAME5"] = ALRM_NAME5;
         alrmsObj["ALRM_CONT5"] = ALRM_CONT5;
         alrmsObj["ALRM_TON5"] = ALRM_TON5;
         alrmsObj["ALRM_TOFF5"] = ALRM_TOFF5;
-
         alrmsObj["ALRM_LOGIC6"] = ALRM_LOGIC6;
         alrmsObj["ALRM_NAME6"] = ALRM_NAME6;
         alrmsObj["ALRM_CONT6"] = ALRM_CONT6;
         alrmsObj["ALRM_TON6"] = ALRM_TON6;
         alrmsObj["ALRM_TOFF6"] = ALRM_TOFF6;
-
         alrmsObj["ALRM_LOGIC7"] = ALRM_LOGIC7;
         alrmsObj["ALRM_NAME7"] = ALRM_NAME7;
         alrmsObj["ALRM_CONT7"] = ALRM_CONT7;
         alrmsObj["ALRM_TON7"] = ALRM_TON7;
         alrmsObj["ALRM_TOFF7"] = ALRM_TOFF7;
+        /************************************************************************************************
+        * Zona configuracion Dispositivo especial.json asignando nuevo valores                         *
+        * a las variables que se encuentran en el archivo globales.hpp                                 *
+        * variables para los nombres de las alarmas emitidos por el protocolo espnow                   *
+        ***********************************************************************************************/
 
+        JsonObject espnowObj = jsonEspecial.createNestedObject("espnow");
+        espnowObj["cambio11"]= cambio11;
+        espnowObj["cambio21"]= cambio21;
+        espnowObj["cambio31"]= cambio31;
+        espnowObj["cambio41"]= cambio41;
+        espnowObj["cambio51"]= cambio51;
+        espnowObj["cambio61"]= cambio61;
+        espnowObj["cambio71"]= cambio71;
+        espnowObj["cambio81"]= cambio81;
+        //----------------------------------------------
+        espnowObj["cambio12"]= cambio12;
+        espnowObj["cambio22"]= cambio22;
+        espnowObj["cambio32"]= cambio32;
+        espnowObj["cambio42"]= cambio42;
+        espnowObj["cambio52"]= cambio52;
+        espnowObj["cambio62"]= cambio62;
+        espnowObj["cambio72"]= cambio72;
+        espnowObj["cambio82"]= cambio82;
+        //----------------------------------------------
+        espnowObj["cambio13"]= cambio13;
+        espnowObj["cambio23"]= cambio23;
+        espnowObj["cambio33"]= cambio33;
+        espnowObj["cambio43"]= cambio43;
+        espnowObj["cambio53"]= cambio53;
+        espnowObj["cambio63"]= cambio63;
+        espnowObj["cambio73"]= cambio73;
+        espnowObj["cambio83"]= cambio83;
+        //----------------------------------------------
+        espnowObj["cambio14"]= cambio14;
+        espnowObj["cambio24"]= cambio24;
+        espnowObj["cambio34"]= cambio34;
+        espnowObj["cambio44"]= cambio44;
+        espnowObj["cambio54"]= cambio54;
+        espnowObj["cambio64"]= cambio64;
+        espnowObj["cambio74"]= cambio74;
+        espnowObj["cambio84"]= cambio84;
+        
         //-------------------------------------------------------------------
         // Zona Dimer
         //-------------------------------------------------------------------
@@ -172,7 +208,7 @@ bool especialSave(){
         especial.close();// ya que todo se leera se cierra el archivo
         Serial.println("");
         log("INFO","settingsSave.hpp","Configuraciones guardadas de los actuadores OK.");
-        serializeJsonPretty(jsonEspecial,Serial);
+        //serializeJsonPretty(jsonEspecial,Serial); //muestra la informacion guardada en el monitor serial
         return true;
     }else{
         log("ERROR","settingsSave.hpp","Falló el guardado de la configuracion Especial.");

@@ -94,34 +94,54 @@ void initServer(){
     // url: /api/connection/mqtt
     // Método: GET
     // -------------------------------------------------------------------
-    //server.on("/api/connection/mqtt", HTTP_GET, handleApiMQTT);
+    server.on("/api/connection/mqtt", HTTP_GET, handleApiMQTT);
 
     // -------------------------------------------------------------------
     // Actualizar las configuraciones del MQTT Conexiones
     // url: /api/connection/mqtt
     // Método: POST
     // -------------------------------------------------------------------
-    //server.on("/api/connection/mqtt", HTTP_POST, [](AsyncWebServerRequest *request) {}, NULL, handleApiPostMQTT);
+    server.on("/api/connection/mqtt", HTTP_POST, [](AsyncWebServerRequest *request) {}, NULL, handleApiPostMQTT);
 
     // -------------------------------------------------------------------
     // Manejo de la descarga del archivo setting.json
     // url: "/api/device/download"
     // Método: GET
     // -------------------------------------------------------------------
-    //server.on("/api/device/download", HTTP_GET, handleApiDownload);
+    server.on("/api/device/download", HTTP_GET, handleApiDownload);
+
+    // -------------------------------------------------------------------
+    // Manejo de la descarga del archivo setting.json
+    // url: "/api/especial/download"
+    // Método: GET
+    // -------------------------------------------------------------------
+    server.on("/api/especial/download", HTTP_GET, handleApiDownloadEspecial);
 
     // -------------------------------------------------------------------
     // Manejo de la carga del archivo settings.json
     // url: "/api/device/upload"
     // Método: POST
     // -------------------------------------------------------------------
-    /*server.on("/api/device/upload", HTTP_POST, [](AsyncWebServerRequest *request)
-        { opened = false; },
-        [](AsyncWebServerRequest *request, const String &filename, size_t index, uint8_t *data, size_t len, bool final)
+    server.on("/api/device/upload", HTTP_POST, [](AsyncWebServerRequest *request)
+    { opened = false; },
+    [](AsyncWebServerRequest *request, const String &filename, size_t index, uint8_t *data, size_t len, bool final)
         {
             handleApiUpload(request, filename, index, data, len, final);
         });
-    */
+    
+
+    // -------------------------------------------------------------------
+    // Manejo de la carga del archivo settings.json
+    // url: "/api/especial/upload"
+    // Método: POST
+    // -------------------------------------------------------------------
+    server.on("/api/especial/upload", HTTP_POST, [](AsyncWebServerRequest *request)
+        { opened2 = false; },
+        [](AsyncWebServerRequest *request, const String &filename, size_t index, uint8_t *data, size_t len, bool final)
+        {
+            handleApiEspecialUpload(request, filename, index, data, len, final);
+        });
+    
 
     // -------------------------------------------------------------------
     // Manejo de la actualización del Firmware a FileSystem

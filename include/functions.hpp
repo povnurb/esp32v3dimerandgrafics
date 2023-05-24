@@ -119,6 +119,7 @@ String ipStr(const IPAddress &ip){
 }
 
 //----------------------------------------------------------------------------
+// maneja los relay, y el buzzer
 // OnOffRelays(command)     mensajes desde el broker
 //Funcion para operar los Relays de forma Global -> API, MQTT, WS ejemplo:
 //ejemplo tópico: lalo/ESP3263A7DBCC2CC1/command
@@ -280,15 +281,150 @@ bool especial(String command){
         ALRM_NAME7 = JsonCommand["value"].as<String>();
         return true;
     }
-    if (JsonCommand["varible"] == "BUZZER"){
-        BUZZER_STATUS = JsonCommand["value"];
-        return false; //este sera el unico que no se salva
+    if (JsonCommand["varible"] == "cambio11"){
+        cambio11 = JsonCommand["value"].as<String>();
+        return true; 
     }
+    if (JsonCommand["varible"] == "cambio21"){
+        cambio21 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio31"){
+        cambio31 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio41"){
+        cambio41 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio51"){
+        cambio51 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio61"){
+        cambio61 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio71"){
+        cambio71 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio81"){
+        cambio81 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio12"){
+        cambio12 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio22"){
+        cambio22 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio32"){
+        cambio32 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio42"){
+        cambio42 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio52"){
+        cambio52 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio62"){
+        cambio62 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio72"){
+        cambio72 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio82"){
+        cambio82 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio13"){
+        cambio13 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio23"){
+        cambio23 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio33"){
+        cambio33 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio43"){
+        cambio43 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio53"){
+        cambio53 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio63"){
+        cambio63 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio73"){
+        cambio73 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio83"){
+        cambio83 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio14"){
+        cambio14 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio24"){
+        cambio24 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio34"){
+        cambio34 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio44"){
+        cambio44 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio54"){
+        cambio54 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio64"){
+        cambio64 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio74"){
+        cambio74 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    if (JsonCommand["varible"] == "cambio84"){
+        cambio84 = JsonCommand["value"].as<String>();
+        return true; 
+    }
+    
     if (JsonCommand["varible"] == "CONTRASEÑA"){
         // {"protocol":"MQTT", "varible": "REINICIAR", "value":"211179" }
         if(JsonCommand["value"] == CONTRASENA_REINICIAR){
             
             REINICIAR=especialSave();     //falta aplicar si no puede salvar no reiniciará
+            if(REINICIAR){
+                log("INFO","functions.hpp","Se va a reinicial el dispositivo");
+                // Esperar la transmisión de los datos seriales
+                Serial.flush();
+                // Reiniciar el ESP32
+                ESP.restart();
+            }else{
+                log("ERROR","functions.hpp","Error en la funcion especialSave()");
+            return false;
+            }
         }else if(JsonCommand["value"] == CONTRASENA_DE_FABRICA){
             // {"protocol":"MQTT", "varible": "DEFABRICA", "value":"21111979" }
             DEFABRICA=true;     //falta aplicar

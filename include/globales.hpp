@@ -38,8 +38,8 @@ char        device_id[30];          //ID del dispositivo
 char        device_name[30];        //Nombre del dispositivo
 char        device_user[15];        //Usuario para acceso al servidor web
 char        device_password[15];    //Contraseña del usuario servidor web
-int         CONTRASENA_REINICIAR;   //= 211179;   //contraseña de 6 digitos para reiniciar el sistema (211179) Guarda informacion aun por hacer ------------
-int         CONTRASENA_DE_FABRICA;  //= 21111979;  //Contraseña de 8 digitos para reinicar de fabrica  (21111979) borra toda la informacion ---------------
+int         CONTRASENA_REINICIAR= 211179;   //= 211179;   //contraseña de 6 digitos para reiniciar el sistema (211179) Guarda informacion aun por hacer ------------
+int         CONTRASENA_DE_FABRICA= 21111979;  //= 21111979;  //Contraseña de 8 digitos para reinicar de fabrica  (21111979) borra toda la informacion ---------------
 bool        REINICIAR = false;
 bool        DEFABRICA = false;
 //----------------------------------------------------------------------------
@@ -165,7 +165,11 @@ NTPClient ntpClient(ntpUDP);
 //-----------------------------------------------------------------
 // Zona ESPNOW
 //-----------------------------------------------------------------
-//int aux1,aux2,aux3,aux4;    //variables auxiliares que ayudaran a separa la informacion reciviba por espnow //ya no se van a usar
+//cambiar el nombre de las alarmas demanera locak    
+String cambio11,cambio21,cambio31,cambio41,cambio51,cambio61,cambio71,cambio81;
+String cambio12,cambio22,cambio32,cambio42,cambio52,cambio62,cambio72,cambio82;
+String cambio13,cambio23,cambio33,cambio43,cambio53,cambio63,cambio73,cambio83;
+String cambio14,cambio24,cambio34,cambio44,cambio54,cambio64,cambio74,cambio84;
 
 //-----------------------------------------------------------------
 // Zona Otras

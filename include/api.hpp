@@ -1,5 +1,5 @@
 //----------------------------------------------------------------------
-// Zona API REST
+// Zona API REST manejadores de peticion
 //--------------------------------------------------------------------------
 // URL:                                 METODO:                ESTADO
 //------------------------------------------------------------------------
@@ -11,6 +11,15 @@
 // /api/relays                          GET         ----        OK
 // /api/alarmas                         POST        ----        OK
 // /api/relays                          POST        ----        OK
+// /api/connection/wifi-scan            GET         ----        OK
+// /api/connection/mqtt                 GET         ----        OK
+// /api/connection/mqtt                 POST        ----        OK
+// /api/device/download                 GET         ----        OK
+// /api/especial/download               GET         ----        OK
+// /api/device/download                 POST        ----
+// /api/especial/download               POST        ----
+
+
 
 
 //API v1 json desde String
@@ -121,6 +130,7 @@ void handleApiEspNow(AsyncWebServerRequest *request){
     WiFi.status() == WL_CONNECTED ? json += ",\"wifiStatus\": true" : json += ",\"wifiStatus\": false";
     WiFi.status() == WL_CONNECTED ? json += ",\"rssiStatus\":" + String(WiFi.RSSI()) : json += ",\"rssiStatus\": 0";
     mqttClient.connected() ? json += ",\"mqttStatus\": true" : json += ",\"mqttStatus\": false";
+    json += ",\"MiMAC\": \"" + String(WiFi.macAddress()) + "\"";
     json += ",\"ESPNOW\":";
     json += jsonStringApi; //informacion enviada por el protocolo espnow
     json += "}";
@@ -157,7 +167,9 @@ void handleApiWifi(AsyncWebServerRequest *request){
         json +="{";   
         wifi_mode? json += "\"wifi_mode\": true": json += "\"wifi_mode\": false";
         json += ",\"wifi_ssid\": \"" + String(wifi_ssid) + "\"";
-        json += ",\"wifi_password\": \"""\"";
+        json += ",\"wifi_password\": \""+ String(wifi_password)+"\"";
+        json += ",\"wifi_ssid2\": \"" + String(wifi_ssid2) + "\"";
+        json += ",\"wifi_password2\": \""+ String(wifi_password2)  +"\"";
         wifi_ip_static ? json += ",\"wifi_ip_static\": true": json += ",\"wifi_ip_static\": false";
         json += ",\"wifi_ipv4\": \""+String(wifi_ipv4)+"\"";
         json += ",\"wifi_gateway\": \""+String(wifi_gateway)+"\"";
@@ -217,6 +229,20 @@ void handleApiPostWiFi(AsyncWebServerRequest *request, uint8_t *data, size_t len
         s=doc["wifi_password"].as<String>();
         s.trim();//limpiamos de caracteres vacios (se los quitamos)
         strlcpy(wifi_password,s.c_str(),sizeof(wifi_password)); //modificamos el valor de la variable con ese valor convertido en char
+        s=""; //limpiamos el valor de s
+    }
+    // SSID2 Client
+    if (doc["wifi_ssid2"] != ""){//si no esta vacia actualizamos la data
+        s=doc["wifi_ssid2"].as<String>();
+        s.trim();//limpiamos de caracteres vacios (se los quitamos)
+        strlcpy(wifi_ssid2,s.c_str(),sizeof(wifi_ssid2)); //modificamos el valor de la variable con ese valor convertido en char
+        s=""; //limpiamos el valor de s
+    }
+    // Password2
+    if (doc["wifi_password2"] != ""){//si no esta vacia actualizamos la data en caso contrario mantiene su valor
+        s=doc["wifi_password2"].as<String>();
+        s.trim();//limpiamos de caracteres vacios (se los quitamos)
+        strlcpy(wifi_password2,s.c_str(),sizeof(wifi_password2)); //modificamos el valor de la variable con ese valor convertido en char
         s=""; //limpiamos el valor de s
     }
     //DHCP
@@ -714,14 +740,12 @@ void handleApiWifiScan(AsyncWebServerRequest *request){
     request->send(200, dataType, json);
 }
 
-
 // -------------------------------------------------------------------
 // Parámetros de configuración MQTT
 // url: /api/connection/mqtt
 // Método: GET
 // -------------------------------------------------------------------
-/*
-void handleApiMQTT(AsyncWebServerRequest *request){    
+void handleApiMQTT(AsyncWebServerRequest *request){    //handleApiMQTT manejador de peticion
     if (security){
         if (!request->authenticate(device_user, device_password))
             return request->requestAuthentication();
@@ -755,6 +779,7 @@ void handleApiMQTT(AsyncWebServerRequest *request){
     request->addInterestingHeader("API ESP32 Server");
     request->send(200, dataType, json);
 }
+
 // -------------------------------------------------------------------
 // Actualizar las configuraciones del MQTT Conexiones
 // url: /api/connection/mqtt
@@ -836,6 +861,7 @@ void handleApiPostMQTT(AsyncWebServerRequest *request, uint8_t *data, size_t len
         request->send(500, dataType, "{ \"save\": false }");
     }
 }
+
 // -------------------------------------------------------------------
 // Manejo de la descarga del archivo setting.json
 // url: "/api/device/download"
@@ -847,10 +873,27 @@ void handleApiDownload(AsyncWebServerRequest *request){
             return request->requestAuthentication();
     }
     
-    log("INFO", "Descarga del archivo settings.json");
-    AsyncWebServerResponse *response = request->beginResponse(SPIFFS, "/settings.json", dataType, true);
+    log("INFO","api.hpp","Descarga del archivo settings.json");
+    AsyncWebServerResponse *response = request->beginResponse(SPIFFS, "/settings.json", dataType, true); //el true es para descargar
     request->send(response);
 }
+
+// -------------------------------------------------------------------
+// Manejo de la descarga del archivo setting.json
+// url: "/api/especial/download"
+// Método: GET
+// -------------------------------------------------------------------
+void handleApiDownloadEspecial(AsyncWebServerRequest *request){
+    if (security){
+        if (!request->authenticate(device_user, device_password))
+            return request->requestAuthentication();
+    }
+    
+    log("INFO","api.hpp","Descarga del archivo especial.json");
+    AsyncWebServerResponse *response = request->beginResponse(SPIFFS, "/especial.json", dataType, true);
+    request->send(response);
+}
+
 // -------------------------------------------------------------------
 // Manejo de la carga del archivo settings.json
 // url: "/api/device/upload"
@@ -864,16 +907,21 @@ void handleApiUpload(AsyncWebServerRequest *request, String filename, size_t ind
         if (!request->authenticate(device_user, device_password))
             return request->requestAuthentication();
     } 
-
+    if(filename!="settings.json"){
+        log("ERROR","api.hpp","No es el archivo valido:" + filename + " \" - settings.json");
+            request->send(500, dataType, "{ \"save\": false, \"msg\": \"¡Error, No es el archivo valido: " + filename + " !\"}");
+            return;
+    }
     if (!index){
         Serial.printf("INFO", "Upload Start: %s\n", filename.c_str());
+        Serial.println("");
     }
     // Validar el archivo si esta abierto settings.json
     if (opened == false){
         opened = true;
         file = SPIFFS.open(String("/") + filename, FILE_WRITE);
         if (!file){
-            log("ERROR", "No se pudo abrir el archivo para escribir");
+            log("ERROR","api.hpp","No se pudo abrir el archivo para escribir");
             request->send(500, dataType, "{ \"save\": false, \"msg\": \"¡Error, No se pudo abrir el archivo para escribir!\"}");
             return;
         }
@@ -881,7 +929,62 @@ void handleApiUpload(AsyncWebServerRequest *request, String filename, size_t ind
 
     // Escribir el archivo en la memoria
     if (file.write(data, len) != len){
-        log("ERROR", "No se pudo escribir el archivo");
+        log("ERROR","api.hpp","No se pudo escribir el archivo");
+        request->send(500, dataType, "{ \"save\": false, \"msg\": \"¡Error, No se pudo escribir el archivo: " + filename + " !\"}");
+        return;
+    }
+    // Finalizada la carga del archivo.
+    if (final){
+        AsyncWebServerResponse *response = request->beginResponse(201, dataType, "{ \"save\": true, \"msg\": \"¡Carga del archivo: " + filename + " completada!\"}");
+        response->addHeader("Cache-Control", "no-cache");
+        response->addHeader("Location", "/");
+        request->send(response);
+        file.close();
+        opened = false;
+        log("INFO","api.hpp","Carga del archivo " + filename + " completada");
+        // Esperar la transmisión de los datos seriales
+        Serial.flush();
+        // Reiniciar el ESP32
+        ESP.restart();
+    }
+}
+
+// -------------------------------------------------------------------
+// Manejo de la carga del archivo settings.json
+// url: "/api/especial/upload"
+// Método: POST
+// -------------------------------------------------------------------
+// Variables para la carga del archivo
+File especialUp;
+bool opened2 = false;
+void handleApiEspecialUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final){
+    if (security){
+        if (!request->authenticate(device_user, device_password))
+            return request->requestAuthentication();
+    } 
+    if(filename!="especial.json"){
+        log("ERROR","api.hpp","No es el archivo valido:" + filename + " \" - especial.json");
+            request->send(500, dataType, "{ \"save\": false, \"msg\": \"¡Error, No es el archivo valido: " + filename + " !\"}");
+            return;
+    }
+    if (!index){
+        Serial.printf("INFO", "Upload Start: %s\n", filename.c_str());
+        Serial.println("");
+    }
+    // Validar el archivo si esta abierto settings.json
+    if (opened2 == false){
+        opened2 = true;
+        especialUp = SPIFFS.open(String("/") + filename, FILE_WRITE);
+        if (!especial){
+            log("ERROR","api.hpp","No se pudo abrir el archivo para escribir");
+            request->send(500, dataType, "{ \"save\": false, \"msg\": \"¡Error, No se pudo abrir el archivo para escribir!\"}");
+            return;
+        }
+    }
+
+    // Escribir el archivo en la memoria
+    if (especialUp.write(data, len) != len){
+        log("ERROR","api.hpp","No se pudo escribir el archivo");
         request->send(500, dataType, "{ \"save\": false, \"msg\": \"¡Error, No se pudo escribir el archivo: " + filename + " !\"}");
         return;
     }
@@ -892,13 +995,13 @@ void handleApiUpload(AsyncWebServerRequest *request, String filename, size_t ind
         response->addHeader("Cache-Control", "no-cache");
         response->addHeader("Location", "/");
         request->send(response);
-        file.close();
-        opened = false;
-        log("INFO", "Carga del archivo " + filename + " completada");
+        especialUp.close();
+        opened2 = false;
+        log("INFO","api.hpp","Carga del archivo " + filename + " completada");
         // Esperar la transmisión de los datos seriales
         Serial.flush();
         // Reiniciar el ESP32
-        ESP.restart();
+        ESP.restart(); //necesario para guardar las configuraciones
     }
 }
 // -------------------------------------------------------------------
@@ -906,6 +1009,7 @@ void handleApiUpload(AsyncWebServerRequest *request, String filename, size_t ind
 // url: /api/device/firmware
 // Método: POST
 // -------------------------------------------------------------------
+/*
 void handleApiFirmware(AsyncWebServerRequest *request, const String &filename, size_t index, uint8_t *data, size_t len, bool final){
     if (security){
         if (!request->authenticate(device_user, device_password))

@@ -142,25 +142,59 @@ bool especialRead(){
          ***********************************************************************************************/
         ALRM_LOGIC1 = jsonEspecial["ALRMS"]["ALRM_LOGIC1"].as<bool>();
         ALRM_NAME1 = jsonEspecial["ALRMS"]["ALRM_NAME1"].as<String>();
-
         ALRM_LOGIC2 = jsonEspecial["ALRMS"]["ALRM_LOGIC2"].as<bool>();
         ALRM_NAME2 = jsonEspecial["ALRMS"]["ALRM_NAME2"].as<String>();
-
         ALRM_LOGIC3 = jsonEspecial["ALRMS"]["ALRM_LOGIC3"].as<bool>();
         ALRM_NAME3 = jsonEspecial["ALRMS"]["ALRM_NAME3"].as<String>();
-
         ALRM_LOGIC4 = jsonEspecial["ALRMS"]["ALRM_LOGIC4"].as<bool>();
         ALRM_NAME4 = jsonEspecial["ALRMS"]["ALRM_NAME4"].as<String>();
-
         ALRM_LOGIC5 = jsonEspecial["ALRMS"]["ALRM_LOGIC5"].as<bool>();
         ALRM_NAME5 = jsonEspecial["ALRMS"]["ALRM_NAME5"].as<String>();
-
         ALRM_LOGIC6 = jsonEspecial["ALRMS"]["ALRM_LOGIC6"].as<bool>();
         ALRM_NAME6 = jsonEspecial["ALRMS"]["ALRM_NAME6"].as<String>();
-
         ALRM_LOGIC7 = jsonEspecial["ALRMS"]["ALRM_LOGIC7"].as<bool>();
         ALRM_NAME7 = jsonEspecial["ALRMS"]["ALRM_NAME7"].as<String>();
+        /************************************************************************************************
+         * Zona configuracion Dispositivo especial.json asignando nuevo valores                         *
+         * a las variables que se encuentran en el archivo globales.hpp                                 *
+         * variables para los nombres de alarmas emitidos por el protocolo espnow                       *
+         ***********************************************************************************************/
 
+        cambio11 = jsonEspecial["espnow"]["cambio11"].as<String>();
+        cambio21 = jsonEspecial["espnow"]["cambio21"].as<String>();
+        cambio31 = jsonEspecial["espnow"]["cambio31"].as<String>();
+        cambio41 = jsonEspecial["espnow"]["cambio41"].as<String>();
+        cambio51 = jsonEspecial["espnow"]["cambio51"].as<String>();
+        cambio61 = jsonEspecial["espnow"]["cambio61"].as<String>();
+        cambio71 = jsonEspecial["espnow"]["cambio71"].as<String>();
+        cambio81 = jsonEspecial["espnow"]["cambio81"].as<String>();
+        //----------------------------------------------
+        cambio12 = jsonEspecial["espnow"]["cambio12"].as<String>();
+        cambio22 = jsonEspecial["espnow"]["cambio22"].as<String>();
+        cambio32 = jsonEspecial["espnow"]["cambio32"].as<String>();
+        cambio42 = jsonEspecial["espnow"]["cambio42"].as<String>();
+        cambio52 = jsonEspecial["espnow"]["cambio52"].as<String>();
+        cambio62 = jsonEspecial["espnow"]["cambio62"].as<String>();
+        cambio72 = jsonEspecial["espnow"]["cambio72"].as<String>();
+        cambio82 = jsonEspecial["espnow"]["cambio82"].as<String>();
+        //----------------------------------------------
+        cambio13 = jsonEspecial["espnow"]["cambio13"].as<String>();
+        cambio23 = jsonEspecial["espnow"]["cambio23"].as<String>();
+        cambio33 = jsonEspecial["espnow"]["cambio33"].as<String>();
+        cambio43 = jsonEspecial["espnow"]["cambio43"].as<String>();
+        cambio53 = jsonEspecial["espnow"]["cambio53"].as<String>();
+        cambio63 = jsonEspecial["espnow"]["cambio63"].as<String>();
+        cambio73 = jsonEspecial["espnow"]["cambio73"].as<String>();
+        cambio83 = jsonEspecial["espnow"]["cambio83"].as<String>();
+        //----------------------------------------------
+        cambio14 = jsonEspecial["espnow"]["cambio14"].as<String>();
+        cambio24 = jsonEspecial["espnow"]["cambio24"].as<String>();
+        cambio34 = jsonEspecial["espnow"]["cambio34"].as<String>();
+        cambio44 = jsonEspecial["espnow"]["cambio44"].as<String>();
+        cambio54 = jsonEspecial["espnow"]["cambio54"].as<String>();
+        cambio64 = jsonEspecial["espnow"]["cambio64"].as<String>();
+        cambio74 = jsonEspecial["espnow"]["cambio74"].as<String>();
+        cambio84 = jsonEspecial["espnow"]["cambio84"].as<String>();
         //-------------------------------------------------------------------
         // Zona Dimer
         //-------------------------------------------------------------------
