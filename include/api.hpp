@@ -18,7 +18,9 @@
 // /api/especial/download               GET         ----        OK
 // /api/device/upload                   POST        ----        OK
 // /api/especial/upload                 POST        ----        OK
-// /api/device/firmware                 POST        ----
+// /api/device/firmware                 POST        ----        OK
+// /api/device/status                   GET         ----        OK
+
 
 
 
@@ -1069,7 +1071,7 @@ void handleApiFirmware(AsyncWebServerRequest *request, const String &filename, s
 // url: /api/device/status
 // Método: GET
 // -------------------------------------------------------------------
-/*
+
 void handleApiGetStatus(AsyncWebServerRequest *request){
     if (security){
         if (!request->authenticate(device_user, device_password))
@@ -1094,6 +1096,7 @@ void handleApiGetStatus(AsyncWebServerRequest *request){
 // url: /api/device/restart
 // Método: POST
 // -------------------------------------------------------------------
+/*
 void handleApiPostRestart(AsyncWebServerRequest *request){
     if (security){
         if (!request->authenticate(device_user, device_password))

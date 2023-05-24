@@ -160,7 +160,7 @@ void initServer(){
     // url: "/api/device/status"
     // Método: GET
     // -------------------------------------------------------------------
-    //server.on("/api/device/status", HTTP_GET, handleApiGetStatus);
+    server.on("/api/device/status", HTTP_GET, handleApiGetStatus);
 
     // -------------------------------------------------------------------
     // Manejo del reinicio
