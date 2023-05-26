@@ -135,6 +135,8 @@ bool especialRead(){
         TIMEOFFRELAY1=jsonEspecial["RELAY"]["TIMEOFFRELAY1"].as<String>();      //indica a que horas se apaga
         TIMEONRELAY2=jsonEspecial["RELAY"]["TIMEONRELAY2"].as<String>();       //indica a que horas se prende
         TIMEOFFRELAY2=jsonEspecial["RELAY"]["TIMEOFFRELAY2"].as<String>();      //indica a que horas se apaga
+        programado1=jsonEspecial["RELAY"]["programado1"].as<bool>();
+        programado2=jsonEspecial["RELAY"]["programado2"].as<bool>();
         /************************************************************************************************
          * Zona configuracion Dispositivo especial.json asignando nuevo valores                         *
          * a las variables que se encuentran en el archivo globales.hpp                                 *

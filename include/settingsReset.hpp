@@ -99,6 +99,8 @@ void especialReset(){
     TIMEOFFRELAY1="00:00";      //indica a que horas se apaga
     TIMEONRELAY2="00:00";       //indica a que horas se prende
     TIMEOFFRELAY2="00:00";      //indica a que horas se apaga
+    programado1=false;
+    programado2=false;
 
     /************************************************************************************************
      * Zona configuracion Dispositivo especial.json asignando nuevo valores                         *

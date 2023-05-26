@@ -20,6 +20,9 @@
 // /api/especial/upload                 POST        ----        OK
 // /api/device/firmware                 POST        ----        OK
 // /api/device/status                   GET         ----        OK
+// /api/device/restart                  POST        ----        OK
+// /api/device/restore                  POST        ----        OK
+// /api/perfil/user                     POST        ----        OK
 
 
 
@@ -419,7 +422,6 @@ void handleApiAlarmas(AsyncWebServerRequest *request){
 //--------------------------------------------------------
 void handleApiRelays(AsyncWebServerRequest *request){
     // agregar el usuario y contraseña
-    // agregar el usuario y contraseña
     if(security){
         if(!request->authenticate(device_user, device_password)){
             return request->requestAuthentication(); //aqui se queda en circulos seria bueno agregar un contador para que salga del bucle
@@ -617,7 +619,7 @@ void handleApiPostRelays(AsyncWebServerRequest *request, uint8_t *data, size_t l
     }
     //la data mete en un string
     String bodyContent = GetBodyContent(data, len);
-    Serial.print(bodyContent);
+    //Serial.print(bodyContent);
     // y se inserta en documento JSON llamado doc
     StaticJsonDocument<1024> doc; //768
     DeserializationError error = deserializeJson(doc, bodyContent);
@@ -685,7 +687,7 @@ void handleApiPostRelays(AsyncWebServerRequest *request, uint8_t *data, size_t l
         request->addInterestingHeader("API ESP32 Server");
         request->send(500, dataType, "{ \"save\": false,\"descripción\": \"Erros con el SPIFFS en save verificar json e información\"}");
     }
-   
+    ctrlRelays();
 }
 
 // -------------------------------------------------------------------
@@ -1096,7 +1098,6 @@ void handleApiGetStatus(AsyncWebServerRequest *request){
 // url: /api/device/restart
 // Método: POST
 // -------------------------------------------------------------------
-/*
 void handleApiPostRestart(AsyncWebServerRequest *request){
     if (security){
         if (!request->authenticate(device_user, device_password))
@@ -1108,6 +1109,7 @@ void handleApiPostRestart(AsyncWebServerRequest *request){
     String origin = "API";
     restart(origin);
 }
+
 // -------------------------------------------------------------------
 // Manejo de la restauración del dispositivo
 // url: /api/device/restore
@@ -1129,6 +1131,7 @@ void handleApiPostRestore(AsyncWebServerRequest *request){
 // url: /api/perfil/user
 // Método: POST
 // -------------------------------------------------------------------
+
 void handleApiPostUser(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
     if (security){
         if (!request->authenticate(device_user, device_password))
@@ -1157,27 +1160,27 @@ void handleApiPostUser(AsyncWebServerRequest *request, uint8_t *data, size_t len
     cp.trim();
 
     // Validar que los datos de lacontraseña anterior no este en blanco
-    if(p != ""){
-        // validar que la contraseña coincida con la anterior
+    if(p != ""){//si p que es el password es diferente de vacio entra
+        // validar que la contraseña que introdusca debe coincida con la anterior
         if( p == device_password ){
-            if(np == "" && cp == ""){
+            if(np == "" && cp == ""){//validar que nuevo paswword y confirmacion de password no vengan vacias
                 request->send(400, dataType, "{ \"save\": false, \"msg\": \"¡Error, No se permite los datos de la nueva contraseña y confirmación vacíos!\"}");
                 return;
-            } else if(np != "" && cp != "" && np == cp){
-                if(np == device_password){
+            } else if(np != "" && cp != "" && np == cp){//si no vienen vacios y son iguales 
+                if(np == device_password){  //si la contraseña es igual a la anterio
                     request->send(400, dataType, "{ \"save\": false, \"msg\": \"¡Error, La contraseña nueva no puede ser igual a la anterior\"}");
                     return;
                 }
-                strlcpy(device_password, np.c_str(), sizeof(device_password));
-                if (settingsSave()) {
+                strlcpy(device_password, np.c_str(), sizeof(device_password));//lo pasamos a char y la asignamos a device_password
+                if (settingsSave()) {//salcamos todo el settings
                     request->send(200, dataType, "{ \"save\": true, \"msg\": \"¡Contraseña actualizada correctamente!\" }");
                 } else {
                     request->send(500, dataType, "{ \"save\": false, \"msg\": \"¡ Internar server error !\" }");
                 }
-            }else if( np !=  cp ){
+            }else if( np !=  cp ){//son diferentes
                 request->send(400, dataType, "{ \"save\": false, \"msg\": \"¡Error, La nueva contraseña y confirmación de nueva contraseña no coinciden!\"}");
                 return;
-            }else{}
+            }else{} //else vacio por convencion
         }else{
            AsyncWebServerResponse *response = request->beginResponse(400, dataType, "{ \"save\": false, \"msg\": \"¡Error, No se pudo guardar, la contraseña anterior no coincide\"}");
             request->send(response);
@@ -1193,6 +1196,7 @@ void handleApiPostUser(AsyncWebServerRequest *request, uint8_t *data, size_t len
 // url: /api/device/relays
 // Método: POST
 // -------------------------------------------------------------------
+/*
 void handleApiPostRelays(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
     if (security){
         if (!request->authenticate(device_user, device_password))
@@ -1223,6 +1227,7 @@ void handleApiPostRelays(AsyncWebServerRequest *request, uint8_t *data, size_t l
 // url: /api/device/dimmer
 // Método: POST
 // -------------------------------------------------------------------
+/*
 void handleApiPostDimmer(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
     if (security){
         if (!request->authenticate(device_user, device_password))

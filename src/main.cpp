@@ -7,6 +7,7 @@
 #include <ArduinoJson.h>  //metodos para manejar archivos JSON
 #include <esp_now.h> //libreria de protocolo esp_now que permite la comunicacion entre dispositivos esp
 #include <TimeLib.h>
+#include <Ticker.h> //para los timer de los relays
 
 //******************************************************************************************************
 // Configuracion del sensor de temperatura DS18B20
@@ -111,10 +112,12 @@ void setup() {
   xTaskCreate(TaskMQTTLed, "TaskMQTTLed", 1024*2, NULL, 1, NULL);
   setupEspnow(); //hasta que este wifi configurado pero hace falta su task
   esp_now_register_recv_cb(OnDataRecv); //no se si va o no va
+  //timer de los relays
+  
 }
 
 void loop() {
-  // loop de monitoreo de WIFI
+  ctrlRelays();
 }
 
 // put function definitions here:

@@ -38,8 +38,8 @@ char        device_id[30];          //ID del dispositivo
 char        device_name[30];        //Nombre del dispositivo
 char        device_user[15];        //Usuario para acceso al servidor web
 char        device_password[15];    //Contraseña del usuario servidor web
-int         CONTRASENA_REINICIAR= 211179;   //= 211179;   //contraseña de 6 digitos para reiniciar el sistema (211179) Guarda informacion aun por hacer ------------
-int         CONTRASENA_DE_FABRICA= 21111979;  //= 21111979;  //Contraseña de 8 digitos para reinicar de fabrica  (21111979) borra toda la informacion ---------------
+int         RESTART= 211179;   //= 211179;   //contraseña de 6 digitos para reiniciar el sistema (211179) Guarda informacion aun por hacer ------------
+int         RESTORE= 21111979;  //= 21111979;  //Contraseña de 8 digitos para reinicar de fabrica  (21111979) borra toda la informacion ---------------
 bool        REINICIAR = false;
 bool        DEFABRICA = false;
 //----------------------------------------------------------------------------
@@ -109,17 +109,17 @@ float max2;
 //Zona RELAY
 //------------------------------------------------------------------------------
 char        R_NAME1[20];        //nombre de los Relays
-int         R_TIME1;            //tiempo que permanecio el relay operando ON en minutos
+int         R_TIME1;            //tiempo que permanecio el relay operando ON en minutos//*************************
 bool        R_STATUS1;          //Estado del pin
 bool        R_TIMERON1;         //indica si se activa el timer del relevador1
 int         R_TIMER1;           //contador regresivo por minuto
 bool        R_LOGIC1;           //por si trabaja energizado
 String      R_DESCRIPTION1;     //indica que es lo que controla   
 bool        TEMPORIZADOR1;      //indica si hay un control por tiempo
-bool        R_EVERYDAY1;           //si el control por tiempo solo activa una vez
+bool        R_EVERYDAY1;           //si el control por tiempo solo activa una vez //****************************
 String      TIMEONRELAY1;       //indica a que horas se prende
 String      TIMEOFFRELAY1;      //indica a que horas se apaga
-
+bool        programado1;        //muestra si esta programado el relay1 con fecha
 
 char        R_NAME2[20];        //nombre de los Relays
 int         R_TIME2;            //tiempo que permanecio el relay operando ON en minutos
@@ -132,6 +132,7 @@ bool        TEMPORIZADOR2;      //indica si hay un control por tiempo
 bool        R_EVERYDAY2;          //si el control por tiempo solo activa una vez
 String      TIMEONRELAY2;       //indica a que horas se prende
 String      TIMEOFFRELAY2;      //indica a que horas se apaga
+bool        programado2;        //muestra si esta programado el relay2 con fecha
 
 bool        BUZZER_STATUS;      //estado del buzzer
 //----------------------------------------------------------------------------
@@ -194,4 +195,20 @@ volatile bool togle = true;
 volatile unsigned long tiempoDeInterrupcion= 0; //sirve para omitir rebotes en sonido
 //void IRAM_ATTR activarAlarmas();
 
-
+// -----------------------------------------------------------------------
+// globales para el timer del relevador 1 y 2
+//https://descubrearduino.com/esp32-arduino-interrupciones-timer/
+// -----------------------------------------------------------------------
+//volatile int interruptCounterRelay1;
+//volatile int interruptCounterRelay2;
+    /*
+    Para configurar el temporizador, necesitaremos apuntar a una variable de tipo hw_timer_t, que luego usaremos 
+    en la función de configuración de Arduino.
+    */
+//hw_timer_t * timer1 = NULL;
+//hw_timer_t * timer2 = NULL;
+    /*Finalmente, necesitaremos declarar una variable de tipo portMUX_TYPE, que utilizaremos para encargarnos de 
+    la sincronización entre el bucle principal y la ISR, cuando modifiquemos una variable compartida.
+    */
+//portMUX_TYPE timerMux1 = portMUX_INITIALIZER_UNLOCKED;
+//portMUX_TYPE timerMux2 = portMUX_INITIALIZER_UNLOCKED;

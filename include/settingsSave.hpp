@@ -114,6 +114,8 @@ bool especialSave(){
         relayObj["TIMEOFFRELAY1"]=TIMEOFFRELAY1;      //indica a que horas se apaga
         relayObj["TIMEONRELAY2"]=TIMEONRELAY2;       //indica a que horas se prende
         relayObj["TIMEOFFRELAY2"]=TIMEOFFRELAY2;      //indica a que horas se apaga
+        relayObj["programado1"]=programado1;
+        relayObj["programado2"]=programado2;
         /************************************************************************************************
          * Zona configuracion Dispositivo especial.json asignando nuevo valores                         *
          * a las variables que se encuentran en el archivo globales.hpp                                 *

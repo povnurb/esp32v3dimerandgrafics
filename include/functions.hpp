@@ -1,7 +1,20 @@
 #include "blinkleds.hpp"
 // archivo de funciones que se ocuparán en el programa
 // especialSave() funcion que usaremos para guardar la configuracion cuando reiniciemos por mqtt
+
+Ticker timerRelay1; //para el manejo del relay1
+Ticker timerRelay2; //para el manejo del relay2
+
+// falta R_TIMER1 y R_TIMER2 para contabilizar el tiempo que lleva encendido
+
+String releTime();
+void settingsReset();
+void especialReset();
 bool especialSave();
+bool settingsSave();
+void offRelay1();
+void offRelay2();
+
 /**
  * void log Genera mensajes personalizados en el puerto Serial
 */
@@ -119,9 +132,9 @@ String ipStr(const IPAddress &ip){
 }
 
 //----------------------------------------------------------------------------
-// maneja los relay, y el buzzer
+// maneja los relay, y el buzzer (solo modifica y guarda valores falta la activacion constante o loop)
 // OnOffRelays(command)     mensajes desde el broker
-//Funcion para operar los Relays de forma Global -> API, MQTT, WS ejemplo:
+//Funcion para operar los Relays de forma por MQTT.
 //ejemplo tópico: lalo/ESP3263A7DBCC2CC1/command
 // {"protocol":"MQTT", "output": "RELAY1", "value":true }
 //----------------------------------------------------------------------------
@@ -411,13 +424,15 @@ bool especial(String command){
     }
     
     if (JsonCommand["varible"] == "CONTRASEÑA"){
-        // {"protocol":"MQTT", "varible": "REINICIAR", "value":"211179" }
-        if(JsonCommand["value"] == CONTRASENA_REINICIAR){
-            
+        // {"protocol":"MQTT", "varible": "CONTRASEÑA", "value":"211179" }
+        if(JsonCommand["value"] == RESTART){
+            log("INFO","functions.hpp","Salvando archivo especial");
             REINICIAR=especialSave();     //falta aplicar si no puede salvar no reiniciará
             
             if(REINICIAR){
-                log("INFO","functions.hpp","Se va a reinicial el dispositivo");
+                log("INFO","functions.hpp","Se va a reinicial el dispositivo por comandos en MQTT");
+                    Serial.println("[RESTART][RESTART][RESTART][RESTART][RESTART][RESTART][RESTART][RESTART]");
+                    Serial.println("[RESTART][RESTART][RESTART][RESTART][RESTART][RESTART][RESTART][RESTART]");
                 // Esperar la transmisión de los datos seriales
                 Serial.flush();
                 // Reiniciar el ESP32
@@ -426,9 +441,25 @@ bool especial(String command){
                 log("ERROR","functions.hpp","Error en la funcion especialSave()");
             return false;
             }
-        }else if(JsonCommand["value"] == CONTRASENA_DE_FABRICA){
-            // {"protocol":"MQTT", "varible": "DEFABRICA", "value":"21111979" }
-            DEFABRICA=true;     //falta aplicar
+        }else if(JsonCommand["value"] == RESTORE){
+            // {"protocol":"MQTT", "varible": "CONTRASEÑA", "value":"21111979" }
+            log("INFO","functions.hpp","Se va a restaurar archivo de configuración especial a valores de fabrica");
+            especialReset();
+            log("INFO","functions.hpp","Se guarda archivo de configuración especial con valores de fabrica");
+            DEFABRICA=especialSave();     //falta aplicar
+            if(DEFABRICA){
+                log("INFO","functions.hpp","Se va a reiniciar el dispositivo");
+                    Serial.println("[RESTORE][RESTORE][RESTORE][RESTORE][RESTORE][RESTORE][RESTORE][RESTORE]");
+                    Serial.println("[RESTORE][RESTORE][RESTORE][RESTORE][RESTORE][RESTORE][RESTORE][RESTORE]");
+                // Esperar la transmisión de los datos seriales
+                Serial.flush();
+                // Reiniciar el ESP32
+                ESP.restart();
+            }else{
+                log("ERROR","functions.hpp","Error en la funcion especialSave()");
+            return false;
+            }
+
         }else{
             log("ERROR","functions.hpp","Contraseña Incorrecta");
             return false;
@@ -549,7 +580,112 @@ String EncryptionType(int encryptionType) {
             return "UNKOWN";
     }
 }
+// ----------------------------------------------------------------------
+// Función para reiniciar el dispositivo Global -> API, MQTT, WS
+// ----------------------------------------------------------------------
+void restart(String origin){
+    log("INFO","functions.hpp","Dispositivo reiniciado desde: " + origin);
+    Serial.println("[RESTART][RESTART][RESTART][RESTART][RESTART][RESTART][RESTART][RESTART]");
+    Serial.println("[RESTART][RESTART][RESTART][RESTART][RESTART][RESTART][RESTART][RESTART]");
+    Serial.flush();
+    ESP.restart();
+}
+// ----------------------------------------------------------------------
+// Función para restablecer el dispositivo Global -> API, MQTT, WS
+// ----------------------------------------------------------------------
+void restore(String origin){
+    log("INFO","functions.hpp","Reseteando configuraciones de fábrica...");
+    settingsReset(); 
+    log("INFO","functions.hpp","Reseteando archivo especial a valores de fábrica...");
+    especialReset();
+    log("INFO","functions.hpp","Salvando configuraciones de fábrica...");
+    if(settingsSave()){
+        log("INFO","functions.hpp","salvando nuevas configuraciones con valores de fábrica...");
+        if(especialSave()){
+            log("INFO","functions.hpp","salvando configuraciones especiales a valores de fábrica por comandos desde: " + origin);
+            Serial.println("[RESTORE][RESTORE][RESTORE][RESTORE][RESTORE][RESTORE][RESTORE][RESTORE]");
+            Serial.println("[RESTORE][RESTORE][RESTORE][RESTORE][RESTORE][RESTORE][RESTORE][RESTORE]");
+            Serial.flush();
+            ESP.restart();
+        }
+    }
+}
+//----------------------------------------------------------------------------
+// maneja los relay desde la api y verificara el estado por minuto 
+//Funcion para operar los Relays de forma Global -> API
+//----------------------------------------------------------------------------
+//releTime
+bool releprog1=false;
+bool releprog2=false;
+void ctrlRelays(){
+    if(programado1){//si tiene hora de inicio programada el relay1
+        if(TIMEONRELAY1==releTime()){
+            digitalWrite(RELAY1, HIGH);
+            R_STATUS1=true;
+        }
+        if(TIMEOFFRELAY1==releTime()){
+            digitalWrite(RELAY1, LOW);
+            R_STATUS1=LOW;
+        }
+    }
+    if(programado2){//si tiene hora de inicio programada el relay2
+        if(TIMEONRELAY2==releTime()){
+            digitalWrite(RELAY2, HIGH);
+            R_STATUS2=true;
+        }
+        if(TIMEOFFRELAY2==releTime()){
+            digitalWrite(RELAY2, LOW);
+            R_STATUS2=LOW;
+        }
+    }
 
+    if(R_TIMERON1&&!releprog1){
+        timerRelay1.attach(R_TIMER1,offRelay1);
+        R_STATUS1=true;
+        releprog1=true;
+    }
+    if(R_TIMERON2&&!releprog2){
+        timerRelay2.attach(R_TIMER2,offRelay2);
+        R_STATUS2=true;
+        releprog2=true;
+    }
+
+    if (R_LOGIC1){
+        digitalWrite(RELAY1, R_STATUS1);
+
+    }else{
+        digitalWrite(RELAY1, !R_STATUS1);
+
+    }
+    if (R_LOGIC2){
+        digitalWrite(RELAY2, R_STATUS2);
+
+    }else{
+        digitalWrite(RELAY2, !R_STATUS2);
+
+    }
+}
+void offRelay1(){
+    R_TIMERON1=false;
+    digitalWrite(RELAY1, false);
+    R_STATUS1=false;
+    timerRelay1.detach();
+    releprog1=false;
+}
+void offRelay2(){
+    R_TIMERON2=false;
+    digitalWrite(RELAY2, false);
+    R_STATUS2=false;
+    timerRelay2.detach();
+    releprog2=false;
+}
+
+ /* falta
+    aplicar todo esto o quitar
+    int         R_TIME1;            //tiempo que permanecio el relay operando ON en minutos
+    bool        R_EVERYDAY1;           //si el control por tiempo solo activa una vez
+
+    */
 
 // -------------------------------------------------------------------
 // Fecha y Hora del Sistema
@@ -604,8 +740,50 @@ String getDateTime(){
 	return String( fecha );
 }
 
+//horario de encendido y apagado del relevador
+String releTime(){
+    
+    char horas[5];
+    int hora = 0;
+    int minuto = 0;
+
+    if(time_ajuste){ // Manual
+        /* RTC */
+
+        hora = rtc.getHour(true);
+        minuto = rtc.getMinute();
+
+    }else{ // Automatico
+        if((WiFi.status() == WL_CONNECTED) && (wifi_mode == WIFI_STA)){
+            /* NTP */
+            if(ntpClient.isTimeSet()) {
+                String formattedTime = ntpClient.getFormattedTime();
+                // FORMAR FECHA DD-MM-YYYY DESDE EPOCH
+                time_t epochTime = ntpClient.getEpochTime();
+                struct tm *now = gmtime ((time_t *)&epochTime); 
+
+                // 12:00:00
+                hora = ntpClient.getHours();
+                minuto = ntpClient.getMinutes();
+
+            }  
+        }else{
+            /* RTC */
+
+            hora = rtc.getHour(true);
+            minuto = rtc.getMinute();
+
+        }                   
+    }	
+    //sprintf( hora, "%.2d-%.2d-%.4d %.2d:%.2d:%.2d", dia, mes, anio, hora, minuto, segundo);
+    sprintf( horas, " %.2d:%.2d", hora, minuto);
+	return String( horas );
+}
+
+
 // -------------------------------------------------------------------
 //contador de alarmas
+// -------------------------------------------------------------------
 void contadorAlarmas(){
     int pines[7] = {ALRM_PIN1,ALRM_PIN2,ALRM_PIN3,ALRM_PIN4,ALRM_PIN5,ALRM_PIN6,ALRM_PIN7};
     bool logicas[7] = {ALRM_LOGIC1,ALRM_LOGIC2,ALRM_LOGIC3,ALRM_LOGIC4,ALRM_LOGIC5,ALRM_LOGIC6,ALRM_LOGIC7};

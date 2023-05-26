@@ -167,28 +167,28 @@ void initServer(){
     // url: "/api/device/restart"
     // Método: POST
     // -------------------------------------------------------------------
-    //server.on("/api/device/restart", HTTP_POST, handleApiPostRestart);
+    server.on("/api/device/restart", HTTP_POST, handleApiPostRestart);
 
     // -------------------------------------------------------------------
     // Manejo de la restauración
     // url: "/api/device/restore"
     // Método: POST
     // -------------------------------------------------------------------
-    //server.on("/api/device/restore", HTTP_POST, handleApiPostRestore);
+    server.on("/api/device/restore", HTTP_POST, handleApiPostRestore);
 
     // -------------------------------------------------------------------
     // Actualizar las configuraciones del acceso al servidor - contraseña
     // url: /api/perfil/user
     // Método: POST
     // -------------------------------------------------------------------
-    //server.on("/api/perfil/user", HTTP_POST, [](AsyncWebServerRequest *request) {}, NULL, handleApiPostUser);
+    server.on("/api/perfil/user", HTTP_POST, [](AsyncWebServerRequest *request) {}, NULL, handleApiPostUser);
 
     // -------------------------------------------------------------------
     // On/Off los relays
     // url: /api/device/relays
     // Método: POST
     // -------------------------------------------------------------------
-    //server.on("/api/device/relays", HTTP_POST, [](AsyncWebServerRequest *request) {}, NULL, handleApiPostRelays);
+    // server.on("/api/device/relays", HTTP_POST, [](AsyncWebServerRequest *request) {}, NULL, handleApiPostRelays);
 
     // -------------------------------------------------------------------
     // Regulador Dimmer

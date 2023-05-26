@@ -376,13 +376,13 @@ String OnOffAlarmas(){
 // ----------------------------------------------------------------------------------
 void activarAlarma(){ //para provar despues en casa
 
-int pines[8] = {ALRM_PIN1,ALRM_PIN2,ALRM_PIN3,ALRM_PIN4,ALRM_PIN5,ALRM_PIN6,ALRM_PIN7};
-bool logicas[8] = {ALRM_LOGIC1,ALRM_LOGIC2,ALRM_LOGIC3,ALRM_LOGIC4,ALRM_LOGIC5,ALRM_LOGIC6,ALRM_LOGIC7};
+int pines[7] = {ALRM_PIN1,ALRM_PIN2,ALRM_PIN3,ALRM_PIN4,ALRM_PIN5,ALRM_PIN6,ALRM_PIN7};
+bool logicas[7] = {ALRM_LOGIC1,ALRM_LOGIC2,ALRM_LOGIC3,ALRM_LOGIC4,ALRM_LOGIC5,ALRM_LOGIC6,ALRM_LOGIC7};
     if(digitalRead(15)){
         prueba = true;//prueba de alarmas envio por mqtt
         //digitalWrite(32,HIGH);
         normalizar=false;
-        for (int i=0; i < 8; i++){
+        for (int i=0; i < 7; i++){
             if(!logicas[i]){
                 pinMode(pines[i],OUTPUT); //activa las alarmas de manera remota
                 digitalWrite(pines[i],LOW);
