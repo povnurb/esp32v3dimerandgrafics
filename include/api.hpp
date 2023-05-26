@@ -23,7 +23,7 @@
 // /api/device/restart                  POST        ----        OK
 // /api/device/restore                  POST        ----        OK
 // /api/perfil/user                     POST        ----        OK
-
+// /api/device/dimmer                   POST        ----        OK
 
 
 
@@ -439,28 +439,24 @@ void handleApiRelays(AsyncWebServerRequest *request){
     json += ",\"RELAY1\":";
         json +="{";   
         json += "\"R_NAME1\": \"" + String(R_NAME1) + "\""; //nombre del relay
-        json += ",\"R_TIME1\": \"" + String(R_TIME1) + "\""; //tiempo que permanece operando
         R_STATUS1? json += ",\"R_STATUS1\": true": json += ",\"R_STATUS1\": false"; //encendido o apagado
         R_TIMERON1? json += ",\"R_TIMERON1\": true": json += ",\"R_TIMERON1\": false"; //si se active el timer de este relevador
         json += ",\"R_TIMER1\": \"" + String(R_TIMER1) + "\""; //contador regresivo por minuto 
         R_LOGIC1? json += ",\"R_LOGIC1\": true": json += ",\"R_LOGIC1\": false"; //por si trabaja energizado
         json += ",\"R_DESCRIPTION1\": \"" + String(R_DESCRIPTION1) + "\""; //breve descripcion 
         TEMPORIZADOR1? json += ",\"TEMPORIZADOR1\": true": json += ",\"TEMPORIZADOR1\": false"; //indica si hay un control por tiempo definido por horario
-        R_EVERYDAY1? json += ",\"R_EVERYDAY1\": true": json += ",\"R_EVERYDAY1\": false"; //si es falso solo una vez en caso contrario todos los dias
         json += ",\"TIMEONRELAY1\": \"" + String(TIMEONRELAY1) + "\""; //indica a que hora se prende en caso de logica negativa a que hr se apaga
         json += ",\"TIMEOFFRELAY1\": \"" + String(TIMEOFFRELAY1) + "\""; //indica a que hora se apaga en caso de logica negativa a que hr se prende
         json += "}";
     json += ",\"RELAY2\":";
         json +="{";   
         json += "\"R_NAME2\": \"" + String(R_NAME2) + "\""; //nombre del relay
-        json += ",\"R_TIME2\": \"" + String(R_TIME2) + "\""; //tiempo que permanece operando
         R_STATUS2? json += ",\"R_STATUS2\": true": json += ",\"R_STATUS2\": false"; //encendido o apagado
         R_TIMERON2? json += ",\"R_TIMERON2\": true": json += ",\"R_TIMERON2\": false"; //si se active el timer de este relevador
         json += ",\"R_TIMER2\": \"" + String(R_TIMER2) + "\""; //contador regresivo por minuto 
         R_LOGIC2? json += ",\"R_LOGIC2\": true": json += ",\"R_LOGIC2\": false"; //por si trabaja energizado
         json += ",\"R_DESCRIPTION2\": \"" + String(R_DESCRIPTION2) + "\""; //breve descripcion 
         TEMPORIZADOR2? json += ",\"TEMPORIZADOR2\": true": json += ",\"TEMPORIZADOR2\": false"; //indica si hay un control por tiempo definido por horario
-        R_EVERYDAY2? json += ",\"R_EVERYDAY2\": true": json += ",\"R_EVERYDAY2\": false"; //si es falso solo una vez en caso contrario todos los dias
         json += ",\"TIMEONRELAY2\": \"" + String(TIMEONRELAY2) + "\""; //indica a que hora se prende en caso de logica negativa a que hr se apaga
         json += ",\"TIMEOFFRELAY2\": \"" + String(TIMEOFFRELAY2) + "\""; //indica a que hora se apaga en caso de logica negativa a que hr se prende
         json += "}";    
@@ -649,7 +645,6 @@ void handleApiPostRelays(AsyncWebServerRequest *request, uint8_t *data, size_t l
         R_DESCRIPTION1=doc["R_DESCRIPTION1"].as<String>(); //modificamos el valor de la variable con ese valor convertido en String
     }      
     TEMPORIZADOR1 = doc["TEMPORIZADOR1"].as<bool>();  //indica si hay un control por tiempo
-    R_EVERYDAY1 = doc["R_EVERYDAY1"].as<bool>();  //si el control por tiempo solo activa una vez
     if (doc["TIMEONRELAY1"] != ""){//si no esta vacia actualizamos la data en caso contrario mantiene su valor
         TIMEONRELAY1=doc["TIMEONRELAY1"].as<String>(); //modificamos el valor de la variable con ese valor convertido en String
     }  
@@ -673,7 +668,6 @@ void handleApiPostRelays(AsyncWebServerRequest *request, uint8_t *data, size_t l
         R_DESCRIPTION2=doc["R_DESCRIPTION2"].as<String>(); //modificamos el valor de la variable con ese valor convertido en String
     }      
     TEMPORIZADOR2 = doc["TEMPORIZADOR2"].as<bool>();  //indica si hay un control por tiempo
-    R_EVERYDAY2 = doc["R_EVERYDAY2"].as<bool>();  //si el control por tiempo solo activa una vez
     if (doc["TIMEONRELAY2"] != ""){//si no esta vacia actualizamos la data en caso contrario mantiene su valor
         TIMEONRELAY2=doc["TIMEONRELAY2"].as<String>(); //modificamos el valor de la variable con ese valor convertido en String
     }  
@@ -1221,13 +1215,13 @@ void handleApiPostRelays(AsyncWebServerRequest *request, uint8_t *data, size_t l
         if(settingsSave())
             request->send(200, dataType, "{ \"relay\": true, \"name\":  \"" + doc["output"].as<String>() + "\", \"status\": false }");
     }
-}
+}*/
 // -------------------------------------------------------------------
 // Manejo del dimmer
 // url: /api/device/dimmer
 // Método: POST
 // -------------------------------------------------------------------
-/*
+
 void handleApiPostDimmer(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
     if (security){
         if (!request->authenticate(device_user, device_password))
@@ -1245,4 +1239,4 @@ void handleApiPostDimmer(AsyncWebServerRequest *request, uint8_t *data, size_t l
 
     dimmer(bodyContent);
     request->send(200, dataType, "{ \"dimmer\": true, \"value\": \"" + String(dim) + "\" }");
-}*/
+}

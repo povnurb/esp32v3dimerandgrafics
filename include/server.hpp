@@ -195,7 +195,7 @@ void initServer(){
     // url: /api/device/dimmer
     // Método: POST
     // -------------------------------------------------------------------
-    //server.on("/api/device/dimmer", HTTP_POST, [](AsyncWebServerRequest *request) {}, NULL, handleApiPostDimmer);
+    server.on("/api/device/dimmer", HTTP_POST, [](AsyncWebServerRequest *request) {}, NULL, handleApiPostDimmer);
 
     server.begin();
     log("INFO","server.hpp","Servidor HTTP iniciado");

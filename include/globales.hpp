@@ -109,27 +109,23 @@ float max2;
 //Zona RELAY
 //------------------------------------------------------------------------------
 char        R_NAME1[20];        //nombre de los Relays
-int         R_TIME1;            //tiempo que permanecio el relay operando ON en minutos//*************************
 bool        R_STATUS1;          //Estado del pin
 bool        R_TIMERON1;         //indica si se activa el timer del relevador1
 int         R_TIMER1;           //contador regresivo por minuto
 bool        R_LOGIC1;           //por si trabaja energizado
 String      R_DESCRIPTION1;     //indica que es lo que controla   
 bool        TEMPORIZADOR1;      //indica si hay un control por tiempo
-bool        R_EVERYDAY1;           //si el control por tiempo solo activa una vez //****************************
 String      TIMEONRELAY1;       //indica a que horas se prende
 String      TIMEOFFRELAY1;      //indica a que horas se apaga
 bool        programado1;        //muestra si esta programado el relay1 con fecha
 
 char        R_NAME2[20];        //nombre de los Relays
-int         R_TIME2;            //tiempo que permanecio el relay operando ON en minutos
 bool        R_STATUS2;          //Estado del pin
 bool        R_TIMERON2;         //indica si se activa el timer del relevador2
 int         R_TIMER2;           //contador regresivo por minuto 
 bool        R_LOGIC2;           //por si trabaja energizado
 String      R_DESCRIPTION2;     //breve descripcion 
 bool        TEMPORIZADOR2;      //indica si hay un control por tiempo
-bool        R_EVERYDAY2;          //si el control por tiempo solo activa una vez
 String      TIMEONRELAY2;       //indica a que horas se prende
 String      TIMEOFFRELAY2;      //indica a que horas se apaga
 bool        programado2;        //muestra si esta programado el relay2 con fecha
@@ -140,7 +136,7 @@ bool        BUZZER_STATUS;      //estado del buzzer
 //-----------------------------------------------------------------------------
 
 const int   freq = 1000;        //frecuancia de trabajo
-const int ledChanel = 0;        //canal
+const int ledChannel = 0;        //canal
 const int resolution = 8;        // resolucion de 8 bits para que llegue a 255
 int       dim;                  //valor del dimer que se le pasa al canal
 
@@ -195,20 +191,4 @@ volatile bool togle = true;
 volatile unsigned long tiempoDeInterrupcion= 0; //sirve para omitir rebotes en sonido
 //void IRAM_ATTR activarAlarmas();
 
-// -----------------------------------------------------------------------
-// globales para el timer del relevador 1 y 2
-//https://descubrearduino.com/esp32-arduino-interrupciones-timer/
-// -----------------------------------------------------------------------
-//volatile int interruptCounterRelay1;
-//volatile int interruptCounterRelay2;
-    /*
-    Para configurar el temporizador, necesitaremos apuntar a una variable de tipo hw_timer_t, que luego usaremos 
-    en la función de configuración de Arduino.
-    */
-//hw_timer_t * timer1 = NULL;
-//hw_timer_t * timer2 = NULL;
-    /*Finalmente, necesitaremos declarar una variable de tipo portMUX_TYPE, que utilizaremos para encargarnos de 
-    la sincronización entre el bucle principal y la ISR, cuando modifiquemos una variable compartida.
-    */
-//portMUX_TYPE timerMux1 = portMUX_INITIALIZER_UNLOCKED;
-//portMUX_TYPE timerMux2 = portMUX_INITIALIZER_UNLOCKED;
+

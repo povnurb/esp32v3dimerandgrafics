@@ -99,8 +99,8 @@ void gpioDefine(){
     pinMode(RELAY1, OUTPUT);
     pinMode(RELAY2, OUTPUT);
     // PWM (DIMMER) dimerizar el led o foco o motor
-    ledcSetup(ledChanel, freq, resolution);
-    ledcAttachPin(DIMMER, ledChanel);
+    ledcSetup(ledChannel, freq, resolution);
+    ledcAttachPin(DIMMER, ledChannel);
     //BUZZER
     pinMode(BUZZER, OUTPUT);
     // poner todos lo configurado en 0 o apagado
@@ -109,7 +109,7 @@ void gpioDefine(){
     setOffSingle(RELAY1);
     setOffSingle(RELAY2);
     setOffSingle(BUZZER);
-    ledcWrite(ledChanel, 0); //puede ir de 0 a 255 ya que la resolucion es de 8 bits
+    ledcWrite(ledChannel, 0); //puede ir de 0 a 255 ya que la resolucion es de 8 bits
 }
 // -------------------------------------------------------------------
 // Convierte un char a IP
@@ -680,12 +680,22 @@ void offRelay2(){
     releprog2=false;
 }
 
- /* falta
-    aplicar todo esto o quitar
-    int         R_TIME1;            //tiempo que permanecio el relay operando ON en minutos
-    bool        R_EVERYDAY1;           //si el control por tiempo solo activa una vez
-
-    */
+//--------------------------------------------------------------------------------
+//Función para el dimmer dispositivo Global -> API, MQTT, WS
+//ejemplo: {"protocol":"API", "output": "Dimmer", "value": 0-100}
+//------------------------------------------------------------------------------
+void dimmer(String dimmer){
+    DynamicJsonDocument JsonDimmer(320);
+    deserializeJson(JsonDimmer, dimmer);
+    log("INFO","functions.hpp","Comando enviado desde: "+JsonDimmer["protocol"].as<String>()+" <=> "+JsonDimmer["output"].as<String>()+" <=> "+JsonDimmer["value"].as<String>()+" %");
+    dim = JsonDimmer["value"].as<int>();
+    if (dim >100) dim = 100;
+    if (dim < 0)  dim = 0;
+    if(settingsSave()){
+        ledcWrite(ledChannel, dim * 2.55);
+        // multiplicamos por 2.55*100 para llegar a 255 que sería el máximo a 8 bits = 3.3V
+    }
+}
 
 // -------------------------------------------------------------------
 // Fecha y Hora del Sistema

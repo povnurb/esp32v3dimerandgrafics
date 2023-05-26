@@ -87,14 +87,10 @@ void especialReset(){
     R_LOGIC2 = true;   //verificar si no es true ------------------------------------------
     R_DESCRIPTION1 = "Control D33";
     R_DESCRIPTION2 = "control D15";
-    R_TIME1=0;        //tiempo que permanecio el relay operando ON por minutos 
-    R_TIME2=0;        //tiempo que permanecio el relay operando ON en minutos
     R_TIMERON1=false;         //indica si se activa el timer del relevador1
     R_TIMERON2=false;         //indica si se activa el timer del relevador2
     TEMPORIZADOR1=false;      //indica si hay un control por horario
     TEMPORIZADOR2=false;      //indica si hay un control por hirario
-    R_EVERYDAY1=true;          //si el control se activa todos los dias
-    R_EVERYDAY2=true;          //si el control se activa todos los dias
     TIMEONRELAY1="00:00";       //indica a que horas se prende
     TIMEOFFRELAY1="00:00";      //indica a que horas se apaga
     TIMEONRELAY2="00:00";       //indica a que horas se prende

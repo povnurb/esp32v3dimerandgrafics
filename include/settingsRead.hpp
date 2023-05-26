@@ -125,12 +125,8 @@ bool especialRead(){
         R_DESCRIPTION2 = jsonEspecial["RELAY"]["R_DESCRIPTION2"].as<String>();
         R_TIMERON1=jsonEspecial["RELAY"]["R_TIMERON1"].as<bool>();         //indica si se activa el timer del relevador1
         R_TIMERON2=jsonEspecial["RELAY"]["R_TIMERON2"].as<bool>();         //indica si se activa el timer del relevador2
-        R_TIME1=jsonEspecial["RELAY"]["R_TIME1"];        //tiempo que permanecio el relay operando ON por minutos 
-        R_TIME2=jsonEspecial["RELAY"]["R_TIME2"];        //tiempo que permanecio el relay operando ON en minutos
         TEMPORIZADOR1=jsonEspecial["RELAY"]["TEMPORIZADOR1"].as<bool>();      //indica si hay un control por horario
         TEMPORIZADOR2=jsonEspecial["RELAY"]["TEMPORIZADOR2"].as<bool>();      //indica si hay un control por hirario
-        R_EVERYDAY1=jsonEspecial["RELAY"]["R_EVERYDAY1"].as<bool>();          //si el control por tiempo solo se activa una vez en caso de false queda establecido todos los dias
-        R_EVERYDAY2=jsonEspecial["RELAY"]["R_EVERYDAY2"].as<bool>();          //si el control por tiempo solo se activa una vez
         TIMEONRELAY1=jsonEspecial["RELAY"]["TIMEONRELAY1"].as<String>();       //indica a que horas se prende
         TIMEOFFRELAY1=jsonEspecial["RELAY"]["TIMEOFFRELAY1"].as<String>();      //indica a que horas se apaga
         TIMEONRELAY2=jsonEspecial["RELAY"]["TIMEONRELAY2"].as<String>();       //indica a que horas se prende

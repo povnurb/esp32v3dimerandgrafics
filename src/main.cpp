@@ -99,7 +99,7 @@ void setup() {
   setOnOffSingle(RELAY1,R_STATUS1);
   setOnOffSingle(RELAY2,R_STATUS2);
   //Pasar el dato del dimmer
-  ledcWrite(ledChanel, dim * 2.55); //dim va de 0 a 100
+  ledcWrite(ledChannel, dim * 2.55); //dim va de 0 a 100
   //inicial el wifi
   wifi_setup();
   //iniciamos el servidor

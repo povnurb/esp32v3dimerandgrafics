@@ -108,6 +108,7 @@ void callback(char *topic, byte *payload, unsigned int length){
         log("INFO","mqtt.hpp","Muestra información de otro dispositivo");
         muestraInfoMqtt(command);
     }
+    //TODO: responder al mqtt el estado de los relays
 }
 
 // -----------------------------------------------------------------------------------
