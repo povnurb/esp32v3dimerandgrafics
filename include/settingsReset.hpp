@@ -55,13 +55,20 @@ void settingsReset(){
     strlcpy(mqtt_password, "public",sizeof(mqtt_password));
     mqtt_clean_sessions = true;        //true significa que eliminará todos los temas suscritos (topicos)
     strlcpy(mqtt_willTopic, PathMqttTopic("status").c_str(),sizeof(mqtt_willTopic)); 
-    strlcpy(mqtt_extraTopic, "",sizeof(mqtt_extraTopic)); 
+    
     strlcpy(mqtt_willMessage, "{\"connected\":false}",sizeof(mqtt_willMessage)); 
     mqtt_willQoS = 0;
     mqtt_willRetain = true;   //verificar false
     mqtt_time_send = true;
     mqtt_time_interval = 60000;   //esta en milisegundo
     mqtt_status_send = true;  
+    // -------------------------------------------------------------------
+    // Time settings.json
+    // -------------------------------------------------------------------
+    time_ajuste = false;
+    strlcpy(time_date, "2023-06-04T14:09", sizeof(time_date));
+    time_z_horaria = -14400;
+    strlcpy(time_server, "time.nist.gov", sizeof(time_server));
     /**
      * Zona de Relay
     */
@@ -128,6 +135,27 @@ void especialReset(){
     cambio13="";cambio23="";cambio33="";cambio43="";cambio53="";cambio63="";cambio73="";cambio83="";
     cambio14="";cambio24="";cambio34="";cambio44="";cambio54="";cambio64="";cambio74="";cambio84="";
 
+    /************************************************************************************************
+     * Nuevos valores a las variables que se encuentran en el archivo globales.hpp                  *
+     * variables para el MQTT2:                                                                     *
+     * *********************************************************************************************/ 
+    mqtt_enable2 = true; //hacer una prueba enable y hacer con otro esp32 una prueba habilitado
+    strlcpy(mqtt_user2, "lalo",sizeof(mqtt_user2));
+    strlcpy(mqtt_id2, (DeviceID()+"Viewer").c_str(),sizeof(mqtt_id2));
+    strlcpy(mqtt_server2, "iotmx.com",sizeof(mqtt_server2));
+    mqtt_port2 = 1883;       //verificar
+    strlcpy(mqtt_willTopic2, PathMqttTopic("status").c_str(),sizeof(mqtt_willTopic2)); // tengo mis dudas
+    strlcpy(mqtt_password2, "public",sizeof(mqtt_password2));
+    mqtt_willQoS2 = 0;
+    mqtt_clean_sessions2 = true;        //true significa que eliminará todos los temas suscritos (topicos)
+    mqtt_time_send2 = true;
+    mqtt_willRetain2 = true;   //verificar false
+    strlcpy(mqtt_willMessage2, "{\"connected\":false}",sizeof(mqtt_willMessage2)); 
+    strlcpy(mqtt_extraTopic, "lalo/ESP3263A7DBCC2CC1",sizeof(mqtt_extraTopic)); //lalo/ESP3263A7DBCC2CC1 ponerlo en carcaza y sin carcaza lalo/ESP32A11B5AE04002
+    mqtt_retain2 = false;
+    mqtt_qos2 = 0; 
+    mqtt_time_interval2 = 10000;
+    mqtt_status_send2 = false;
     //-------------------------------------------------------------------
     // Zona Dimer
     //-------------------------------------------------------------------

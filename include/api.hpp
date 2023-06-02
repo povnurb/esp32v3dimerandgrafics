@@ -24,6 +24,11 @@
 // /api/device/restore                  POST        ----        OK
 // /api/perfil/user                     POST        ----        OK
 // /api/device/dimmer                   POST        ----        OK
+// /api/connection/mqtt2                GET         ----        OK
+// /api/connection/alarmasremotas       GET         ----        OK
+// /api/connection/alarmasremotas       POST        ----        OK
+// /api/time                            GET         ----        OK
+// /api/time                            POST        ----        OK
 
 
 
@@ -331,7 +336,6 @@ void handleApiPostWiFi(AsyncWebServerRequest *request, uint8_t *data, size_t len
 //--------------------------------------------------------
 void handleApiAlarmas(AsyncWebServerRequest *request){
     // agregar el usuario y contraseña
-    // agregar el usuario y contraseña
     if(security){
         if(!request->authenticate(device_user, device_password)){
             return request->requestAuthentication(); //aqui se queda en circulos seria bueno agregar un contador para que salga del bucle
@@ -350,7 +354,7 @@ void handleApiAlarmas(AsyncWebServerRequest *request){
         json +="{";   
         json += "\"ALRM_PIN1\": \"" + String(ALRM_PIN1) + "\"";
         json += ",\"ALRM_NAME1\": \"" + String(ALRM_NAME1) + "\"";
-        ALRM_STATUS1? json += ",\"ALRM_STATUS1\": true": json += ",\"ALRM_STATUS1\": false";
+        digitalRead(alarma1.PIN)?(ALRM_LOGIC1? json += ",\"ALRM_STATUS1\": true": json += ",\"ALRM_STATUS1\": false"):(ALRM_LOGIC1? json += ",\"ALRM_STATUS1\": false": json += ",\"ALRM_STATUS1\": true");
         ALRM_LOGIC1? json += ",\"ALRM_LOGIC1\": true": json += ",\"ALRM_LOGIC1\": false";
         json += ",\"ALRM_TON1\": \"" + String(ALRM_TON1) + "\"";
         json += ",\"ALRM_TOFF1\": \"" + String(ALRM_TOFF1) + "\"";
@@ -358,7 +362,7 @@ void handleApiAlarmas(AsyncWebServerRequest *request){
         //---------------------------------------------------
         json += ",\"ALRM_PIN2\": \"" + String(ALRM_PIN2) + "\"";
         json += ",\"ALRM_NAME2\": \"" + String(ALRM_NAME2) + "\"";
-        ALRM_STATUS2? json += ",\"ALRM_STATUS2\": true": json += ",\"ALRM_STATUS2\": false";
+        digitalRead(alarma2.PIN)?(ALRM_LOGIC2? json += ",\"ALRM_STATUS2\": true": json += ",\"ALRM_STATUS2\": false"):(ALRM_LOGIC2? json += ",\"ALRM_STATUS2\": false": json += ",\"ALRM_STATUS2\": true");
         ALRM_LOGIC2? json += ",\"ALRM_LOGIC2\": true": json += ",\"ALRM_LOGIC2\": false";
         json += ",\"ALRM_TON2\": \"" + String(ALRM_TON2) + "\"";
         json += ",\"ALRM_TOFF2\": \"" + String(ALRM_TOFF2) + "\"";
@@ -366,7 +370,7 @@ void handleApiAlarmas(AsyncWebServerRequest *request){
         //-------------------------------------------------------------------------------------------
         json += ",\"ALRM_PIN3\": \"" + String(ALRM_PIN3) + "\"";
         json += ",\"ALRM_NAME3\": \"" + String(ALRM_NAME3) + "\"";
-        ALRM_STATUS3? json += ",\"ALRM_STATUS3\": true": json += ",\"ALRM_STATUS3\": false";
+        digitalRead(alarma3.PIN)?(ALRM_LOGIC3? json += ",\"ALRM_STATUS3\": true": json += ",\"ALRM_STATUS3\": false"):(ALRM_LOGIC3? json += ",\"ALRM_STATUS3\": false": json += ",\"ALRM_STATUS3\": true");
         ALRM_LOGIC3? json += ",\"ALRM_LOGIC3\": true": json += ",\"ALRM_LOGIC3\": false";
         json += ",\"ALRM_TON3\": \"" + String(ALRM_TON3) + "\"";
         json += ",\"ALRM_TOFF3\": \"" + String(ALRM_TOFF3) + "\"";
@@ -374,7 +378,7 @@ void handleApiAlarmas(AsyncWebServerRequest *request){
         //-------------------------------------------------------------------------------------------
         json += ",\"ALRM_PIN4\": \"" + String(ALRM_PIN4) + "\"";
         json += ",\"ALRM_NAME4\": \"" + String(ALRM_NAME4) + "\"";
-        ALRM_STATUS4? json += ",\"ALRM_STATUS4\": true": json += ",\"ALRM_STATUS4\": false";
+        digitalRead(alarma4.PIN)?(ALRM_LOGIC4? json += ",\"ALRM_STATUS4\": true": json += ",\"ALRM_STATUS4\": false"):(ALRM_LOGIC4? json += ",\"ALRM_STATUS4\": false": json += ",\"ALRM_STATUS4\": true");
         ALRM_LOGIC4? json += ",\"ALRM_LOGIC4\": true": json += ",\"ALRM_LOGIC4\": false";
         json += ",\"ALRM_TON4\": \"" + String(ALRM_TON4) + "\"";
         json += ",\"ALRM_TOFF4\": \"" + String(ALRM_TOFF4) + "\"";
@@ -382,7 +386,7 @@ void handleApiAlarmas(AsyncWebServerRequest *request){
         //-------------------------------------------------------------------------------------------
         json += ",\"ALRM_PIN5\": \"" + String(ALRM_PIN5) + "\"";
         json += ",\"ALRM_NAME5\": \"" + String(ALRM_NAME5) + "\"";
-        ALRM_STATUS5? json += ",\"ALRM_STATUS5\": true": json += ",\"ALRM_STATUS5\": false";
+        digitalRead(alarma5.PIN)?(ALRM_LOGIC5? json += ",\"ALRM_STATUS5\": true": json += ",\"ALRM_STATUS5\": false"):(ALRM_LOGIC5? json += ",\"ALRM_STATUS5\": false": json += ",\"ALRM_STATUS5\": true");
         ALRM_LOGIC5? json += ",\"ALRM_LOGIC5\": true": json += ",\"ALRM_LOGIC5\": false";
         json += ",\"ALRM_TON5\": \"" + String(ALRM_TON5) + "\"";
         json += ",\"ALRM_TOFF5\": \"" + String(ALRM_TOFF5) + "\"";
@@ -390,7 +394,7 @@ void handleApiAlarmas(AsyncWebServerRequest *request){
         //-------------------------------------------------------------------------------------------
         json += ",\"ALRM_PIN6\": \"" + String(ALRM_PIN6) + "\"";
         json += ",\"ALRM_NAME6\": \"" + String(ALRM_NAME6) + "\"";
-        ALRM_STATUS6? json += ",\"ALRM_STATUS6\": true": json += ",\"ALRM_STATUS6\": false";
+        digitalRead(alarma6.PIN)?(ALRM_LOGIC6? json += ",\"ALRM_STATUS6\": true": json += ",\"ALRM_STATUS6\": false"):(ALRM_LOGIC6? json += ",\"ALRM_STATUS6\": false": json += ",\"ALRM_STATUS6\": true");
         ALRM_LOGIC6? json += ",\"ALRM_LOGIC6\": true": json += ",\"ALRM_LOGIC6\": false";
         json += ",\"ALRM_TON6\": \"" + String(ALRM_TON6) + "\"";
         json += ",\"ALRM_TOFF6\": \"" + String(ALRM_TOFF6) + "\"";
@@ -398,7 +402,7 @@ void handleApiAlarmas(AsyncWebServerRequest *request){
         //-------------------------------------------------------------------------------------------
         json += ",\"ALRM_PIN7\": \"" + String(ALRM_PIN7) + "\"";
         json += ",\"ALRM_NAME7\": \"" + String(ALRM_NAME7) + "\"";
-        ALRM_STATUS7? json += ",\"ALRM_STATUS7\": true": json += ",\"ALRM_STATUS7\": false";
+        digitalRead(alarma7.PIN)?(ALRM_LOGIC7? json += ",\"ALRM_STATUS7\": true": json += ",\"ALRM_STATUS7\": false"):(ALRM_LOGIC7? json += ",\"ALRM_STATUS7\": false": json += ",\"ALRM_STATUS7\": true");
         ALRM_LOGIC7? json += ",\"ALRM_LOGIC7\": true": json += ",\"ALRM_LOGIC7\": false";
         json += ",\"ALRM_TON7\": \"" + String(ALRM_TON7) + "\"";
         json += ",\"ALRM_TOFF7\": \"" + String(ALRM_TOFF7) + "\"";
@@ -1239,4 +1243,311 @@ void handleApiPostDimmer(AsyncWebServerRequest *request, uint8_t *data, size_t l
 
     dimmer(bodyContent);
     request->send(200, dataType, "{ \"dimmer\": true, \"value\": \"" + String(dim) + "\" }");
+}
+
+//*****************************************************************************
+// Agregado por Eduardo Sanchez
+// configuracion del mqtt para la obtencion de alarmas remotas
+//*************************************************************************************
+
+// -------------------------------------------------------------------
+// Parámetros de configuración MQTT
+// url: /api/connection/mqtt2
+// Método: GET
+// -------------------------------------------------------------------
+void handleApiMQTT2(AsyncWebServerRequest *request){    //handleApiMQTT manejador de peticion
+    if (security){
+        if (!request->authenticate(device_user, device_password))
+            return request->requestAuthentication();
+    }
+    
+    String json = "";
+    json = "{";
+    json += "\"serial\": \"" + DeviceID() + "\"";
+    json += ",\"device\": \"" + platform() + "\"";
+    WiFi.status() == WL_CONNECTED ? json += ",\"wifiQuality\":" + String(getRSSIasQuality(WiFi.RSSI())) : json += ",\"wifiQuality\": 0";
+    WiFi.status() == WL_CONNECTED ? json += ",\"wifiStatus\": true" : json += ",\"wifiStatus\": false";
+    WiFi.status() == WL_CONNECTED ? json += ",\"rssiStatus\":" + String(WiFi.RSSI()) : json += ",\"rssiStatus\": 0";
+    mqttClient.connected() ? json += ",\"mqttStatus\": true" : json += ",\"mqttStatus\": false";
+    json += ",\"mqtt2\":{";
+        mqtt2_status ? json += "\"mqtt2_status\": true" : json += "\"mqtt2_status\": false";
+        mqtt_enable2 ? json += ",\"mqtt_enable2\": true" : json += ",\"mqtt_enable2\": false";
+        json += ",\"mqtt_server2\": \"" + String(mqtt_server2) + "\"";
+        json += ",\"mqtt_port2\":" + String(mqtt_port2);
+        mqtt_retain2 ? json += ",\"mqtt_retain2\": true" : json += ",\"mqtt_retain2\": false";
+        json += ",\"mqtt_qos2\":" + String(mqtt_qos2);
+        json += ",\"mqtt_id2\": \"" + String(mqtt_id2) + "\"";
+        json += ",\"mqtt_user2\": \"" + String(mqtt_user2) + "\"";
+        json += ",\"mqtt_password2\": \""+ String(mqtt_password2) +"\""; 
+        json += ",\"mqtt_extraTopic\": \""+ String(mqtt_extraTopic) +"\"";
+        mqtt_clean_sessions2 ? json += ",\"mqtt_clean_sessions2\": true" : json += ",\"mqtt_clean_sessions2\": false";
+        mqtt_time_send2 ? json += ",\"mqtt_time_send2\": true" : json += "\"mqtt_time_send2\": false";
+        json += ",\"mqtt_time_interval\":" + String(mqtt_time_interval2 / 1000); // 60000 / 1000 = 30s
+        mqtt_status_send2 ? json += ",\"mqtt_status_send2\": true" : json += ",\"mqtt_status_send2\": false";
+    json += "},";
+    json += "\"code\": 1 ";
+    json += "}";
+
+    request->addInterestingHeader("API ESP32 Server");
+    request->send(200, dataType, json);
+}
+//---------------------------------------------------------
+// leer información de las alarmas proporcionada de otro dispositivo 
+// url: /api/connection/alarmasremotas
+// Método: GET 
+//--------------------------------------------------------
+void handleApiAlarmRemote(AsyncWebServerRequest *request){ //lo que viene de el mqtt
+    // agregar el usuario y contraseña
+    if(security){
+        if(!request->authenticate(device_user, device_password)){
+            return request->requestAuthentication(); //aqui se queda en circulos seria bueno agregar un contador para que salga del bucle
+        }
+    }
+    String json = "";
+
+    json = "{";
+    json += "\"serial\": \"" + String(REMOTE_serial) + "\"";           
+    json += ",\"MACWiFi\": \"" + String(REMOTE_MACWiFi) + "\"";
+    json += ",\"RELAYS\":";
+        json +="{";   
+        json += "\"REMOTE_R_NAME1\": \"" + String(REMOTE_R_NAME1) + "\"";
+        json += ",\"REMOTE_R_NAME2\": \"" + String(REMOTE_R_NAME2) + "\"";
+        REMOTE_R_STATUS1? json += ",\"REMOTE_R_STATUS1\": true": json += ",\"REMOTE_R_STATUS1\": false";
+        REMOTE_R_STATUS2? json += ",\"REMOTE_R_STATUS2\": true": json += ",\"REMOTE_R_STATUS2\": false";
+        REMOTE_R_LOGIC1? json += ",\"REMOTE_R_LOGIC1\": true": json += ",\"REMOTE_R_LOGIC1\": false";
+        REMOTE_R_LOGIC2? json += ",\"REMOTE_R_LOGIC2\": true": json += ",\"REMOTE_R_LOGIC2\": false";
+        json += "}";
+    json += ",\"ALRMS\":";
+        json +="{";   
+        json += "\"REMOTE_ALRM_NAME1\": \"" + String(REMOTE_ALRM_NAME1) + "\"";
+        REMOTE_ALRM_STATUS1? json += ",\"REMOTE_ALRM_STATUS1\": true": json += ",\"REMOTE_ALRM_STATUS1\": false";
+        REMOTE_ALRM_LOGIC1? json += ",\"REMOTE_ALRM_LOGIC1\": true": json += ",\"REMOTE_ALRM_LOGIC1\": false";
+        json += ",\"REMOTE_ALRM_TON1\": \"" + String(REMOTE_ALRM_TON1) + "\"";
+        json += ",\"REMOTE_ALRM_TOFF1\": \"" + String(REMOTE_ALRM_TOFF1) + "\"";
+        json += ",\"REMOTE_ALRM_CONT1\": \"" + String(REMOTE_ALRM_CONT1) + "\"";
+        //---------------------------------------------------
+        json += ",\"REMOTE_ALRM_NAME2\": \"" + String(REMOTE_ALRM_NAME2) + "\"";
+        REMOTE_ALRM_STATUS2? json += ",\"REMOTE_ALRM_STATUS2\": true": json += ",\"REMOTE_ALRM_STATUS2\": false";
+        REMOTE_ALRM_LOGIC2? json += ",\"REMOTE_ALRM_LOGIC2\": true": json += ",\"REMOTE_ALRM_LOGIC2\": false";
+        json += ",\"REMOTE_ALRM_TON2\": \"" + String(REMOTE_ALRM_TON2) + "\"";
+        json += ",\"REMOTE_ALRM_TOFF2\": \"" + String(REMOTE_ALRM_TOFF2) + "\"";
+        json += ",\"REMOTE_ALRM_CONT2\": \"" + String(REMOTE_ALRM_CONT2) + "\"";
+        //-------------------------------------------------------------------------------------------
+        json += ",\"REMOTE_ALRM_NAME3\": \"" + String(REMOTE_ALRM_NAME3) + "\"";
+        REMOTE_ALRM_STATUS3? json += ",\"REMOTE_ALRM_STATUS3\": true": json += ",\"REMOTE_ALRM_STATUS3\": false";
+        REMOTE_ALRM_LOGIC3? json += ",\"REMOTE_ALRM_LOGIC3\": true": json += ",\"REMOTE_ALRM_LOGIC3\": false";
+        json += ",\"REMOTE_ALRM_TON3\": \"" + String(REMOTE_ALRM_TON3) + "\"";
+        json += ",\"REMOTE_ALRM_TOFF3\": \"" + String(REMOTE_ALRM_TOFF3) + "\"";
+        json += ",\"REMOTE_ALRM_CONT3\": \"" + String(REMOTE_ALRM_CONT3) + "\"";
+        //-------------------------------------------------------------------------------------------
+        json += ",\"REMOTE_ALRM_NAME4\": \"" + String(REMOTE_ALRM_NAME4) + "\"";
+        REMOTE_ALRM_STATUS4? json += ",\"REMOTE_ALRM_STATUS4\": true": json += ",\"REMOTE_ALRM_STATUS4\": false";
+        REMOTE_ALRM_LOGIC4? json += ",\"REMOTE_ALRM_LOGIC4\": true": json += ",\"REMOTE_ALRM_LOGIC4\": false";
+        json += ",\"REMOTE_ALRM_TON4\": \"" + String(REMOTE_ALRM_TON4) + "\"";
+        json += ",\"REMOTE_ALRM_TOFF4\": \"" + String(REMOTE_ALRM_TOFF4) + "\"";
+        json += ",\"REMOTE_ALRM_CONT4\": \"" + String(REMOTE_ALRM_CONT4) + "\"";
+        //-------------------------------------------------------------------------------------------
+        json += ",\"REMOTE_ALRM_NAME5\": \"" + String(REMOTE_ALRM_NAME5) + "\"";
+        REMOTE_ALRM_STATUS5? json += ",\"REMOTE_ALRM_STATUS5\": true": json += ",\"REMOTE_ALRM_STATUS5\": false";
+        REMOTE_ALRM_LOGIC5? json += ",\"REMOTE_ALRM_LOGIC5\": true": json += ",\"REMOTE_ALRM_LOGIC5\": false";
+        json += ",\"REMOTE_ALRM_TON5\": \"" + String(REMOTE_ALRM_TON5) + "\"";
+        json += ",\"REMOTE_ALRM_TOFF5\": \"" + String(REMOTE_ALRM_TOFF5) + "\"";
+        json += ",\"REMOTE_ALRM_CONT5\": \"" + String(REMOTE_ALRM_CONT5) + "\"";
+        //-------------------------------------------------------------------------------------------
+        json += ",\"REMOTE_ALRM_NAME6\": \"" + String(REMOTE_ALRM_NAME6) + "\"";
+        REMOTE_ALRM_STATUS6? json += ",\"REMOTE_ALRM_STATUS6\": true": json += ",\"REMOTE_ALRM_STATUS6\": false";
+        REMOTE_ALRM_LOGIC6? json += ",\"REMOTE_ALRM_LOGIC6\": true": json += ",\"REMOTE_ALRM_LOGIC6\": false";
+        json += ",\"REMOTE_ALRM_TON6\": \"" + String(REMOTE_ALRM_TON6) + "\"";
+        json += ",\"REMOTE_ALRM_TOFF6\": \"" + String(REMOTE_ALRM_TOFF6) + "\"";
+        json += ",\"REMOTE_ALRM_CONT6\": \"" + String(REMOTE_ALRM_CONT6) + "\"";
+        //-------------------------------------------------------------------------------------------
+        json += ",\"REMOTE_ALRM_NAME7\": \"" + String(REMOTE_ALRM_NAME7) + "\"";
+        REMOTE_ALRM_STATUS7? json += ",\"REMOTE_ALRM_STATUS7\": true": json += ",\"REMOTE_ALRM_STATUS7\": false";
+        REMOTE_ALRM_LOGIC7? json += ",\"REMOTE_ALRM_LOGIC7\": true": json += ",\"REMOTE_ALRM_LOGIC7\": false";
+        json += ",\"REMOTE_ALRM_TON7\": \"" + String(REMOTE_ALRM_TON7) + "\"";
+        json += ",\"REMOTE_ALRM_TOFF7\": \"" + String(REMOTE_ALRM_TOFF7) + "\"";
+        json += ",\"REMOTE_ALRM_CONT7\": \"" + String(REMOTE_ALRM_CONT7) + "\"";
+        //-------------------------------------------------------------------------------------------
+        Activar? json += ",\"Activar\": true": json += ",\"Activar\": false";
+        json += "}";
+    json += "}";
+   
+     request->addInterestingHeader("API ESP32 Server");//este es el header se agrega
+    //send(estado,aplicacion,formato)
+    request->send(200, dataType, json);
+}
+
+// -------------------------------------------------------------------
+// Actualizar las configuraciones para el MQTT2 Conexiones
+// url: /api/connection/mqtt2
+// Método: POST
+// -------------------------------------------------------------------
+void handleApiPostMQTT2(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
+    if (security){
+        if (!request->authenticate(device_user, device_password))
+            return request->requestAuthentication();
+    }
+
+    String bodyContent = GetBodyContent(data, len);
+    StaticJsonDocument<768> doc;
+    DeserializationError error = deserializeJson(doc, bodyContent);
+    if (error){
+        request->send(400, dataType, "{ \"status\": \"Error de JSON enviado\" }");
+        return;
+    };
+
+    //  -------------------------------------------------------------------
+    //  MQTT Conexión settings.json
+    //  -------------------------------------------------------------------
+    String s = "";
+    // MQTT Enable
+    mqtt_enable2 = doc["mqtt_enable2"].as<bool>();
+    // MQTT Server
+    if (doc["mqtt_server2"] != ""){
+        s = doc["mqtt_server2"].as<String>();
+        s.trim();
+        strlcpy(mqtt_server2, s.c_str(), sizeof(mqtt_server2));
+        s = "";
+    }
+    // MQTT Port
+    if (doc["mqtt_port2"] != ""){
+        mqtt_port2 = doc["mqtt_port2"].as<int>();
+    }
+    // MQTT Retain
+    mqtt_retain2 = doc["mqtt_retain2"].as<bool>();
+    // MQTT QOS 0-1-2
+    mqtt_qos2 = doc["mqtt_qos2"].as<int>();
+    // MQTT ID
+    if (doc["mqtt_id2"] != ""){
+        s = doc["mqtt_id2"].as<String>();
+        s.trim();
+        strlcpy(mqtt_id2, s.c_str(), sizeof(mqtt_id2));
+        s = "";
+    }
+    // MQTT User
+    if (doc["mqtt_user2"] != ""){
+        s = doc["mqtt_user2"].as<String>();
+        s.trim();
+        strlcpy(mqtt_user2, s.c_str(), sizeof(mqtt_user2));
+        s = "";
+    }
+    // MQTT Password
+    if (doc["mqtt_password2"] != ""){
+        s = doc["mqtt_password2"].as<String>();
+        s.trim();
+        strlcpy(mqtt_password2, s.c_str(), sizeof(mqtt_password2));
+        s = "";
+    }
+    if (doc["mqtt_extraTopic"] != ""){
+        s = doc["mqtt_extraTopic"].as<String>();
+        s.trim();
+        strlcpy(mqtt_extraTopic, s.c_str(), sizeof(mqtt_extraTopic));
+        s = "";
+    }
+    // mqtt_clean_sessions
+    mqtt_clean_sessions2 = doc["mqtt_clean_sessions2"].as<bool>();    
+    // -------------------------------------------------------------------
+    // MQTT Envio de datos settings.json
+    // -------------------------------------------------------------------
+    // mqtt_time_send
+    mqtt_time_send2 = doc["mqtt_time_send2"].as<bool>();
+    // mqtt_time_interval
+    mqtt_time_interval2 = doc["mqtt_time_interval2"].as<int>() * 1000; // 60 * 1000 = 60000 = 60s
+    // mqtt_status_send
+    mqtt_status_send2 = doc["mqtt_status_send2"].as<bool>();
+    // Save Settings.json
+    if (especialSave()){
+        request->addInterestingHeader("API ESP32 Server");
+        request->send(200, dataType, "{ \"save\": true }");
+    }else{
+        request->addInterestingHeader("API ESP32 Server");
+        request->send(500, dataType, "{ \"save\": false }");
+    }
+}
+
+// ------------------------------------------------------------------
+// Leer información de tiempo proporcionada por el servidor
+// url: /api/time
+// Método: GET
+// ------------------------------------------------------------------
+void handleApiTime(AsyncWebServerRequest *request){
+    if (security){
+        if (!request->authenticate(device_user, device_password))
+            return request->requestAuthentication();
+    }
+        String json = "";
+        json = "{";
+        json += "\"serial\": \"" + DeviceID() + "\"";
+        json += ",\"device\": \"" + platform() + "\"";
+        WiFi.status() == WL_CONNECTED ? json += ",\"wifiQuality\":" + String(getRSSIasQuality(WiFi.RSSI())) : json += ",\"wifiQuality\": 0";
+        WiFi.status() == WL_CONNECTED ? json += ",\"wifiStatus\": true" : json += ",\"wifiStatus\": false";
+        WiFi.status() == WL_CONNECTED ? json += ",\"rssiStatus\":" + String(WiFi.RSSI()) : json += ",\"rssiStatus\": 0";
+        mqttClient.connected() ? json += ",\"mqttStatus\": true" : json += ",\"mqttStatus\": false";
+        json += ",\"time\":{";
+                time_ajuste ? json += "\"time_ajuste\": true" : json += "\"time_ajuste\": false";
+                json += ",\"time_date\": \""+ String(time_date) + "\""; //2023-03-07T23:47
+                json += ",\"time_z_horaria\": \"" + String(time_z_horaria) + "\"";
+                json += ",\"time_server\": \""+ String(time_server) + "\"";
+                json += ",\"time_now\": \""+ String(time_now) + "\""; //2023-03-07T23:47
+                json += ",\"hora\": \""+ String(hora) + "\""; //2023-03-07T23:47
+            json += "},";
+        json += "\"code\": 1 ";
+        json += "}";
+        request->send(200, dataType, json);
+}
+
+//--------------------------------------------------------------------------------
+//Parámetros de Configuración del Tiempo guardar cambios
+//url: /api/time
+//Método: POST
+//---------------------------------------------------------------------------------
+void handleApiPostTime(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
+    if (security){
+        if (!request->authenticate(device_user, device_password))
+            return request->requestAuthentication();
+    } 
+    String bodyContent = GetBodyContent(data, len);  
+    StaticJsonDocument<320> doc;
+    DeserializationError error = deserializeJson(doc, bodyContent);
+    if (error) { 
+        request->send(400, dataType, "{ \"status\": \"Error de JSON enviado\" }");
+        return;
+    };
+    // -------------------------------------------------------------------
+    // Time settings.json
+    // -------------------------------------------------------------------
+    String s = "";    
+    // Manual - Internet true/false
+    time_ajuste = doc["time_ajuste"].as<bool>();
+    // Fecha - Hora
+    if(doc["time_date"] != ""){
+        s = doc["time_date"].as<String>();
+        s.trim();
+        strlcpy(time_date, s.c_str(), sizeof(time_date));
+        s = "";
+    }
+    // Numero de la zona Horaria
+    if(doc["time_z_horaria"] != ""){
+        time_z_horaria = doc["time_z_horaria"].as<float>()*3600;
+    }
+    // Servidor NTP
+    if(doc["time_server"] != ""){
+        s = doc["time_server"].as<String>();
+        s.trim();
+        strlcpy(time_server, s.c_str(), sizeof(time_server));
+        s = "";
+    }
+    
+    // Save Settings.json
+    if (settingsSave()){
+        request->send(200, dataType, "{ \"save\": true }");   
+        log("INFO","api.hpp"," Time Set OK");
+        // Esperar la Transmisión de los datos seriales
+        Serial.flush(); 
+        delay(10); // como se va a reiniciar pongo un tiempo de retardo para que mando el codigo 200
+        WiFi.disconnect(true,false); //para evitar el error
+        ESP.restart();     
+    }else{
+        request->send(500, dataType, "{ \"save\": false }");
+    }    
 }

@@ -28,6 +28,9 @@ void TaskMqttReconnect(void *pvParamenters){
             if(mqtt_server != 0){ //ya estaconectado
                 //llamar a la funcion del loop mqtt
                 mqttloop();
+                if(mqtt_enable2){
+                    mqttloop2();// agregado
+                }             
                 //Enviar por MQTT el json siempre y cuando este habilitado el envio
                 if(mqttClient.connected()&&mqtt_status_send){
                     if(millis()-lasMsg > mqtt_time_interval){
@@ -57,3 +60,4 @@ void TaskMQTTLed(void *pvParameters){
         }
     }
 }
+// tareas agregadas por Eduardo Sanchez

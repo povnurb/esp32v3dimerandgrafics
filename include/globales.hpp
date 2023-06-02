@@ -82,13 +82,38 @@ char    mqtt_user[30];              //Usuario MQTT broker
 char    mqtt_password[39];          //Contraseña del MQTT Broker
 bool    mqtt_clean_sessions;        //Habilitar sesiones limpias
 char    mqtt_willTopic[150];        //Will topico
-char    mqtt_extraTopic[150];       //otro topico que dejara ver informacion de otro dispositivo
+
 char    mqtt_willMessage[63];       //will mensaje
 int     mqtt_willQoS;               //will calidad de servicio 0,1,2
 bool    mqtt_willRetain;            //will mensaje retenido
 bool    mqtt_time_send;             //Habilitar envio de datos
 int     mqtt_time_interval;         //Tiempo de envio por MQTT en segundos
 bool    mqtt_status_send;           //Habilitar envio de estados
+//------------------------------------------------------------------------------------------------------------
+// agregado por eduardo sanchez para conectarse a un segundo broker ******************************************
+//------------------------------------------------------------------------------------------------------------
+//nuevas variables necesarias para conectarse a otro dispositivo remoto que hay que obtener del 
+// especial
+String mismotopic;
+bool    mqtt2_status;
+bool    mqtt_enable2;                //Habilitar MQTT Broker true / false
+char    mqtt_user2[30];
+char    mqtt_id2[30];
+char    mqtt_server2[39];
+int     mqtt_port2;
+char    mqtt_willTopic2[150];        //Will topico
+char    mqtt_password2[39]; 
+int     mqtt_willQoS2;
+bool    mqtt_clean_sessions2;        //Habilitar sesiones limpias
+bool    mqtt_time_send2;
+bool    mqtt_willRetain2;            //will mensaje retenido
+char    mqtt_willMessage2[63];       //will mensaje
+char    mqtt_extraTopic[150];       //otro topico que dejara ver informacion de otro dispositivo
+bool    mqtt_retain2;
+int     mqtt_qos2;
+int     mqtt_time_interval2;         //Tiempo de envio para recibir mensajes desde otro dispositivo MQTT en segundos
+bool    mqtt_status_send2;           //Habilitar envio de estados
+
 //------------------------------------------------------------------------
 //Zona EEPROM para contador de reinicios
 //------------------------------------------------------------------------++++++++++++++++++++++++++++++++++++++++++++
@@ -111,7 +136,7 @@ float max2;
 char        R_NAME1[20];        //nombre de los Relays
 bool        R_STATUS1;          //Estado del pin
 bool        R_TIMERON1;         //indica si se activa el timer del relevador1
-int         R_TIMER1;           //contador regresivo por minuto
+int         R_TIMER1;           //contador por segundo
 bool        R_LOGIC1;           //por si trabaja energizado
 String      R_DESCRIPTION1;     //indica que es lo que controla   
 bool        TEMPORIZADOR1;      //indica si hay un control por tiempo
@@ -122,7 +147,7 @@ bool        programado1;        //muestra si esta programado el relay1 con fecha
 char        R_NAME2[20];        //nombre de los Relays
 bool        R_STATUS2;          //Estado del pin
 bool        R_TIMERON2;         //indica si se activa el timer del relevador2
-int         R_TIMER2;           //contador regresivo por minuto 
+int         R_TIMER2;           //contador por segundo 
 bool        R_LOGIC2;           //por si trabaja energizado
 String      R_DESCRIPTION2;     //breve descripcion 
 bool        TEMPORIZADOR2;      //indica si hay un control por tiempo
@@ -156,9 +181,12 @@ int time_sc;                // Segundos 0-59
 int time_dy;                // Días 1 - 31
 int time_mt;                // Meses 1- 12
 int time_yr;                // Año 2023
+String time_now;            // Muestra un string de la fecha
+String hora;
+
 // NTP Server
 WiFiUDP ntpUDP;
-NTPClient ntpClient(ntpUDP);
+NTPClient ntpClient(ntpUDP);    //para la hora y la fecha
 //-----------------------------------------------------------------
 // Zona ESPNOW
 //-----------------------------------------------------------------
@@ -191,4 +219,13 @@ volatile bool togle = true;
 volatile unsigned long tiempoDeInterrupcion= 0; //sirve para omitir rebotes en sonido
 //void IRAM_ATTR activarAlarmas();
 
-
+///variables que se requieren para obtener la informacion del dispositivo remoto
+String  REMOTE_serial,REMOTE_MACWiFi;
+bool    REMOTE_ALRM_STATUS1,REMOTE_ALRM_STATUS2,REMOTE_ALRM_STATUS3,REMOTE_ALRM_STATUS4,REMOTE_ALRM_STATUS5,REMOTE_ALRM_STATUS6,REMOTE_ALRM_STATUS7;
+bool    REMOTE_ALRM_LOGIC1,REMOTE_ALRM_LOGIC2,REMOTE_ALRM_LOGIC3,REMOTE_ALRM_LOGIC4,REMOTE_ALRM_LOGIC5,REMOTE_ALRM_LOGIC6,REMOTE_ALRM_LOGIC7;
+String  REMOTE_ALRM_NAME1, REMOTE_ALRM_NAME2, REMOTE_ALRM_NAME3, REMOTE_ALRM_NAME4, REMOTE_ALRM_NAME5, REMOTE_ALRM_NAME6, REMOTE_ALRM_NAME7;
+String  REMOTE_ALRM_TON1, REMOTE_ALRM_TON2, REMOTE_ALRM_TON3, REMOTE_ALRM_TON4, REMOTE_ALRM_TON5, REMOTE_ALRM_TON6, REMOTE_ALRM_TON7;
+String  REMOTE_ALRM_TOFF1, REMOTE_ALRM_TOFF2, REMOTE_ALRM_TOFF3, REMOTE_ALRM_TOFF4, REMOTE_ALRM_TOFF5, REMOTE_ALRM_TOFF6, REMOTE_ALRM_TOFF7;
+int     REMOTE_ALRM_CONT1, REMOTE_ALRM_CONT2, REMOTE_ALRM_CONT3, REMOTE_ALRM_CONT4, REMOTE_ALRM_CONT5, REMOTE_ALRM_CONT6, REMOTE_ALRM_CONT7; //registra el valor del contador
+String  REMOTE_R_NAME1, REMOTE_R_NAME2;        
+bool    REMOTE_R_STATUS1, REMOTE_R_STATUS2, REMOTE_R_LOGIC1, REMOTE_R_LOGIC2;

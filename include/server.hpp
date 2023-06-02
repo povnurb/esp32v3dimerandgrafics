@@ -197,6 +197,48 @@ void initServer(){
     // -------------------------------------------------------------------
     server.on("/api/device/dimmer", HTTP_POST, [](AsyncWebServerRequest *request) {}, NULL, handleApiPostDimmer);
 
+    //*************************************************************************************************
+    // El siguiente es agregado por Eduardo Sanchez
+    // la intancion es conectarse a otro broker para obtener alarmas de otro dispositivo
+    // y si no se puede pues por lo menos conectarse al mismo para obtener alarmas de otro dispositivo
+    //*************************************************************************************************
+    // -------------------------------------------------------------------
+    // Parámetros de configuración MQTT
+    // url: /api/connection/mqtt2
+    // Método: GET
+    // -------------------------------------------------------------------
+    server.on("/api/connection/mqtt2", HTTP_GET, handleApiMQTT2);
+    // -------------------------------------------------------------------
+    // Parámetros de configuración MQTT y obtener las alarmas remotas
+    // url: /api/connection/alarmasremotas
+    // Método: GET 
+    // -------------------------------------------------------------------
+    server.on("/api/connection/alarmasremotas", HTTP_GET, handleApiAlarmRemote);
+
+
+    //primero configurar el post para despues obtener el get
+    // -------------------------------------------------------------------
+    // Actualizar las configuraciones del MQTT para las alarmas remotas
+    // url: /api/connection/mqtt2
+    // Método: POST
+    // -------------------------------------------------------------------
+    server.on("/api/connection/mqtt2", HTTP_POST, [](AsyncWebServerRequest *request) {}, NULL, handleApiPostMQTT2);
+    
+    // ------------------------------------------------------------------
+    // Parámetros de Configuración del Tiempo
+    // url: /api/time
+    // Método: GET
+    // ------------------------------------------------------------------
+    server.on("/api/time", HTTP_GET,handleApiTime);
+    
+    //--------------------------------------------------------------------------------
+    //Parámetros de Configuración del Tiempo guardar cambios
+    //url: /api/time
+    //Método: POST
+    //---------------------------------------------------------------------------------
+    server.on("/api/time", HTTP_POST, [](AsyncWebServerRequest * request){}, NULL, handleApiPostTime);
+
+
     server.begin();
     log("INFO","server.hpp","Servidor HTTP iniciado");
 }

@@ -20,7 +20,7 @@ String  ALRM_TOFF1, ALRM_TOFF2, ALRM_TOFF3, ALRM_TOFF4, ALRM_TOFF5, ALRM_TOFF6, 
 int     ALRM_CONT1, ALRM_CONT2, ALRM_CONT3, ALRM_CONT4, ALRM_CONT5, ALRM_CONT6, ALRM_CONT7; //registra el valor del contador
 int cont[7] = {ALRM_CONT1, ALRM_CONT2, ALRM_CONT3, ALRM_CONT4,ALRM_CONT5, ALRM_CONT6, ALRM_CONT7};//lleva la contavilizacion en un for
 bool cambiar[7] = {false,false,false,false,false,false,false};//ayuda al contador a idicar si va a cambiar de numero 
-bool Activar = false; //envia por mqtt que se hace una prueba de alarmas
+bool Activar = false; //envia por mqtt que se hace una prueba de todas las alarmas en este caso 7 alarmas
 
 // -------------------------------------------------------------------
 struct Alarma{
@@ -219,134 +219,134 @@ String OnOffAlarmas(){
     if (!alarma1.LOGICA){
         if (digitalRead(alarma1.PIN)){
             jsonDoc["ALRM_STATUS1"] = true;
-            
+            ALRM_STATUS1=true;
         }else
         {
            jsonDoc["ALRM_STATUS1"] = false;
-           
+           ALRM_STATUS1=false;
         }
     }else{
         if (digitalRead(alarma1.PIN)){
             jsonDoc["ALRM_STATUS1"] = false;
-            
+            ALRM_STATUS1=false;
         }else
         {
            jsonDoc["ALRM_STATUS1"] = true;
-           
+           ALRM_STATUS1=true;
         }
     }
     if (!alarma2.LOGICA){
         if (digitalRead(alarma2.PIN)){
             jsonDoc["ALRM_STATUS2"] = true;
-            
+            ALRM_STATUS2=true;
         }else
         {
            jsonDoc["ALRM_STATUS2"] = false;
-           
+           ALRM_STATUS2=false;
         }
     }else{
         if (digitalRead(alarma2.PIN)){
             jsonDoc["ALRM_STATUS2"] = false;
-            
+            ALRM_STATUS2=false;
         }else
         {
            jsonDoc["ALRM_STATUS2"] = true;
-           
+           ALRM_STATUS2=true;
         }
     }
     if (!alarma3.LOGICA){
         if (digitalRead(alarma3.PIN)){
             jsonDoc["ALRM_STATUS3"] = true;
-            
+            ALRM_STATUS3=true;
         }else
         {
            jsonDoc["ALRM_STATUS3"] = false;
-           
+           ALRM_STATUS3=false;
         }
     }else{
         if (digitalRead(alarma3.PIN)){
             jsonDoc["ALRM_STATUS3"] = false;
-            
+            ALRM_STATUS3=false;
         }else
         {
            jsonDoc["ALRM_STATUS3"] = true;
-           
+           ALRM_STATUS3=true;
         }
     }
     if (!alarma4.LOGICA){
         if (digitalRead(alarma4.PIN)){
             jsonDoc["ALRM_STATUS4"] = true;
-            
+            ALRM_STATUS4=true;
         }else
         {
            jsonDoc["ALRM_STATUS4"] = false;
-           
+           ALRM_STATUS5=false;
         }
     }else{
         if (digitalRead(alarma4.PIN)){
             jsonDoc["ALRM_STATUS4"] = false;
-            
+            ALRM_STATUS4=false;
         }else
         {
            jsonDoc["ALRM_STATUS4"] = true;
-           
+           ALRM_STATUS4=true;
         }
     }
     if (!alarma5.LOGICA){
         if (digitalRead(alarma5.PIN)){
             jsonDoc["ALRM_STATUS5"] = true;
-            
+            ALRM_STATUS5=true;
         }else
         {
            jsonDoc["ALRM_STATUS5"] = false;
-           
+           ALRM_STATUS5=false;
         }
     }else{
         if (digitalRead(alarma5.PIN)){
             jsonDoc["ALRM_STATUS5"] = false;
-            
+            ALRM_STATUS5=false;
         }else
         {
            jsonDoc["ALRM_STATUS5"] = true;
-           
+           ALRM_STATUS5=true;
         }
     }
     if (!alarma6.LOGICA){
         if (digitalRead(alarma6.PIN)){
             jsonDoc["ALRM_STATUS6"] = true;
-            
+            ALRM_STATUS6=true;
         }else
         {
            jsonDoc["ALRM_STATUS6"] = false;
-           
+           ALRM_STATUS6=false;
         }
     }else{
         if (digitalRead(alarma6.PIN)){
             jsonDoc["ALRM_STATUS6"] = false;
-            
+            ALRM_STATUS6=false;
         }else
         {
            jsonDoc["ALRM_STATUS6"] = true;
-           
+           ALRM_STATUS6=true;
         }
     }
     if (!alarma7.LOGICA){
         if (digitalRead(alarma7.PIN)){
             jsonDoc["ALRM_STATUS7"] = true;
-            
+            ALRM_STATUS7=true;
         }else
         {
            jsonDoc["ALRM_STATUS7"] = false;
-           
+           ALRM_STATUS7=false;
         }
     }else{
         if (digitalRead(alarma7.PIN)){
             jsonDoc["ALRM_STATUS7"] = false;
-            
+            ALRM_STATUS7=false;
         }else
         {
            jsonDoc["ALRM_STATUS7"] = true;
-           
+           ALRM_STATUS7=true;
         }
     }
     
@@ -424,4 +424,112 @@ void IRAM_ATTR activarAlarmas(){
     tiempoDeInterrupcion = millis();
     togle ^= true;
     } 
+}
+// nueva funcion estatus
+void statusAlarmVariables(){//modifica el estado de las variables
+    if (!alarma1.LOGICA){
+        if (digitalRead(alarma1.PIN)){
+            ALRM_STATUS1=true;
+        }else
+        {
+           ALRM_STATUS1=false;
+        }
+    }else{
+        if (digitalRead(alarma1.PIN)){
+            ALRM_STATUS1=false;
+        }else
+        {
+           ALRM_STATUS1=true;
+        }
+    }
+    if (!alarma2.LOGICA){
+        if (digitalRead(alarma2.PIN)){
+            ALRM_STATUS2=true;
+        }else
+        {
+           ALRM_STATUS2=false;
+        }
+    }else{
+        if (digitalRead(alarma2.PIN)){
+            ALRM_STATUS2=false;
+        }else
+        {
+           ALRM_STATUS2=true;
+        }
+    }
+    if (!alarma3.LOGICA){
+        if (digitalRead(alarma3.PIN)){
+            ALRM_STATUS3=true;
+        }else
+        {
+           ALRM_STATUS3=false;
+        }
+    }else{
+        if (digitalRead(alarma3.PIN)){
+            ALRM_STATUS3=false;
+        }else
+        {
+           ALRM_STATUS3=true;
+        }
+    }
+    if (!alarma4.LOGICA){
+        if (digitalRead(alarma4.PIN)){
+            ALRM_STATUS4=true;
+        }else
+        {
+           ALRM_STATUS5=false;
+        }
+    }else{
+        if (digitalRead(alarma4.PIN)){
+            ALRM_STATUS4=false;
+        }else
+        {
+           ALRM_STATUS4=true;
+        }
+    }
+    if (!alarma5.LOGICA){
+        if (digitalRead(alarma5.PIN)){
+            ALRM_STATUS5=true;
+        }else
+        {
+           ALRM_STATUS5=false;
+        }
+    }else{
+        if (digitalRead(alarma5.PIN)){
+            ALRM_STATUS5=false;
+        }else
+        {
+           ALRM_STATUS5=true;
+        }
+    }
+    if (!alarma6.LOGICA){
+        if (digitalRead(alarma6.PIN)){
+            ALRM_STATUS6=true;
+        }else
+        {
+           ALRM_STATUS6=false;
+        }
+    }else{
+        if (digitalRead(alarma6.PIN)){
+            ALRM_STATUS6=false;
+        }else
+        {
+           ALRM_STATUS6=true;
+        }
+    }
+    if (!alarma7.LOGICA){
+        if (digitalRead(alarma7.PIN)){
+            ALRM_STATUS7=true;
+        }else
+        {
+           ALRM_STATUS7=false;
+        }
+    }else{
+        if (digitalRead(alarma7.PIN)){
+            ALRM_STATUS7=false;
+        }else
+        {
+           ALRM_STATUS7=true;
+        }
+    }
 }

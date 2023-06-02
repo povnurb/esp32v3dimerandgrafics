@@ -42,6 +42,7 @@
 #include "espnow.hpp" 
 #include "mqtt.hpp"
 #include "server.hpp"
+#include "alarmremote.hpp"
 
 
 #include "tareas.hpp"
@@ -102,14 +103,19 @@ void setup() {
   ledcWrite(ledChannel, dim * 2.55); //dim va de 0 a 100
   //inicial el wifi
   wifi_setup();
+  //seteamos el time
+  timeSetup();
+  actualizaciontime.attach(1,actualizaTime);//actualizara el tiempo cada 1 segundo
   //iniciamos el servidor
   initServer();
   //crear Tarea Reconexión WIFI
   xTaskCreate(TaskWifiReconnect, "TaskWifiReconnect", 1024*6, NULL, 2, NULL);
   //crear Tarea de reconexión MQTT
-  xTaskCreate(TaskMqttReconnect, "TaskWifiReconnect", 1024*6, NULL, 2, NULL);
+  xTaskCreate(TaskMqttReconnect, "TaskMqttReconnect", 1024*6, NULL, 2, NULL);
   //LED MQTT Task  
   xTaskCreate(TaskMQTTLed, "TaskMQTTLed", 1024*2, NULL, 1, NULL);
+  //crear Tarea de reconexión MQTT
+  
   setupEspnow(); //hasta que este wifi configurado pero hace falta su task
   esp_now_register_recv_cb(OnDataRecv); //no se si va o no va
   //timer de los relays
@@ -117,7 +123,9 @@ void setup() {
 }
 
 void loop() {
-  ctrlRelays();
+  ctrlRelays();// checa el estado de los relays
+  statusAlarmVariables();//actualiza el estado de las variables de las alarmas
+  mostrar();
 }
 
 // put function definitions here:

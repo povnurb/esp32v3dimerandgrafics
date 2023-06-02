@@ -77,13 +77,19 @@ bool settingsRead(){
         strlcpy(mqtt_password, jsonSettings["mqtt"]["mqtt_password"],sizeof(mqtt_password));
         mqtt_clean_sessions = jsonSettings["mqtt"]["mqtt_clean_sessions"];
         strlcpy(mqtt_willTopic, jsonSettings["mqtt"]["mqtt_willTopic"],sizeof(mqtt_willTopic)); 
-        strlcpy(mqtt_extraTopic, jsonSettings["mqtt"]["mqtt_extraTopic"],sizeof(mqtt_extraTopic));
+        
         strlcpy(mqtt_willMessage, jsonSettings["mqtt"]["mqtt_willMessage"],sizeof(mqtt_willMessage)); 
         mqtt_willQoS = jsonSettings["mqtt"]["mqtt_willQoS"];
         mqtt_willRetain = jsonSettings["mqtt"]["mqtt_willRetain"];   
         mqtt_time_send = jsonSettings["mqtt"]["mqtt_time_send"];
         mqtt_time_interval = jsonSettings["mqtt"]["mqtt_time_interval"];   
         mqtt_status_send = jsonSettings["mqtt"]["mqtt_status_send"];  
+
+        // Time settings.json
+        time_ajuste = jsonSettings["time_ajuste"];
+        strlcpy(time_date, jsonSettings["time_date"], sizeof(time_date));
+        time_z_horaria = jsonSettings["time_z_horaria"];
+        strlcpy(time_server, jsonSettings["time_server"], sizeof(time_server));
 
         file.close();// ya que todo se leera se cierra el archivo
         log("INFO","settingsRead.hpp","Lectura de las configuraciones OK.");
@@ -193,6 +199,28 @@ bool especialRead(){
         cambio64 = jsonEspecial["espnow"]["cambio64"].as<String>();
         cambio74 = jsonEspecial["espnow"]["cambio74"].as<String>();
         cambio84 = jsonEspecial["espnow"]["cambio84"].as<String>();
+        /************************************************************************************************
+         * Nuevos valores a las variables que se encuentran en el archivo globales.hpp                  *
+         * variables para el MQTT2:                                                                     *
+         * *********************************************************************************************/ 
+        mqtt_enable2 = jsonEspecial["mqtt2"]["mqtt_enable2"];
+        strlcpy(mqtt_user2, jsonEspecial["mqtt2"]["mqtt_user2"],sizeof(mqtt_user2));
+        strlcpy(mqtt_id2, jsonEspecial["mqtt2"]["mqtt_id2"],sizeof(mqtt_id2));
+        strlcpy(mqtt_server2, jsonEspecial["mqtt2"]["mqtt_server2"],sizeof(mqtt_server2));
+        mqtt_port2 = jsonEspecial["mqtt2"]["mqtt_port2"];
+        strlcpy(mqtt_willTopic2, jsonEspecial["mqtt2"]["mqtt_willTopic2"],sizeof(mqtt_willTopic2));
+        strlcpy(mqtt_password2, jsonEspecial["mqtt2"]["mqtt_password2"],sizeof(mqtt_password2));
+        mqtt_willQoS2 = jsonEspecial["mqtt2"]["mqtt_willQoS2"];
+        mqtt_clean_sessions2 = jsonEspecial["mqtt2"]["mqtt_clean_sessions2"];
+        mqtt_time_send2 = jsonEspecial["mqtt2"]["mqtt_time_send2"];
+        mqtt_willRetain2 = jsonEspecial["mqtt2"]["mqtt_willRetain2"];
+        strlcpy(mqtt_willMessage2, jsonEspecial["mqtt2"]["mqtt_willMessage2"],sizeof(mqtt_willMessage2));
+        strlcpy(mqtt_extraTopic, jsonEspecial["mqtt2"]["mqtt_extraTopic"],sizeof(mqtt_extraTopic));
+        mqtt_retain2 = jsonEspecial["mqtt2"]["mqtt_retain2"];
+        mqtt_qos2 = jsonEspecial["mqtt2"]["mqtt_qos2"];
+        mqtt_time_interval2 = jsonEspecial["mqtt2"]["mqtt_time_interval2"];
+        mqtt_status_send2 = jsonEspecial["mqtt2"]["mqtt_status_send2"];           //Habilitar envio de estados
+        
         //-------------------------------------------------------------------
         // Zona Dimer
         //-------------------------------------------------------------------

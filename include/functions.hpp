@@ -4,6 +4,9 @@
 
 Ticker timerRelay1; //para el manejo del relay1
 Ticker timerRelay2; //para el manejo del relay2
+Ticker actualizaciontime; //actualizara el valor de la variable time cada 10 segundor
+
+
 
 // falta R_TIMER1 y R_TIMER2 para contabilizar el tiempo que lleva encendido
 
@@ -14,7 +17,7 @@ bool especialSave();
 bool settingsSave();
 void offRelay1();
 void offRelay2();
-
+void setDyMsYr();
 /**
  * void log Genera mensajes personalizados en el puerto Serial
 */
@@ -476,6 +479,63 @@ void muestraInfoMqtt(String command){
     deserializeJson (JsonCommand, command);
     log("INFO","functions","pendiente de mostrar informacion");
 }
+void muestraInfoMqtt2(String command){//muestra informacion del dispositivo remoto y lo almacena en las variables
+    DynamicJsonDocument JsonCommand(capacitySettings);
+    deserializeJson (JsonCommand, command);//lo que llega a command se manda al JsonCommand
+    log("INFO","functions.hpp","Informacion remota recibida");
+    //serializeJsonPretty(JsonCommand, Serial);
+    log("INFO","functions.hpp","Asignando valores a las variables REMOTAS ");
+    REMOTE_serial = JsonCommand["serial"].as<String>();
+    REMOTE_MACWiFi = JsonCommand["MACWiFi"].as<String>();
+    REMOTE_ALRM_STATUS1 = JsonCommand["especial"]["ALRM_STATUS1"].as<bool>();
+    REMOTE_ALRM_STATUS2 = JsonCommand["especial"]["ALRM_STATUS2"].as<bool>();
+    REMOTE_ALRM_STATUS3 = JsonCommand["especial"]["ALRM_STATUS3"].as<bool>();
+    REMOTE_ALRM_STATUS4 = JsonCommand["especial"]["ALRM_STATUS4"].as<bool>();
+    REMOTE_ALRM_STATUS5 = JsonCommand["especial"]["ALRM_STATUS5"].as<bool>();
+    REMOTE_ALRM_STATUS6 = JsonCommand["especial"]["ALRM_STATUS6"].as<bool>();
+    REMOTE_ALRM_STATUS7 = JsonCommand["especial"]["ALRM_STATUS7"].as<bool>();
+    REMOTE_ALRM_NAME1 = JsonCommand["especial"]["ALRM_NAME1"].as<String>();
+    REMOTE_ALRM_NAME2 = JsonCommand["especial"]["ALRM_NAME2"].as<String>();
+    REMOTE_ALRM_NAME3 = JsonCommand["especial"]["ALRM_NAME3"].as<String>();
+    REMOTE_ALRM_NAME4 = JsonCommand["especial"]["ALRM_NAME4"].as<String>();
+    REMOTE_ALRM_NAME5 = JsonCommand["especial"]["ALRM_NAME5"].as<String>();
+    REMOTE_ALRM_NAME7 = JsonCommand["especial"]["ALRM_NAME7"].as<String>();
+    REMOTE_ALRM_NAME7 = JsonCommand["especial"]["ALRM_NAME7"].as<String>();
+    REMOTE_ALRM_LOGIC1 = JsonCommand["especial"]["ALRM_LOGIC1"].as<bool>();
+    REMOTE_ALRM_LOGIC2 = JsonCommand["especial"]["ALRM_LOGIC2"].as<bool>();
+    REMOTE_ALRM_LOGIC3 = JsonCommand["especial"]["ALRM_LOGIC3"].as<bool>();
+    REMOTE_ALRM_LOGIC4 = JsonCommand["especial"]["ALRM_LOGIC4"].as<bool>();
+    REMOTE_ALRM_LOGIC5 = JsonCommand["especial"]["ALRM_LOGIC5"].as<bool>();
+    REMOTE_ALRM_LOGIC6 = JsonCommand["especial"]["ALRM_LOGIC6"].as<bool>();
+    REMOTE_ALRM_LOGIC7 = JsonCommand["especial"]["ALRM_LOGIC7"].as<bool>();
+    REMOTE_ALRM_TON1 = JsonCommand["especial"]["ALRM_TON1"].as<String>();
+    REMOTE_ALRM_TON2 = JsonCommand["especial"]["ALRM_TON2"].as<String>();
+    REMOTE_ALRM_TON3 = JsonCommand["especial"]["ALRM_TON3"].as<String>();
+    REMOTE_ALRM_TON4 = JsonCommand["especial"]["ALRM_TON4"].as<String>();
+    REMOTE_ALRM_TON5 = JsonCommand["especial"]["ALRM_TON5"].as<String>();
+    REMOTE_ALRM_TON6 = JsonCommand["especial"]["ALRM_TON6"].as<String>();
+    REMOTE_ALRM_TON7 = JsonCommand["especial"]["ALRM_TON7"].as<String>();
+    REMOTE_ALRM_TOFF1 = JsonCommand["especial"]["ALRM_TOFF1"].as<String>();
+    REMOTE_ALRM_TOFF2 = JsonCommand["especial"]["ALRM_TOFF2"].as<String>();
+    REMOTE_ALRM_TOFF3 = JsonCommand["especial"]["ALRM_TOFF3"].as<String>();
+    REMOTE_ALRM_TOFF4 = JsonCommand["especial"]["ALRM_TOFF4"].as<String>();
+    REMOTE_ALRM_TOFF5 = JsonCommand["especial"]["ALRM_TOFF5"].as<String>();
+    REMOTE_ALRM_TOFF6 = JsonCommand["especial"]["ALRM_TOFF6"].as<String>();
+    REMOTE_ALRM_TOFF7 = JsonCommand["especial"]["ALRM_TOFF7"].as<String>();
+    REMOTE_ALRM_CONT1 = JsonCommand["especial"]["ALRM_CONT1"].as<int>();
+    REMOTE_ALRM_CONT2 = JsonCommand["especial"]["ALRM_CONT2"].as<int>();
+    REMOTE_ALRM_CONT3 = JsonCommand["especial"]["ALRM_CONT3"].as<int>();
+    REMOTE_ALRM_CONT4 = JsonCommand["especial"]["ALRM_CONT4"].as<int>();
+    REMOTE_ALRM_CONT5 = JsonCommand["especial"]["ALRM_CONT5"].as<int>();
+    REMOTE_ALRM_CONT6 = JsonCommand["especial"]["ALRM_CONT6"].as<int>();
+    REMOTE_ALRM_CONT7 = JsonCommand["especial"]["ALRM_CONT7"].as<int>();
+    REMOTE_R_NAME1 = JsonCommand["especial"]["R_NAME1"].as<String>();   
+    REMOTE_R_NAME2 = JsonCommand["especial"]["R_NAME2"].as<String>();
+    REMOTE_R_STATUS1 = JsonCommand["especial"]["R_STATUS1"].as<bool>();
+    REMOTE_R_STATUS2 = JsonCommand["especial"]["R_STATUS2"].as<bool>();
+    REMOTE_R_LOGIC1 = JsonCommand["especial"]["R_LOGIC1"].as<bool>();
+    REMOTE_R_LOGIC2 = JsonCommand["especial"]["R_LOGIC2"].as<bool>();
+}
 // -------------------------------------------------------------------
 // Retorna segundos como "d:hh:mm"
 // -------------------------------------------------------------------
@@ -700,6 +760,47 @@ void dimmer(String dimmer){
 // -------------------------------------------------------------------
 // Fecha y Hora del Sistema
 // -------------------------------------------------------------------
+//------------------------------------------------------------------
+// Setup de fecha y Hora Auto / Manual
+//------------------------------------------------------------------
+void timeSetup(){ //verificar si esta tomando la fecha de manera automatica si no quitar la fecha automatica
+//y deja la pura manual
+    
+    setDyMsYr();
+
+    if(time_ajuste){
+        rtc.setTime(time_sc, time_mn, time_hr, time_dy, time_mt, time_yr); 
+        log("INFO","functions.hpp", "RTC set OK en Manual");
+    // datos desde el Internet
+    }else{
+        if ((WiFi.status() == WL_CONNECTED) && (wifi_mode == WIFI_STA)){
+            /* WiFi Conectada */
+            ntpClient.begin();
+            ntpClient.setPoolServerName(time_server); //servidor 
+            ntpClient.setTimeOffset(time_z_horaria);    // zona horaria
+            ntpClient.update(); 
+            log("INFO","functions.hpp", "NTC set OK en Automatico");
+        }else{
+            /* Si no hay conexión a WiFi - No Internet */
+            rtc.setTime(time_sc, time_mn, time_hr, time_dy, time_mt, time_yr); 
+            log("INFO","functions.hpp", "RTC set OK Sin Conexión a internet");
+        }
+    }
+}
+
+// -------------------------------------------------------------------
+// Función para seteo de Día, Mes y Año a las variables
+// -------------------------------------------------------------------
+void setDyMsYr(){
+    // 2022-09-07T23:47
+    String str_date = time_date;
+    time_sc = 0;
+    time_mn = str_date.substring(14, 16).toInt(); //47
+    time_hr = str_date.substring(11, 13).toInt(); //23
+    time_dy = str_date.substring(8, 10).toInt(); 
+    time_mt = str_date.substring(5, 7).toInt();   
+    time_yr = str_date.substring(0, 4).toInt();  //2023
+}
 
 String getDateTime(){
     
@@ -720,7 +821,8 @@ String getDateTime(){
         minuto = rtc.getMinute();
         segundo = rtc.getSecond();
     }else{ // Automatico
-        if((WiFi.status() == WL_CONNECTED) && (wifi_mode == WIFI_STA)){
+        //if((WiFi.status() == WL_CONNECTED) && (wifi_mode == WIFI_STA)){
+        if((WiFi.status() == WL_CONNECTED) && (wifi_mode == WIFI_AP_STA)){
             /* NTP */
             if(ntpClient.isTimeSet()) {
                 String formattedTime = ntpClient.getFormattedTime();
@@ -764,7 +866,7 @@ String releTime(){
         minuto = rtc.getMinute();
 
     }else{ // Automatico
-        if((WiFi.status() == WL_CONNECTED) && (wifi_mode == WIFI_STA)){
+        if((WiFi.status() == WL_CONNECTED) && (wifi_mode == WIFI_AP_STA)){
             /* NTP */
             if(ntpClient.isTimeSet()) {
                 String formattedTime = ntpClient.getFormattedTime();
@@ -786,7 +888,7 @@ String releTime(){
         }                   
     }	
     //sprintf( hora, "%.2d-%.2d-%.4d %.2d:%.2d:%.2d", dia, mes, anio, hora, minuto, segundo);
-    sprintf( horas, " %.2d:%.2d", hora, minuto);
+    sprintf( horas, "%.2d:%.2d", hora, minuto);
 	return String( horas );
 }
 
@@ -909,3 +1011,10 @@ void mostrar(){
     }
 }
 
+//----------------------------------------------------
+// actulizacion de la variable time_now
+//---------------------------------------------------
+void actualizaTime(){
+    time_now = getDateTime();
+    hora = releTime();
+}

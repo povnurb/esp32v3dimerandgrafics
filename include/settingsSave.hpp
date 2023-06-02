@@ -62,13 +62,23 @@ bool settingsSave(){
         mqttObj["mqtt_password"] = mqtt_password;
         mqttObj["mqtt_clean_sessions"] = mqtt_clean_sessions;
         mqttObj["mqtt_willTopic"] = mqtt_willTopic; 
-        mqttObj["mqtt_extraTopic"] = mqtt_extraTopic;
+
         mqttObj["mqtt_willMessage"] = mqtt_willMessage; 
         mqttObj["mqtt_willQoS"] = mqtt_willQoS;
         mqttObj["mqtt_willRetain"] = mqtt_willRetain;   
         mqttObj["mqtt_time_send"] = mqtt_time_send;
         mqttObj["mqtt_time_interval"] = mqtt_time_interval;   
         mqttObj["mqtt_status_send"] = mqtt_status_send;  
+
+        // ---------------------------------------------------------------------------------
+        // TIME settings.json
+        // -------------------------------------------------------------------
+        jsonSettings["time_ajuste"] = time_ajuste;
+        jsonSettings["time_date"] = time_date;
+        jsonSettings["time_z_horaria"] = time_z_horaria;
+        jsonSettings["time_server"] = time_server;
+
+
         jsonSettings["file_version"] = "3.0.0";
         serializeJsonPretty(jsonSettings,file); //escribe en el archivo file
         file.close();// ya que todo se leera se cierra el archivo
@@ -195,7 +205,28 @@ bool especialSave(){
         espnowObj["cambio64"]= cambio64;
         espnowObj["cambio74"]= cambio74;
         espnowObj["cambio84"]= cambio84;
-        
+        /************************************************************************************************
+         * Nuevos valores a las variables que se encuentran en el archivo globales.hpp                  *
+         * variables para el MQTT2:                                                                     *
+         * *********************************************************************************************/ 
+        JsonObject mqtt2Obj = jsonEspecial.createNestedObject("mqtt2");
+        mqtt2Obj["mqtt_enable2"]=mqtt_enable2;
+        mqtt2Obj["mqtt_user2"]=mqtt_user2;
+        mqtt2Obj["mqtt_id2"]=mqtt_id2;
+        mqtt2Obj["mqtt_server2"]=mqtt_server2;
+        mqtt2Obj["mqtt_port2"]=mqtt_port2; 
+        mqtt2Obj["mqtt_willTopic2"]=mqtt_willTopic2;
+        mqtt2Obj["mqtt_password2"]=mqtt_password2;
+        mqtt2Obj["mqtt_willQoS2"]=mqtt_willQoS2; 
+        mqtt2Obj["mqtt_clean_sessions2"]=mqtt_clean_sessions2; 
+        mqtt2Obj["mqtt_time_send2"] = mqtt_time_send2;
+        mqtt2Obj["mqtt_willRetain2"]=mqtt_willRetain2; 
+        mqtt2Obj["mqtt_willMessage2"]=mqtt_willMessage2;
+        mqtt2Obj["mqtt_extraTopic"] = mqtt_extraTopic;
+        mqtt2Obj["mqtt_retain2"]=mqtt_retain2;
+        mqtt2Obj["mqtt_qos2"] = mqtt_qos2;
+        mqtt2Obj["mqtt_time_interval2"] = mqtt_time_interval2;
+        mqtt2Obj["mqtt_status_send2"] = mqtt_status_send2;
         //-------------------------------------------------------------------
         // Zona Dimer
         //-------------------------------------------------------------------
