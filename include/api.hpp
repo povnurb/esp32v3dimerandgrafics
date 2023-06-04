@@ -633,6 +633,7 @@ void handleApiPostRelays(AsyncWebServerRequest *request, uint8_t *data, size_t l
     //---------------------------------------------------------------------
     String s = "";
     //Relays1
+    if (doc["R_STATUS1"] != "")
     R_STATUS1 = doc["R_STATUS1"].as<bool>();
     if (doc["R_NAME1"] != ""){//si no esta vacia actualizamos la data
         s=doc["R_NAME1"].as<String>();
@@ -640,14 +641,17 @@ void handleApiPostRelays(AsyncWebServerRequest *request, uint8_t *data, size_t l
         strlcpy(R_NAME1,s.c_str(),sizeof(R_NAME1)); //modificamos el valor de la variable con ese valor convertido en char
         s=""; //limpiamos el valor de s
     }
+    if (doc["R_TIMERON1"] != "")
     R_TIMERON1 = doc["R_TIMERON1"].as<bool>(); //indica si se activa el timer del relevador1
     if(doc["R_TIMER1"] != ""){
         R_TIMER1 = doc["R_TIMER1"].as<int>();  //contador regresivo por minuto el tiempo que permanecera encendido 
-    }  
+    }
+    if (doc["R_LOGIC1"] != "")  
     R_LOGIC1 = doc["R_LOGIC1"].as<bool>();  //por si trabaja energizado logica positiva o verdera en caso contraro false
     if (doc["R_DESCRIPTION1"] != ""){//si no esta vacia actualizamos la data en caso contrario mantiene su valor
         R_DESCRIPTION1=doc["R_DESCRIPTION1"].as<String>(); //modificamos el valor de la variable con ese valor convertido en String
-    }      
+    }
+    if (doc["TEMPORIZADOR1"] != "")       
     TEMPORIZADOR1 = doc["TEMPORIZADOR1"].as<bool>();  //indica si hay un control por tiempo
     if (doc["TIMEONRELAY1"] != ""){//si no esta vacia actualizamos la data en caso contrario mantiene su valor
         TIMEONRELAY1=doc["TIMEONRELAY1"].as<String>(); //modificamos el valor de la variable con ese valor convertido en String
@@ -656,6 +660,7 @@ void handleApiPostRelays(AsyncWebServerRequest *request, uint8_t *data, size_t l
         TIMEOFFRELAY1=doc["TIMEOFFRELAY1"].as<String>(); //modificamos el valor de la variable con ese valor convertido en String
     }  
     //Relays2
+    if (doc["R_STATUS2"] != "")  
     R_STATUS2 = doc["R_STATUS2"].as<bool>();
     if (doc["R_NAME2"] != ""){//si no esta vacia actualizamos la data
         s=doc["R_NAME2"].as<String>();
@@ -663,14 +668,17 @@ void handleApiPostRelays(AsyncWebServerRequest *request, uint8_t *data, size_t l
         strlcpy(R_NAME2,s.c_str(),sizeof(R_NAME2)); //modificamos el valor de la variable con ese valor convertido en char
         s=""; //limpiamos el valor de s
     }
+    if (doc["R_TIMERON2"] != "")  
     R_TIMERON2 = doc["R_TIMERON2"].as<bool>(); //indica si se activa el timer del relevador2
     if(doc["R_TIMER2"] != ""){
         R_TIMER2 = doc["R_TIMER2"].as<int>();  //contador regresivo por minuto el tiempo que permanecera encendido 
     }  
+    if (doc["R_LOGIC2"] != "")  
     R_LOGIC2 = doc["R_LOGIC2"].as<bool>();  //por si trabaja energizado logica positiva o verdera en caso contraro false
     if (doc["R_DESCRIPTION2"] != ""){//si no esta vacia actualizamos la data en caso contrario mantiene su valor
         R_DESCRIPTION2=doc["R_DESCRIPTION2"].as<String>(); //modificamos el valor de la variable con ese valor convertido en String
     }      
+    if (doc["TEMPORIZADOR2"] != "")  
     TEMPORIZADOR2 = doc["TEMPORIZADOR2"].as<bool>();  //indica si hay un control por tiempo
     if (doc["TIMEONRELAY2"] != ""){//si no esta vacia actualizamos la data en caso contrario mantiene su valor
         TIMEONRELAY2=doc["TIMEONRELAY2"].as<String>(); //modificamos el valor de la variable con ese valor convertido en String
@@ -678,12 +686,47 @@ void handleApiPostRelays(AsyncWebServerRequest *request, uint8_t *data, size_t l
     if (doc["TIMEOFFRELAY2"] != ""){//si no esta vacia actualizamos la data en caso contrario mantiene su valor
         TIMEOFFRELAY2=doc["TIMEOFFRELAY2"].as<String>(); //modificamos el valor de la variable con ese valor convertido en String
     }  
+    String respuesta = "";
+
+    respuesta = "{";
+    respuesta += "\"serial\": \"" + DeviceID() + "\"";           
+    respuesta += ",\"device\": \"" + platform() + "\"";           
+    WiFi.status() == WL_CONNECTED ? respuesta += ",\"wifiQuality\":" + String(getRSSIasQuality(WiFi.RSSI())) : respuesta += ",\"wifiQuality\": 0";
+    WiFi.status() == WL_CONNECTED ? respuesta += ",\"wifiStatus\": true" : respuesta += ",\"wifiStatus\": false";
+    WiFi.status() == WL_CONNECTED ? respuesta += ",\"rssiStatus\":" + String(WiFi.RSSI()) : respuesta += ",\"rssiStatus\": 0";
+    mqttClient.connected() ? respuesta += ",\"mqttStatus\": true" : respuesta += ",\"mqttStatus\": false";
+    respuesta += ",\"RELAY1\":";
+        respuesta +="{";   
+        respuesta += "\"R_NAME1\": \"" + String(R_NAME1) + "\""; //nombre del relay
+        R_STATUS1? respuesta += ",\"R_STATUS1\": true": respuesta += ",\"R_STATUS1\": false"; //encendido o apagado
+        R_TIMERON1? respuesta += ",\"R_TIMERON1\": true": respuesta += ",\"R_TIMERON1\": false"; //si se active el timer de este relevador
+        respuesta += ",\"R_TIMER1\": \"" + String(R_TIMER1) + "\""; //contador regresivo por minuto 
+        R_LOGIC1? respuesta += ",\"R_LOGIC1\": true": respuesta += ",\"R_LOGIC1\": false"; //por si trabaja energizado
+        respuesta += ",\"R_DESCRIPTION1\": \"" + String(R_DESCRIPTION1) + "\""; //breve descripcion 
+        TEMPORIZADOR1? respuesta += ",\"TEMPORIZADOR1\": true": respuesta += ",\"TEMPORIZADOR1\": false"; //indica si hay un control por tiempo definido por horario
+        respuesta += ",\"TIMEONRELAY1\": \"" + String(TIMEONRELAY1) + "\""; //indica a que hora se prende en caso de logica negativa a que hr se apaga
+        respuesta += ",\"TIMEOFFRELAY1\": \"" + String(TIMEOFFRELAY1) + "\""; //indica a que hora se apaga en caso de logica negativa a que hr se prende
+        respuesta += "}";
+    respuesta += ",\"RELAY2\":";
+        respuesta +="{";   
+        respuesta += "\"R_NAME2\": \"" + String(R_NAME2) + "\""; //nombre del relay
+        R_STATUS2? respuesta += ",\"R_STATUS2\": true": respuesta += ",\"R_STATUS2\": false"; //encendido o apagado
+        R_TIMERON2? respuesta += ",\"R_TIMERON2\": true": respuesta += ",\"R_TIMERON2\": false"; //si se active el timer de este relevador
+        respuesta += ",\"R_TIMER2\": \"" + String(R_TIMER2) + "\""; //contador regresivo por minuto 
+        R_LOGIC2? respuesta += ",\"R_LOGIC2\": true": respuesta += ",\"R_LOGIC2\": false"; //por si trabaja energizado
+        respuesta += ",\"R_DESCRIPTION2\": \"" + String(R_DESCRIPTION2) + "\""; //breve descripcion 
+        TEMPORIZADOR2? respuesta += ",\"TEMPORIZADOR2\": true": respuesta += ",\"TEMPORIZADOR2\": false"; //indica si hay un control por tiempo definido por horario
+        respuesta += ",\"TIMEONRELAY2\": \"" + String(TIMEONRELAY2) + "\""; //indica a que hora se prende en caso de logica negativa a que hr se apaga
+        respuesta += ",\"TIMEOFFRELAY2\": \"" + String(TIMEOFFRELAY2) + "\""; //indica a que hora se apaga en caso de logica negativa a que hr se prende
+        respuesta += "},";    
     if (especialSave()){
+        respuesta += "\"save\": true}"; 
         request->addInterestingHeader("API ESP32 Server");
-        request->send(200, dataType, "{ \"save\": true}");
+        request->send(200, dataType, respuesta);
     }else{
+        respuesta += "\"save\": false,\"descripción\": \"Erros con el SPIFFS en save verificar json e información\"}";
         request->addInterestingHeader("API ESP32 Server");
-        request->send(500, dataType, "{ \"save\": false,\"descripción\": \"Erros con el SPIFFS en save verificar json e información\"}");
+        request->send(500, dataType, respuesta);
     }
     ctrlRelays();
 }

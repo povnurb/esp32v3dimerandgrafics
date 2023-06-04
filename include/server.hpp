@@ -239,6 +239,21 @@ void initServer(){
     server.on("/api/time", HTTP_POST, [](AsyncWebServerRequest * request){}, NULL, handleApiPostTime);
 
 
+    //para los POST
+    server.onNotFound([](AsyncWebServerRequest *request){
+        if (request->method() == HTTP_OPTIONS){
+        request->send(200);
+        }else{
+            request->send(404);
+        }
+    });
+    //----------------------------------------------------------------------------
+    //Iniciar el servidor WEB + CORS
+    //----------------------------------------------------------------------------
+
+    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");
+    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Headers", "*");
+    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Method", "POST, GET, OPTIONS, DELETE");
     server.begin();
     log("INFO","server.hpp","Servidor HTTP iniciado");
 }

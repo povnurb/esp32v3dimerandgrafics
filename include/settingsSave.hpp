@@ -234,13 +234,14 @@ bool especialSave(){
         dimmerObj["dim_value"] = dim;
         
         serializeJsonPretty(jsonEspecial,especial); //lo escribe en el archivo especial
+        serializeJsonPretty(jsonEspecial,Serial);
         especial.close();// ya que todo se leera se cierra el archivo
         Serial.println("");
-        log("INFO","settingsSave.hpp","Configuraciones guardadas de los actuadores OK.");
+        log("INFO","especialSave.hpp","Configuraciones guardadas de los actuadores OK.");
         //serializeJsonPretty(jsonEspecial,Serial); //muestra la informacion guardada en el monitor serial
         return true;
     }else{
-        log("ERROR","settingsSave.hpp","Falló el guardado de la configuracion Especial.");
+        log("ERROR","especialSave.hpp","Falló el guardado de la configuracion Especial.");
         return false;
     }
 }
