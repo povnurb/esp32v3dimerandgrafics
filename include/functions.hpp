@@ -1018,3 +1018,14 @@ void actualizaTime(){
     time_now = getDateTime();
     hora = releTime();
 }
+
+//--------------------------------------------------------------------------------
+//Función para el Buzzer dispositivo Global -> API, MQTT, WS
+//ejemplo: {"protocol":"API", "output": "buzzer", "value": false}
+//------------------------------------------------------------------------------
+void buzzer(String buzzer){
+    DynamicJsonDocument JsonBuzzer(120);
+    deserializeJson(JsonBuzzer, buzzer);
+    log("INFO","functions.hpp","Comando enviado desde: "+JsonBuzzer["protocol"].as<String>()+" <=> "+JsonBuzzer["output"].as<String>()+" <=> "+JsonBuzzer["value"].as<String>());
+    BUZZER_STATUS = JsonBuzzer["value"].as<bool>();
+}

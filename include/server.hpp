@@ -202,6 +202,15 @@ void initServer(){
     // la intancion es conectarse a otro broker para obtener alarmas de otro dispositivo
     // y si no se puede pues por lo menos conectarse al mismo para obtener alarmas de otro dispositivo
     //*************************************************************************************************
+
+    // -------------------------------------------------------------------
+    // Control Buzzer
+    // url: /api/device/buzzer
+    // Método: POST
+    // -------------------------------------------------------------------
+    server.on("/api/device/buzzer", HTTP_POST, [](AsyncWebServerRequest *request) {}, NULL, handleApiPostBuzzer);
+
+
     // -------------------------------------------------------------------
     // Parámetros de configuración MQTT
     // url: /api/connection/mqtt2

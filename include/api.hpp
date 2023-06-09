@@ -29,7 +29,7 @@
 // /api/connection/alarmasremotas       POST        ----        OK
 // /api/time                            GET         ----        OK
 // /api/time                            POST        ----        OK
-
+// /api/device/buzzer                   POST        ----        
 
 
 //API v1 json desde String
@@ -1593,4 +1593,31 @@ void handleApiPostTime(AsyncWebServerRequest *request, uint8_t *data, size_t len
     }else{
         request->send(500, dataType, "{ \"save\": false }");
     }    
+}
+
+
+//buzzer handleApiPostBuzzer
+// -------------------------------------------------------------------
+// Manejo del buzzer
+// url: /api/device/buzzer
+// Método: POST
+// -------------------------------------------------------------------
+
+void handleApiPostBuzzer(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
+    if (security){
+        if (!request->authenticate(device_user, device_password))
+            return request->requestAuthentication();
+    } 
+    // capturamos la data en string
+    String bodyContent = GetBodyContent(data, len);
+    // Validar que sea un JSON
+    StaticJsonDocument<250> doc;
+    DeserializationError error = deserializeJson(doc, bodyContent);
+    if (error){
+        request->send(400, dataType, "{ \"status\": \"Error de JSON enviado\" }");
+        return;
+    };
+
+    buzzer(bodyContent);
+    request->send(200, dataType, "{ \"buzzer\": true, \"value\": \"" + String(BUZZER_STATUS) + "\" }");
 }
