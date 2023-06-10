@@ -442,27 +442,27 @@ void handleApiRelays(AsyncWebServerRequest *request){
     mqttClient.connected() ? json += ",\"mqttStatus\": true" : json += ",\"mqttStatus\": false";
     json += ",\"RELAY1\":";
         json +="{";   
-        json += "\"R_NAME1\": \"" + String(R_NAME1) + "\""; //nombre del relay
-        R_STATUS1? json += ",\"R_STATUS1\": true": json += ",\"R_STATUS1\": false"; //encendido o apagado
+        R_LOGIC1? json += "\"R_LOGIC1\": true": json += "\"R_LOGIC1\": false"; //por si trabaja energizado
+        json += ",\"R_NAME1\": \"" + String(R_NAME1) + "\""; //nombre del relay
+        json += ",\"R_DESCRIPTION1\": \"" + String(R_DESCRIPTION1) + "\""; //breve descripcion 
         R_TIMERON1? json += ",\"R_TIMERON1\": true": json += ",\"R_TIMERON1\": false"; //si se active el timer de este relevador
         json += ",\"R_TIMER1\": \"" + String(R_TIMER1) + "\""; //contador regresivo por minuto 
-        R_LOGIC1? json += ",\"R_LOGIC1\": true": json += ",\"R_LOGIC1\": false"; //por si trabaja energizado
-        json += ",\"R_DESCRIPTION1\": \"" + String(R_DESCRIPTION1) + "\""; //breve descripcion 
         TEMPORIZADOR1? json += ",\"TEMPORIZADOR1\": true": json += ",\"TEMPORIZADOR1\": false"; //indica si hay un control por tiempo definido por horario
         json += ",\"TIMEONRELAY1\": \"" + String(TIMEONRELAY1) + "\""; //indica a que hora se prende en caso de logica negativa a que hr se apaga
         json += ",\"TIMEOFFRELAY1\": \"" + String(TIMEOFFRELAY1) + "\""; //indica a que hora se apaga en caso de logica negativa a que hr se prende
+        R_STATUS1? json += ",\"R_STATUS1\": true": json += ",\"R_STATUS1\": false"; //encendido o apagado
         json += "}";
     json += ",\"RELAY2\":";
         json +="{";   
-        json += "\"R_NAME2\": \"" + String(R_NAME2) + "\""; //nombre del relay
-        R_STATUS2? json += ",\"R_STATUS2\": true": json += ",\"R_STATUS2\": false"; //encendido o apagado
+        R_LOGIC2? json += "\"R_LOGIC2\": true": json += "\"R_LOGIC2\": false"; //por si trabaja energizado
+        json += ",\"R_NAME2\": \"" + String(R_NAME2) + "\""; //nombre del relay
+        json += ",\"R_DESCRIPTION2\": \"" + String(R_DESCRIPTION2) + "\""; //breve descripcion
         R_TIMERON2? json += ",\"R_TIMERON2\": true": json += ",\"R_TIMERON2\": false"; //si se active el timer de este relevador
         json += ",\"R_TIMER2\": \"" + String(R_TIMER2) + "\""; //contador regresivo por minuto 
-        R_LOGIC2? json += ",\"R_LOGIC2\": true": json += ",\"R_LOGIC2\": false"; //por si trabaja energizado
-        json += ",\"R_DESCRIPTION2\": \"" + String(R_DESCRIPTION2) + "\""; //breve descripcion 
         TEMPORIZADOR2? json += ",\"TEMPORIZADOR2\": true": json += ",\"TEMPORIZADOR2\": false"; //indica si hay un control por tiempo definido por horario
         json += ",\"TIMEONRELAY2\": \"" + String(TIMEONRELAY2) + "\""; //indica a que hora se prende en caso de logica negativa a que hr se apaga
         json += ",\"TIMEOFFRELAY2\": \"" + String(TIMEOFFRELAY2) + "\""; //indica a que hora se apaga en caso de logica negativa a que hr se prende
+        R_STATUS2? json += ",\"R_STATUS2\": true": json += ",\"R_STATUS2\": false"; //encendido o apagado
         json += "}";    
     json += "}";
     request->addInterestingHeader("API ESP32 Server");//este es el header se agrega
