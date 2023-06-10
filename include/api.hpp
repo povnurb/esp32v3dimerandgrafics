@@ -1620,4 +1620,9 @@ void handleApiPostBuzzer(AsyncWebServerRequest *request, uint8_t *data, size_t l
 
     buzzer(bodyContent);
     request->send(200, dataType, "{ \"buzzer\": true, \"value\": \"" + String(BUZZER_STATUS) + "\" }");
+    if(BUZZER_STATUS){
+        digitalWrite(BUZZER, HIGH);
+    }else{
+        digitalWrite(BUZZER, LOW);
+    }
 }
