@@ -176,44 +176,35 @@ String Json(){
     espObj["ALRM_LOGIC3"] = ALRM_LOGIC3? true : false;
     espObj["ALRM_LOGIC4"] = ALRM_LOGIC4? true : false;
     espObj["ALRM_LOGIC5"] = ALRM_LOGIC5? true : false;
-    espObj["ALRM_LOGIC6"] = ALRM_LOGIC6? true : false;
-    espObj["ALRM_LOGIC7"] = ALRM_LOGIC7? true : false; 
     espObj["ALRM_NAME1"] = String(ALRM_NAME1);
     espObj["ALRM_NAME2"] = String(ALRM_NAME2);
     espObj["ALRM_NAME3"] = String(ALRM_NAME3);
     espObj["ALRM_NAME4"] = String(ALRM_NAME4);
     espObj["ALRM_NAME5"] = String(ALRM_NAME5);
-    espObj["ALRM_NAME6"] = String(ALRM_NAME6);
-    espObj["ALRM_NAME7"] = String(ALRM_NAME7);
     espObj["ALRM_STATUS1"] = ALRM_LOGIC1? (digitalRead(ALRM_PIN1)? true : false):(digitalRead(ALRM_PIN1)? false:true);
     espObj["ALRM_STATUS2"] = ALRM_LOGIC2? (digitalRead(ALRM_PIN2)? true : false):(digitalRead(ALRM_PIN2)? false:true);
     espObj["ALRM_STATUS3"] = ALRM_LOGIC3? (digitalRead(ALRM_PIN3)? true : false):(digitalRead(ALRM_PIN3)? false:true);
     espObj["ALRM_STATUS4"] = ALRM_LOGIC4? (digitalRead(ALRM_PIN4)? true : false):(digitalRead(ALRM_PIN4)? false:true);
     espObj["ALRM_STATUS5"] = ALRM_LOGIC5? (digitalRead(ALRM_PIN5)? true : false):(digitalRead(ALRM_PIN5)? false:true);
-    espObj["ALRM_STATUS6"] = ALRM_LOGIC6? (digitalRead(ALRM_PIN6)? true : false):(digitalRead(ALRM_PIN6)? false:true);
-    espObj["ALRM_STATUS7"] = ALRM_LOGIC7? (digitalRead(ALRM_PIN7)? true : false):(digitalRead(ALRM_PIN7)? false:true);
     //falta por enviar cosas para mi que este no se manda con remote si no se cacha
     espObj["ALRM_TON1"] = ALRM_TON1;
     espObj["ALRM_TON2"] = ALRM_TON2;
     espObj["ALRM_TON3"] = ALRM_TON3;
     espObj["ALRM_TON4"] = ALRM_TON4;
     espObj["ALRM_TON5"] = ALRM_TON5;
-    espObj["ALRM_TON6"] = ALRM_TON6;
-    espObj["ALRM_TON7"] = ALRM_TON7;
+
     espObj["ALRM_TOFF1"] = ALRM_TOFF1;
     espObj["ALRM_TOFF2"] = ALRM_TOFF2;
     espObj["ALRM_TOFF3"] = ALRM_TOFF3;
     espObj["ALRM_TOFF4"] = ALRM_TOFF4;
     espObj["ALRM_TOFF5"] = ALRM_TOFF5;
-    espObj["ALRM_TOFF6"] = ALRM_TOFF6;
-    espObj["ALRM_TOFF7"] = ALRM_TOFF7;
+
     espObj["ALRM_CONT1"] = ALRM_CONT1;
     espObj["ALRM_CONT2"] = ALRM_CONT2;
     espObj["ALRM_CONT3"] = ALRM_CONT3;
     espObj["ALRM_CONT4"] = ALRM_CONT4;
     espObj["ALRM_CONT5"] = ALRM_CONT5;
-    espObj["ALRM_CONT6"] = ALRM_CONT6;
-    espObj["ALRM_CONT7"] = ALRM_CONT7;
+
 
     serializeJson(jsonDoc, response);
     return response;

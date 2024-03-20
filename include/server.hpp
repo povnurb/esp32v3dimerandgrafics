@@ -87,7 +87,7 @@ void initServer(){
     // a escanear desde otro lugar (ciclo / configuración).
     // No solicite más de 3-5 segundos. \ ALT + 92
     // -------------------------------------------------------------------
-    server.on("/api/connection/wifi-scan", HTTP_GET, handleApiWifiScan);
+    //server.on("/api/connection/wifi-scan", HTTP_GET, handleApiWifiScan);
 
     // -------------------------------------------------------------------
     // Parámetros de configuración MQTT
