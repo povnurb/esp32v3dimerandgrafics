@@ -453,6 +453,7 @@ void handleApiRelays(AsyncWebServerRequest *request)
     json = "{";
     json += "\"serial\": \"" + DeviceID() + "\"";
     json += ",\"device\": \"" + platform() + "\"";
+    json += ",\"time\": \"" + getDateTime() + "\"";
     WiFi.status() == WL_CONNECTED ? json += ",\"wifiQuality\":" + String(getRSSIasQuality(WiFi.RSSI())) : json += ",\"wifiQuality\": 0";
     WiFi.status() == WL_CONNECTED ? json += ",\"wifiStatus\": true" : json += ",\"wifiStatus\": false";
     WiFi.status() == WL_CONNECTED ? json += ",\"rssiStatus\":" + String(WiFi.RSSI()) : json += ",\"rssiStatus\": 0";

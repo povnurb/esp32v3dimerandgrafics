@@ -4,19 +4,17 @@
 
 Ticker timerRelay1;       // para el manejo del relay1
 Ticker timerRelay2;       // para el manejo del relay2
-Ticker actualizaciontime; // actualizara el valor de la variable time cada 10 segundor
+Ticker actualizaciontime; // actualizara el valor de la variable time cada 10 segundos
 
 // falta R_TIMER1 y R_TIMER2 para contabilizar el tiempo que lleva encendido
 
-String releTime();
+String releTime(); // es el comparador para encender o apagar los relevadores
 void settingsReset();
 void especialReset();
 bool especialSave();
 bool settingsSave();
 void offRelay1();
 void offRelay2();
-void onRelay1();
-void onRelay2();
 void setDyMsYr();
 /**
  * void log Genera mensajes personalizados en el puerto Serial
@@ -1006,7 +1004,6 @@ String releTime()
     if (time_ajuste)
     { // Manual
         /* RTC */
-
         hora = rtc.getHour(true);
         minuto = rtc.getMinute();
     }
@@ -1243,7 +1240,7 @@ void buzzer(String buzzer)
 // Funcion para activar y desactivar los relevadores de manera local
 //-------------------------------------------------------------------------------
 void actRele()
-{ /*
+{ /*  //jala solo para el d35 pero no para d32 ya que esta conectado diferente
   if (!digitalRead(ACTRELE1) && togle1)
   {
       togle1 = !togle1;
@@ -1333,3 +1330,35 @@ void IRAM_ATTR funcDeInterrupcion2()
         tiempoDeInterrupcion = millis();
     }
 }*/
+//-------------------------------------------------------------------------------
+// Funcion para activar y desactivar los relevadores con respecto al tiempo
+//-------------------------------------------------------------------------------
+void temporelevares()
+{
+    if (TEMPORIZADOR1)
+    {
+        if (TIMEONRELAY1 == releTime())
+        {
+            digitalWrite(RELAY1, true);
+            R_STATUS1 = true;
+        }
+        if (TIMEOFFRELAY1 == releTime())
+        {
+            digitalWrite(RELAY1, false);
+            R_STATUS1 = false;
+        }
+    }
+    if (TEMPORIZADOR2)
+    {
+        if (TIMEONRELAY2 == releTime())
+        {
+            digitalWrite(RELAY2, true);
+            R_STATUS2 = true;
+        }
+        if (TIMEOFFRELAY2 == releTime())
+        {
+            digitalWrite(RELAY2, false);
+            R_STATUS2 = false;
+        }
+    }
+}

@@ -124,6 +124,8 @@ void setup()
   xTaskCreate(TaskLCD, "TaskLCD", 1024 * 2, NULL, 1, NULL);
   // crear Tarea cambio de estado rele de manera local
   xTaskCreate(Taskrelcambio, "Taskrelcambio", 1024 * 2, NULL, 1, NULL);
+  // crea tarea para ponerle horario a los relevadore
+  xTaskCreate(TaskTimeRele, "TaskTimeRele", 1024 * 2, NULL, 1, NULL);
   // crear tarea estado de las alarmas
   // xTaskCreate(TaskAlarms, "TaskAlarms", 1024 * 2, NULL, 1, NULL);
 

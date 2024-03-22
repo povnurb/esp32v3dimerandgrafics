@@ -46,7 +46,7 @@ void settingsReset()
      * a las variables que se encuentran en el archivo globales.hpp                                 *
      * variables para el MQTT:                                                                      *
      * *********************************************************************************************/
-    mqtt_enable = false; // estaba en false
+    mqtt_enable = true; // estaba en false
     strlcpy(mqtt_server, "iotmx.com", sizeof(mqtt_server));
     mqtt_port = 1883;   // verificar
     mqtt_retain = true; // verificar false
@@ -86,7 +86,7 @@ void especialReset()
     /********************************************************************************
      * Zona configuracion Dispositivo especial.json asignando nuevo valores         *
      * a las variables que se encuentran en el archivo globales.hpp                 *
-     * variables para los actuadres RELAYS                                          *
+     * variables para los actuadores RELAYS                                          *
      *******************************************************************************/
     strlcpy(LUGAR, "IGL-PTTI", sizeof(LUGAR));
     strlcpy(R_NAME1, "RELAY1", sizeof(R_NAME1)); // variables de tipo char primero se define la variable (R_NAME1)
@@ -114,15 +114,15 @@ void especialReset()
      * variables para los sensores de alarmas:                                                      *
      ***********************************************************************************************/
     ALRM_LOGIC1 = false;
-    ALRM_NAME1 = "Temp. Alta en Sala";
+    ALRM_NAME1 = "ALTA TEMPERATURA EN SALA";
     ALRM_LOGIC2 = false;
-    ALRM_NAME2 = "F. compresor clima A";
+    ALRM_NAME2 = "F. COMPRESOR A";
     ALRM_LOGIC3 = false;
-    ALRM_NAME3 = "F. compresor clima B";
+    ALRM_NAME3 = "F. COMPRESOR B";
     ALRM_LOGIC4 = false;
-    ALRM_NAME4 = "CLIMA A OPERANDO";
+    ALRM_NAME4 = "CLIMA A";
     ALRM_LOGIC5 = false;
-    ALRM_NAME5 = "CLIMA B OPERANDO";
+    ALRM_NAME5 = "CLIMA B";
     /************************************************************************************************
      * Zona configuracion Dispositivo especial.json asignando nuevo valores                         *
      * a las variables que se encuentran en el archivo globales.hpp                                 *

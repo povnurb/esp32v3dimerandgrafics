@@ -103,3 +103,15 @@ void Taskrelcambio(void *pvParameters)
         actRele(); // activa los relevadores de manera local
     }
 }
+// ---------------------------------------------------------------------
+// Tarea de encender los relevadores en tiempo
+// --------------------------------------------------------------------
+void TaskTimeRele(void *pvParameters)
+{
+    (void)pvParameters;
+    while (1)
+    {
+        vTaskDelay(10 / portTICK_PERIOD_MS);
+        temporelevares(); // activa los relevadores de manera local
+    }
+}
