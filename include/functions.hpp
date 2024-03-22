@@ -15,6 +15,8 @@ bool especialSave();
 bool settingsSave();
 void offRelay1();
 void offRelay2();
+void onRelay1();
+void onRelay2();
 void setDyMsYr();
 /**
  * void log Genera mensajes personalizados en el puerto Serial
@@ -109,6 +111,8 @@ void gpioDefine()
     pinMode(MQTTLED, OUTPUT);
     pinMode(RELAY1, OUTPUT);
     pinMode(RELAY2, OUTPUT);
+    pinMode(ACTRELE1, INPUT_PULLUP); // GPIO 35
+    pinMode(ACTRELE2, INPUT_PULLUP); // GPIO 32
     // PWM (DIMMER) dimerizar el led o foco o motor
     ledcSetup(ledChannel, freq, resolution);
     ledcAttachPin(DIMMER, ledChannel);
@@ -859,7 +863,6 @@ void offRelay2()
     timerRelay2.detach();
     releprog2 = false;
 }
-
 //--------------------------------------------------------------------------------
 // Función para el dimmer dispositivo Global -> API, MQTT, WS
 // ejemplo: {"protocol":"API", "output": "Dimmer", "value": 0-100}
@@ -1196,6 +1199,22 @@ void mostrar()
         OLED.println("%");
         OLED.println(getDateTime());
         OLED.println(ipStr(WiFi.localIP()));
+        if (!digitalRead(26))
+        {
+            OLED.println("CLIMA A OPERANDO");
+        }
+        else if (!digitalRead(27))
+        {
+            OLED.println("CLIMA B OPERANDO");
+        }
+        else if (!digitalRead(27) && !digitalRead(27))
+        {
+            OLED.println("2 CLIMAS OPERANDO");
+        }
+        else
+        {
+            OLED.println("CLIMAS NO OPERANDO");
+        }
         OLED.display();
     }
 }
@@ -1220,3 +1239,97 @@ void buzzer(String buzzer)
     log("INFO", "functions.hpp", "Comando enviado desde: " + JsonBuzzer["protocol"].as<String>() + " <=> " + JsonBuzzer["output"].as<String>() + " <=> " + JsonBuzzer["value"].as<String>());
     BUZZER_STATUS = JsonBuzzer["value"].as<bool>();
 }
+//------------------------------INTERRUPCIONES-------------------------------------------------
+// Funcion para activar y desactivar los relevadores de manera local
+//-------------------------------------------------------------------------------
+void actRele()
+{ /*
+  if (!digitalRead(ACTRELE1) && togle1)
+  {
+      togle1 = !togle1;
+      if (!digitalRead(RELAY1))
+      {
+          digitalWrite(RELAY1, true);
+          R_STATUS1 = true;
+          tiempoDeInterrupcion = millis();
+      }
+      else if (digitalRead(RELAY1))
+      {
+          digitalWrite(RELAY1, false);
+          R_STATUS1 = false;
+          tiempoDeInterrupcion = millis();
+      }
+  }
+  else
+  {
+      if (millis() - tiempoDeInterrupcion > tiempoDeRebote)
+      {
+          togle1 = !togle1;
+          tiempoDeInterrupcion = millis();
+      }
+  }*/
+    //-----------------------------------------------------------
+    if (!digitalRead(RELAY1) && !digitalRead(ACTRELE1) && togle1)
+    {
+        togle1 = !togle1;
+        digitalWrite(RELAY1, true);
+        R_STATUS1 = true;
+        tiempoDeInterrupcion = millis();
+    }
+    else if (digitalRead(RELAY1) && !digitalRead(ACTRELE1) && togle1)
+    {
+        togle1 = !togle1;
+        digitalWrite(RELAY1, false);
+        R_STATUS1 = false;
+        tiempoDeInterrupcion = millis();
+    }
+    else
+    {
+        if (millis() - tiempoDeInterrupcion > tiempoDeRebote)
+        {
+            togle1 = true;
+        }
+    }
+    //-----------------------------------------------------------
+    if (!digitalRead(RELAY2) && !digitalRead(ACTRELE2) && togle2)
+    {
+        togle2 = !togle2;
+        digitalWrite(RELAY2, true);
+        R_STATUS2 = true;
+        tiempoDeInterrupcion1 = millis();
+    }
+    else if (digitalRead(RELAY2) && !digitalRead(ACTRELE2) && togle2)
+    {
+        togle2 = !togle2;
+        digitalWrite(RELAY2, false);
+        R_STATUS2 = false;
+        tiempoDeInterrupcion1 = millis();
+    }
+    else
+    {
+        if (millis() - tiempoDeInterrupcion1 > tiempoDeRebote)
+        {
+            togle2 = true;
+        }
+    }
+}
+/*
+void IRAM_ATTR funcDeInterrupcion1()
+{ // esta funcion de interrupcion no se manda a llamar se ejecuta sola cuando sucede la interrupcion
+    if (millis() - tiempoDeInterrupcion > tiempoDeRebote)
+    {
+        Serial.println("cambiando el relevador1");
+        R_STATUS1 = !R_STATUS1;
+
+        tiempoDeInterrupcion = millis();
+    }
+}
+void IRAM_ATTR funcDeInterrupcion2()
+{ // esta funcion de interrupcion no se manda a llamar se ejecuta sola cuando sucede la interrupcion
+    if (millis() - tiempoDeInterrupcion > tiempoDeRebote)
+    {
+        Serial.println("cambiando el relevador2");
+        R_STATUS2 = !R_STATUS2;
+        tiempoDeInterrupcion = millis();
+    }
+}*/

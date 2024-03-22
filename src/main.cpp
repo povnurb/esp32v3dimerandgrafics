@@ -57,8 +57,8 @@ void setup()
   // put your setup code here, to run once:
   Serial.begin(115200);
   log("INFO", "main.cpp", "Iniciando el setup");
-  if (produccion)
-  { // en el archivo globales linea 88 aprox
+  if (produccion) // cuando ya este en funcionamiento se le pone true
+  {               // en el archivo globales linea 88 aprox
     // informacion de la libreria EEPROM
     EEPROM.begin(256);                           // se define con 256 bites
     EEPROM.get(Restart_Address, device_restart); // se pone en la variable devie_restart
@@ -122,17 +122,27 @@ void setup()
   xTaskCreate(TaskMQTTLed, "TaskMQTTLed", 1024 * 2, NULL, 1, NULL);
   // crear Tarea mostrar pantalla LCD
   xTaskCreate(TaskLCD, "TaskLCD", 1024 * 2, NULL, 1, NULL);
+  // crear Tarea cambio de estado rele de manera local
+  xTaskCreate(Taskrelcambio, "Taskrelcambio", 1024 * 2, NULL, 1, NULL);
+  // crear tarea estado de las alarmas
+  // xTaskCreate(TaskAlarms, "TaskAlarms", 1024 * 2, NULL, 1, NULL);
 
-  setupEspnow();                        // hasta que este wifi configurado pero hace falta su task
-  esp_now_register_recv_cb(OnDataRecv); // no se si va o no va
-  // timer de los relays
+  // setupEspnow();                        // hasta que este wifi configurado pero hace falta su task
+  // esp_now_register_recv_cb(OnDataRecv); // no se si va o no va
+  //  timer de los relays
+  //-------------------------------Interrupciones-------------------------------------------------------
+  /*pinMode(ACTRELE1, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(ACTRELE1), funcDeInterrupcion1, RISING); // Flanco de subida
+  pinMode(ACTRELE2, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(ACTRELE2), funcDeInterrupcion2, FALLING); // Flanco de bajada*/
 }
 
 void loop()
 {
-  ctrlRelays();           // checa el estado de los relays
+  ctrlRelays();           // checa el estado de los relays para prenderlos o apagarlos
   statusAlarmVariables(); // actualiza el estado de las variables de las alarmas
-  mostrar();              // muestra el display
+  contadorAlarmas();      // cuenta la cantidad de alarmas y le pone la fecha
+  // setupPinActivarAlarmas(); o crear una tarea o interrupcion
 }
 
 // put function definitions here:

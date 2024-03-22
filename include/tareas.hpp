@@ -91,3 +91,15 @@ void TaskLCD(void *pvParameters)
         mostrar();
     }
 }
+// ----------------------------------------------------------------------
+// Tarea mostrar pantalla LCD
+// ----------------------------------------------------------------------
+void Taskrelcambio(void *pvParameters)
+{
+    (void)pvParameters;
+    while (1)
+    {
+        vTaskDelay(10 / portTICK_PERIOD_MS);
+        actRele(); // activa los relevadores de manera local
+    }
+}

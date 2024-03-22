@@ -114,15 +114,15 @@ void especialReset()
      * variables para los sensores de alarmas:                                                      *
      ***********************************************************************************************/
     ALRM_LOGIC1 = false;
-    ALRM_NAME1 = "ALARMA_1";
+    ALRM_NAME1 = "Temp. Alta en Sala";
     ALRM_LOGIC2 = false;
-    ALRM_NAME2 = "ALARMA_2";
+    ALRM_NAME2 = "F. compresor clima A";
     ALRM_LOGIC3 = false;
-    ALRM_NAME3 = "ALARMA_3";
+    ALRM_NAME3 = "F. compresor clima B";
     ALRM_LOGIC4 = false;
-    ALRM_NAME4 = "ALARMA_4";
+    ALRM_NAME4 = "CLIMA A OPERANDO";
     ALRM_LOGIC5 = false;
-    ALRM_NAME5 = "ALARMA_5";
+    ALRM_NAME5 = "CLIMA B OPERANDO";
     /************************************************************************************************
      * Zona configuracion Dispositivo especial.json asignando nuevo valores                         *
      * a las variables que se encuentran en el archivo globales.hpp                                 *

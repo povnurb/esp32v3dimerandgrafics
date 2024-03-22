@@ -18,8 +18,8 @@
 #define TMOSFET2 19      // GPIO19 Salida que alimenta a un MOSFET
 #define TMOSFET1 23      // GPIO23 Salida que alimenta a un MOSFET
 #define ALARM_PIN3 25    // GPIO25 entrada de alarma con tierra
-#define COMPRESOR1 26    // GPIO26 entrada con acoplador a 5-24 volts indicarian si sigue operando un compresor1
-#define COMPRESOR2 27    // GPIO27 entrada con acoplador a 5-24 volts indicarian si sigue operando un compresor2
+#define CLIMAA 26    // GPIO26 entrada con acoplador a 5-24 volts indicarian si sigue operando un compresor1
+#define CLIMAB 27    // GPIO27 entrada con acoplador a 5-24 volts indicarian si sigue operando un compresor2
 #define POTENCIOMETRO 36 // señal del potenciometro
 #define NTC10K 39        // conector para termistor
 */
@@ -233,10 +233,15 @@ Adafruit_SSD1306 OLED(SCREEN_WIDTH, SCREEN_HEIGHT);
 // -----------------------------------------------------------------------
 // Activacion de Alarmas de manera local atravez de la interupcion (boton 34)
 // -----------------------------------------------------------------------
-#define BOTON2 34 // Botón de interrupción de alarma
+#define ACTRELE1 35 // Botón de interrupción para relevador2
+#define BOTON2 34
+#define ACTRELE2 32 // Botón de interrupción para relevador2
 volatile bool togle = true;
-#define tiempoDeRebote 250                       // sirve para omitir rebotes
-volatile unsigned long tiempoDeInterrupcion = 0; // sirve para omitir rebotes en sonido
+volatile bool togle1 = true;                      // para el relevador1 en local
+volatile bool togle2 = true;                      // para el relevador2 en local
+#define tiempoDeRebote 2000                       // sirve para omitir rebotes
+volatile unsigned long tiempoDeInterrupcion = 0;  // sirve para omitir rebotes en sonido
+volatile unsigned long tiempoDeInterrupcion1 = 0; // sirve para omitir rebotes en el RELAY2
 // void IRAM_ATTR activarAlarmas();
 
 /// variables que se requieren para obtener la informacion del dispositivo remoto
