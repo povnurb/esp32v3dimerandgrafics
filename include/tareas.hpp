@@ -87,8 +87,9 @@ void TaskLCD(void *pvParameters)
     (void)pvParameters;
     while (1)
     {
-        vTaskDelay(10 / portTICK_PERIOD_MS);
         mostrar();
+        // Serial.println(tempC);
+        vTaskDelay(100 / portTICK_PERIOD_MS);
     }
 }
 // ----------------------------------------------------------------------

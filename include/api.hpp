@@ -97,7 +97,7 @@ void handleApiIndex(AsyncWebServerRequest *request)
     json += ",\"cpuTemp\":" + String(TempCPUValue());
     isnan(Temperatura()) ? json += ",\"tC\":\"Checar_Sensor\"" : json += ",\"tC\":" + String(Temperatura());
     json += ",\"hum\":" + String(Humedad());
-    json += ",\"tmin\":" + String(tempMin());
+    json += ",\"tmin\":" + String(tempMin()); // tempMin()
     json += ",\"tmax\":" + String(tempMax());
     BUZZER_STATUS ? json += ",\"BUZZER_STATUS\": true" : json += ",\"BUZZER_STATUS\": false";
     json += ",\"relays\":[";

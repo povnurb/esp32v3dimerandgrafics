@@ -121,7 +121,7 @@ void setup()
   // LED MQTT Task
   xTaskCreate(TaskMQTTLed, "TaskMQTTLed", 1024 * 2, NULL, 1, NULL);
   // crear Tarea mostrar pantalla LCD
-  xTaskCreate(TaskLCD, "TaskLCD", 1024 * 2, NULL, 1, NULL);
+  xTaskCreate(TaskLCD, "TaskLCD", 1024 * 4, NULL, 1, NULL); // necesita 4 * 1024 errores con menos
   // crear Tarea cambio de estado rele de manera local
   xTaskCreate(Taskrelcambio, "Taskrelcambio", 1024 * 2, NULL, 1, NULL);
   // crea tarea para ponerle horario a los relevadore

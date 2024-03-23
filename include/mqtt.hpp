@@ -224,6 +224,18 @@ String Json()
     espObj["ALRM_CONT4"] = ALRM_CONT4;
     espObj["ALRM_CONT5"] = ALRM_CONT5;
 
+    JsonObject r1Obj = jsonDoc.createNestedObject("timerR1");
+    r1Obj["R_TIMERON1"] = R_TIMERON1 ? true : false;
+    r1Obj["R_TIMER1"] = String(R_TIMER1);
+    r1Obj["TEMPORIZADOR1"] = TEMPORIZADOR1 ? true : false;
+    r1Obj["TIMEONRELAY1"] = String(TIMEONRELAY1);
+    r1Obj["TIMEOFFRELAY1"] = String(TIMEOFFRELAY1);
+    JsonObject r2Obj = jsonDoc.createNestedObject("timerR2");
+    r2Obj["R_TIMERON2"] = R_TIMERON2 ? true : false;
+    r2Obj["R_TIMER2"] = String(R_TIMER2);
+    r2Obj["TEMPORIZADOR2"] = TEMPORIZADOR2 ? true : false;
+    r2Obj["TIMEONRELAY2"] = String(TIMEONRELAY2);
+    r2Obj["TIMEOFFRELAY2"] = String(TIMEOFFRELAY2);
     serializeJson(jsonDoc, response);
     return response;
 }
