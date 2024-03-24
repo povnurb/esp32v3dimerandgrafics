@@ -1032,7 +1032,8 @@ void handleApiUpload(AsyncWebServerRequest *request, String filename, size_t ind
     if (opened == false)
     {
         opened = true;
-        file = SPIFFS.open(String("/") + filename, FILE_WRITE);
+        // file = SPIFFS.open(String("/") + filename, FILE_WRITE); //se modifica a especial.json
+        file = SPIFFS.open(String("/especial.json"), FILE_WRITE);
         if (!file)
         {
             log("ERROR", "api.hpp", "No se pudo abrir el archivo para escribir");

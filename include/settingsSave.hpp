@@ -128,6 +128,8 @@ bool settingsSave()
         alrmsObj["ALRM_TON5"] = ALRM_TON5;
         alrmsObj["ALRM_TOFF5"] = ALRM_TOFF5;
         //----------------------------------------------------------------------------------------------
+        JsonObject dimmerObj = jsonSettings.createNestedObject("DIMER");
+        dimmerObj["dim_value"] = dim;
         // ---------------------------------------------------------------------------------
         // TIME settings.json
         // -------------------------------------------------------------------
@@ -135,7 +137,6 @@ bool settingsSave()
         jsonSettings["time_date"] = time_date;
         jsonSettings["time_z_horaria"] = time_z_horaria;
         jsonSettings["time_server"] = time_server;
-
         jsonSettings["file_version"] = "3.0.0";
         serializeJsonPretty(jsonSettings, file); // escribe en el archivo file
         file.close();                            // ya que todo se leera se cierra el archivo
@@ -160,6 +161,54 @@ bool especialSave()
     if (especial)
     { // si se puede abrir el archivo en modo lectura
         jsonEspecial["LUGAR"] = LUGAR;
+        jsonEspecial["device_id"] = device_id;
+        jsonEspecial["device_name"] = device_name;
+        jsonEspecial["device_user"] = device_user;
+        jsonEspecial["device_password"] = device_password;
+        JsonObject wifiObj = jsonEspecial.createNestedObject("wifi"); // definicion para crear la estructura
+        wifiObj["wifi_mode"] = wifi_mode;
+        wifiObj["wifi_ssid"] = wifi_ssid;
+        wifiObj["wifi_password"] = wifi_password;
+        wifiObj["wifi_ssid2"] = wifi_ssid2;
+        wifiObj["wifi_password2"] = wifi_password2;
+        wifiObj["wifi_ip_static"] = wifi_ip_static; // es un bool
+        wifiObj["wifi_ipv4"] = wifi_ipv4;
+        wifiObj["wifi_subnet"] = wifi_subnet;
+        wifiObj["wifi_gateway"] = wifi_gateway;
+        wifiObj["wifi_dns_primary"] = wifi_dns_primary;
+        wifiObj["wifi_dns_secondary"] = wifi_dns_secondary;
+        /************************************************************************************************
+         * Zona configuracion Dispositivo settings.json asignando nuevo valores                         *
+         * a las variables que se encuentran en el archivo globales.hpp                                 *
+         * variables para el Wifi en modo AccesPoint:                                                   *
+         ***********************************************************************************************/
+        wifiObj["ap_ssid"] = ap_ssid;         // char
+        wifiObj["ap_password"] = ap_password; // char
+        wifiObj["ap_chanel"] = ap_chanel;
+        wifiObj["ap_visibility"] = ap_visibility;
+        wifiObj["ap_connect"] = ap_connect;
+        /************************************************************************************************
+         * Zona configuracion Dispositivo settings.json asignando nuevo valores                         *
+         * a las variables que se encuentran en el archivo globales.hpp                                 *
+         * variables para el MQTT:                                                                      *
+         * *********************************************************************************************/
+        JsonObject mqttObj = jsonEspecial.createNestedObject("mqtt");
+        mqttObj["mqtt_enable"] = mqtt_enable;
+        mqttObj["mqtt_server"] = mqtt_server;
+        mqttObj["mqtt_port"] = mqtt_port;
+        mqttObj["mqtt_retain"] = mqtt_retain;
+        mqttObj["mqtt_qos"] = mqtt_qos;
+        mqttObj["mqtt_id"] = mqtt_id;
+        mqttObj["mqtt_user"] = mqtt_user;
+        mqttObj["mqtt_password"] = mqtt_password;
+        mqttObj["mqtt_clean_sessions"] = mqtt_clean_sessions;
+        mqttObj["mqtt_willTopic"] = mqtt_willTopic;
+        mqttObj["mqtt_willMessage"] = mqtt_willMessage;
+        mqttObj["mqtt_willQoS"] = mqtt_willQoS;
+        mqttObj["mqtt_willRetain"] = mqtt_willRetain;
+        mqttObj["mqtt_time_send"] = mqtt_time_send;
+        mqttObj["mqtt_time_interval"] = mqtt_time_interval;
+        mqttObj["mqtt_status_send"] = mqtt_status_send;
         /********************************************************************************
          * Zona configuracion Dispositivo especial.json asignando nuevo valores         *
          * a las variables que se encuentran en el archivo especial                     *
@@ -286,7 +335,14 @@ bool especialSave()
         //-------------------------------------------------------------------
         JsonObject dimmerObj = jsonEspecial.createNestedObject("DIMER");
         dimmerObj["dim_value"] = dim;
-
+        // ---------------------------------------------------------------------------------
+        // TIME settings.json
+        // -------------------------------------------------------------------
+        jsonEspecial["time_ajuste"] = time_ajuste;
+        jsonEspecial["time_date"] = time_date;
+        jsonEspecial["time_z_horaria"] = time_z_horaria;
+        jsonEspecial["time_server"] = time_server;
+        jsonEspecial["file_version"] = "3.0.0";
         serializeJsonPretty(jsonEspecial, especial); // lo escribe en el archivo especial
         serializeJsonPretty(jsonEspecial, Serial);
         especial.close(); // ya que todo se leera se cierra el archivo

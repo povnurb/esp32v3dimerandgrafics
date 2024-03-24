@@ -101,6 +101,10 @@ bool settingsRead()
         ALRM_LOGIC5 = jsonSettings["ALRMS"]["ALRM_LOGIC5"].as<bool>();
         ALRM_NAME5 = jsonSettings["ALRMS"]["ALRM_NAME5"].as<String>();
         //-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------
+        // Zona Dimer
+        //-------------------------------------------------------------------
+        dim = jsonSettings["DIMER"]["dim_value"];
         // Time settings.json
         time_ajuste = jsonSettings["time_ajuste"];
         strlcpy(time_date, jsonSettings["time_date"], sizeof(time_date));
@@ -143,6 +147,57 @@ bool especialRead()
          * variables para los actuadres RELAYS                                          *
          *******************************************************************************/
         strlcpy(LUGAR, jsonEspecial["LUGAR"], sizeof(LUGAR));
+        strlcpy(device_id, jsonEspecial["device_id"], sizeof(device_id));       // variables de tipo char primero se define la variable (device_id)
+        strlcpy(device_name, jsonEspecial["device_name"], sizeof(device_name)); // luego el dato (jsonEspecial["device_name"])
+        strlcpy(device_user, jsonEspecial["device_user"], sizeof(device_user)); // y por ultimo el tamaño
+        strlcpy(device_password, jsonEspecial["device_password"], sizeof(device_password));
+        /************************************************************************************************
+         * Zona configuracion Dispositivo settings.json asignando nuevo valores                         *
+         * a las variables que se encuentran en el archivo globales.hpp                                 *
+         * variables para el Wifi en modo cliente:                                                      *
+         ***********************************************************************************************/
+        wifi_mode = jsonEspecial["wifi"]["wifi_mode"];                                        // como no es un char es diferente este es un bool
+        strlcpy(wifi_ssid, jsonEspecial["wifi"]["wifi_ssid"], sizeof(wifi_ssid));             // char
+        strlcpy(wifi_password, jsonEspecial["wifi"]["wifi_password"], sizeof(wifi_password)); // char
+        strlcpy(wifi_ssid2, jsonEspecial["wifi"]["wifi_ssid2"], sizeof(wifi_ssid2));
+        strlcpy(wifi_password2, jsonEspecial["wifi"]["wifi_password2"], sizeof(wifi_password2));             // char
+        wifi_ip_static = jsonEspecial["wifi"]["wifi_ip_static"];                                             // es un bool
+        strlcpy(wifi_ipv4, jsonEspecial["wifi"]["wifi_ipv4"], sizeof(wifi_ipv4));                            // es una variable de tipo char
+        strlcpy(wifi_subnet, jsonEspecial["wifi"]["wifi_subnet"], sizeof(wifi_subnet));                      // es una variable de tipo char
+        strlcpy(wifi_gateway, jsonEspecial["wifi"]["wifi_gateway"], sizeof(wifi_gateway));                   // es una variable de tipo char
+        strlcpy(wifi_dns_primary, jsonEspecial["wifi"]["wifi_dns_primary"], sizeof(wifi_dns_primary));       // es una variable de tipo char
+        strlcpy(wifi_dns_secondary, jsonEspecial["wifi"]["wifi_dns_secondary"], sizeof(wifi_dns_secondary)); // es una variable de tipo char
+        /************************************************************************************************
+         * Zona configuracion Dispositivo settings.json asignando nuevo valores                         *
+         * a las variables que se encuentran en el archivo globales.hpp                                 *
+         * variables para el Wifi en modo AccesPoint:                                                   *
+         ***********************************************************************************************/
+        strlcpy(ap_ssid, jsonEspecial["wifi"]["ap_ssid"], sizeof(ap_ssid));             // char
+        strlcpy(ap_password, jsonEspecial["wifi"]["ap_password"], sizeof(ap_password)); // char
+        ap_chanel = jsonEspecial["wifi"]["ap_chanel"];
+        ap_visibility = jsonEspecial["wifi"]["ap_visibility"];
+        ap_connect = jsonEspecial["wifi"]["ap_connect"];
+        /************************************************************************************************
+         * Zona configuracion Dispositivo settings.json asignando nuevo valores                         *
+         * a las variables que se encuentran en el archivo globales.hpp                                 *
+         * variables para el MQTT:                                                                      *
+         * *********************************************************************************************/
+        mqtt_enable = jsonEspecial["mqtt"]["mqtt_enable"];
+        strlcpy(mqtt_server, jsonEspecial["mqtt"]["mqtt_server"], sizeof(mqtt_server));
+        mqtt_port = jsonEspecial["mqtt"]["mqtt_port"];
+        mqtt_retain = jsonEspecial["mqtt"]["mqtt_retain"];
+        mqtt_qos = jsonEspecial["mqtt"]["mqtt_qos"];
+        strlcpy(mqtt_id, jsonEspecial["mqtt"]["mqtt_id"], sizeof(mqtt_id));
+        strlcpy(mqtt_user, jsonEspecial["mqtt"]["mqtt_user"], sizeof(mqtt_user));
+        strlcpy(mqtt_password, jsonEspecial["mqtt"]["mqtt_password"], sizeof(mqtt_password));
+        mqtt_clean_sessions = jsonEspecial["mqtt"]["mqtt_clean_sessions"];
+        strlcpy(mqtt_willTopic, jsonEspecial["mqtt"]["mqtt_willTopic"], sizeof(mqtt_willTopic));
+        strlcpy(mqtt_willMessage, jsonEspecial["mqtt"]["mqtt_willMessage"], sizeof(mqtt_willMessage));
+        mqtt_willQoS = jsonEspecial["mqtt"]["mqtt_willQoS"];
+        mqtt_willRetain = jsonEspecial["mqtt"]["mqtt_willRetain"];
+        mqtt_time_send = jsonEspecial["mqtt"]["mqtt_time_send"];
+        mqtt_time_interval = jsonEspecial["mqtt"]["mqtt_time_interval"];
+        mqtt_status_send = jsonEspecial["mqtt"]["mqtt_status_send"];
         strlcpy(R_NAME1, jsonEspecial["RELAY"]["R_NAME1"], sizeof(R_NAME1)); // variables de tipo char primero se define la variable (R_NAME1)
         strlcpy(R_NAME2, jsonEspecial["RELAY"]["R_NAME2"], sizeof(R_NAME2)); // variables de tipo char primero se define la variable (R_NAME2)
         R_STATUS1 = jsonEspecial["RELAY"]["R_STATUS1"].as<bool>();           // como no es un char es diferente este es un bool
@@ -245,7 +300,11 @@ bool especialRead()
         // Zona Dimer
         //-------------------------------------------------------------------
         dim = jsonEspecial["DIMER"]["dim_value"];
-
+        // Time settings.json
+        time_ajuste = jsonEspecial["time_ajuste"];
+        strlcpy(time_date, jsonEspecial["time_date"], sizeof(time_date));
+        time_z_horaria = jsonEspecial["time_z_horaria"];
+        strlcpy(time_server, jsonEspecial["time_server"], sizeof(time_server));
         especial.close(); // ya que todo se leera se cierra el archivo
         log("INFO", "settingsRead.hpp", "Lectura de las configuraciones de los actuadores OK.");
         return true;

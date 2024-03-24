@@ -105,6 +105,9 @@ void settingsReset()
     ALRM_LOGIC5 = false;
     ALRM_NAME5 = "CLIMA B";
     //--------------------------------------------------------------------------------------------
+    //  Zona Dimer
+    //-------------------------------------------------------------------
+    dim = 0;
     // -------------------------------------------------------------------
     // Time settings.json
     // -------------------------------------------------------------------
@@ -116,120 +119,117 @@ void settingsReset()
      * Zona de Relay
      */
     // RELAY_PIN[8] ={33,15,0,0,0,0,0,0}
-    //-------------------------------------------------------------------
-    //  Zona Dimer
-    //-------------------------------------------------------------------
-    dim = 0;
     log("INFO", "settingsReset.hpp", "Se reiniciaron todos los valores por defecto.");
 }
 
 void especialReset()
 {
+    settingsReset();
     /********************************************************************************
      * Zona configuracion Dispositivo especial.json asignando nuevo valores         *
      * a las variables que se encuentran en el archivo globales.hpp                 *
      * variables para los actuadores RELAYS                                          *
      *******************************************************************************/
-    strlcpy(LUGAR, "IGL-PTTI", sizeof(LUGAR));
-    strlcpy(R_NAME1, "RELAY1", sizeof(R_NAME1)); // variables de tipo char primero se define la variable (R_NAME1)
-    strlcpy(R_NAME2, "RELAY2", sizeof(R_NAME2)); // variables de tipo char primero se define la variable (R_NAME2)
-    R_STATUS1 = false;
-    R_STATUS2 = false;
-    R_LOGIC1 = true; // verificar si no es true ------------------------------------------
-    R_LOGIC2 = true; // verificar si no es true ------------------------------------------
-    R_DESCRIPTION1 = "Control D04";
-    R_DESCRIPTION2 = "control D02";
-    R_TIMERON1 = false;      // indica si se activa el timer del relevador1
-    R_TIMERON2 = false;      // indica si se activa el timer del relevador2
-    TEMPORIZADOR1 = false;   // indica si hay un control por horario
-    TEMPORIZADOR2 = false;   // indica si hay un control por hirario
-    TIMEONRELAY1 = "00:00";  // indica a que horas se prende
-    TIMEOFFRELAY1 = "00:00"; // indica a que horas se apaga
-    TIMEONRELAY2 = "00:00";  // indica a que horas se prende
-    TIMEOFFRELAY2 = "00:00"; // indica a que horas se apaga
-    programado1 = false;
-    programado2 = false;
+    // strlcpy(LUGAR, "IGL-PTTI", sizeof(LUGAR));
+    // strlcpy(R_NAME1, "RELAY1", sizeof(R_NAME1)); // variables de tipo char primero se define la variable (R_NAME1)
+    // strlcpy(R_NAME2, "RELAY2", sizeof(R_NAME2)); // variables de tipo char primero se define la variable (R_NAME2)
+    // R_STATUS1 = false;
+    // R_STATUS2 = false;
+    // R_LOGIC1 = true; // verificar si no es true ------------------------------------------
+    // R_LOGIC2 = true; // verificar si no es true ------------------------------------------
+    // R_DESCRIPTION1 = "Control D04";
+    // R_DESCRIPTION2 = "control D02";
+    // R_TIMERON1 = false;      // indica si se activa el timer del relevador1
+    // R_TIMERON2 = false;      // indica si se activa el timer del relevador2
+    // TEMPORIZADOR1 = false;   // indica si hay un control por horario
+    // TEMPORIZADOR2 = false;   // indica si hay un control por hirario
+    // TIMEONRELAY1 = "00:00";  // indica a que horas se prende
+    // TIMEOFFRELAY1 = "00:00"; // indica a que horas se apaga
+    // TIMEONRELAY2 = "00:00";  // indica a que horas se prende
+    // TIMEOFFRELAY2 = "00:00"; // indica a que horas se apaga
+    // programado1 = false;
+    // programado2 = false;
 
-    /************************************************************************************************
-     * Zona configuracion Dispositivo especial.json asignando nuevo valores                         *
-     * a las variables que se encuentran en el archivo globales.hpp                                 *
-     * variables para los sensores de alarmas:                                                      *
-     ***********************************************************************************************/
-    ALRM_LOGIC1 = false;
-    ALRM_NAME1 = "ALTA TEMPERATURA EN SALA";
-    ALRM_LOGIC2 = false;
-    ALRM_NAME2 = "F. COMPRESOR A";
-    ALRM_LOGIC3 = false;
-    ALRM_NAME3 = "F. COMPRESOR B";
-    ALRM_LOGIC4 = false;
-    ALRM_NAME4 = "CLIMA A";
-    ALRM_LOGIC5 = false;
-    ALRM_NAME5 = "CLIMA B";
-    /************************************************************************************************
-     * Zona configuracion Dispositivo especial.json asignando nuevo valores                         *
-     * a las variables que se encuentran en el archivo globales.hpp                                 *
-     * variables para los nombres de las alarmas emitidos por el protocolo espnow                   *
-     ***********************************************************************************************/
-    /*
-    cambio11 = "";
-    cambio21 = "";
-    cambio31 = "";
-    cambio41 = "";
-    cambio51 = "";
-    cambio61 = "";
-    cambio71 = "";
-    cambio81 = "";
-    cambio12 = "";
-    cambio22 = "";
-    cambio32 = "";
-    cambio42 = "";
-    cambio52 = "";
-    cambio62 = "";
-    cambio72 = "";
-    cambio82 = "";
-    cambio13 = "";
-    cambio23 = "";
-    cambio33 = "";
-    cambio43 = "";
-    cambio53 = "";
-    cambio63 = "";
-    cambio73 = "";
-    cambio83 = "";
-    cambio14 = "";
-    cambio24 = "";
-    cambio34 = "";
-    cambio44 = "";
-    cambio54 = "";
-    cambio64 = "";
-    cambio74 = "";
-    cambio84 = "";
-    */
-    /************************************************************************************************
-     * Nuevos valores a las variables que se encuentran en el archivo globales.hpp                  *
-     * variables para el MQTT2:                                                                     *
-     * *********************************************************************************************/
-    /*
-    mqtt_enable2 = false; // hacer una prueba enable y hacer con otro esp32 una prueba habilitado
-    strlcpy(mqtt_user2, "lalo", sizeof(mqtt_user2));
-    strlcpy(mqtt_id2, (DeviceID() + "Viewer").c_str(), sizeof(mqtt_id2));
-    strlcpy(mqtt_server2, "iotmx.com", sizeof(mqtt_server2));
-    mqtt_port2 = 1883;                                                                  // verificar
-    strlcpy(mqtt_willTopic2, PathMqttTopic("status").c_str(), sizeof(mqtt_willTopic2)); // tengo mis dudas
-    strlcpy(mqtt_password2, "public", sizeof(mqtt_password2));
-    mqtt_willQoS2 = 0;
-    mqtt_clean_sessions2 = true; // true significa que eliminará todos los temas suscritos (topicos)
-    mqtt_time_send2 = true;
-    mqtt_willRetain2 = true; // verificar false
-    strlcpy(mqtt_willMessage2, "{\"connected\":false}", sizeof(mqtt_willMessage2));
-    strlcpy(mqtt_extraTopic, "lalo/ESP3263A7DBCC2CC1", sizeof(mqtt_extraTopic)); // lalo/ESP3263A7DBCC2CC1 ponerlo en carcaza y sin carcaza lalo/ESP32A11B5AE04002
-    mqtt_retain2 = false;
-    mqtt_qos2 = 0;
-    mqtt_time_interval2 = 10000;
-    mqtt_status_send2 = false;
-    */
-    //-------------------------------------------------------------------
-    // Zona Dimer
-    //-------------------------------------------------------------------
-    dim = 0;
-    log("INFO", "settingsReset.hpp", "Se reiniciaron todos los valores de fabrica.");
+    // /************************************************************************************************
+    //  * Zona configuracion Dispositivo especial.json asignando nuevo valores                         *
+    //  * a las variables que se encuentran en el archivo globales.hpp                                 *
+    //  * variables para los sensores de alarmas:                                                      *
+    //  ***********************************************************************************************/
+    // ALRM_LOGIC1 = false;
+    // ALRM_NAME1 = "ALTA TEMPERATURA EN SALA";
+    // ALRM_LOGIC2 = false;
+    // ALRM_NAME2 = "F. COMPRESOR A";
+    // ALRM_LOGIC3 = false;
+    // ALRM_NAME3 = "F. COMPRESOR B";
+    // ALRM_LOGIC4 = false;
+    // ALRM_NAME4 = "CLIMA A";
+    // ALRM_LOGIC5 = false;
+    // ALRM_NAME5 = "CLIMA B";
+    // /************************************************************************************************
+    //  * Zona configuracion Dispositivo especial.json asignando nuevo valores                         *
+    //  * a las variables que se encuentran en el archivo globales.hpp                                 *
+    //  * variables para los nombres de las alarmas emitidos por el protocolo espnow                   *
+    //  ***********************************************************************************************/
+    // /*
+    // cambio11 = "";
+    // cambio21 = "";
+    // cambio31 = "";
+    // cambio41 = "";
+    // cambio51 = "";
+    // cambio61 = "";
+    // cambio71 = "";
+    // cambio81 = "";
+    // cambio12 = "";
+    // cambio22 = "";
+    // cambio32 = "";
+    // cambio42 = "";
+    // cambio52 = "";
+    // cambio62 = "";
+    // cambio72 = "";
+    // cambio82 = "";
+    // cambio13 = "";
+    // cambio23 = "";
+    // cambio33 = "";
+    // cambio43 = "";
+    // cambio53 = "";
+    // cambio63 = "";
+    // cambio73 = "";
+    // cambio83 = "";
+    // cambio14 = "";
+    // cambio24 = "";
+    // cambio34 = "";
+    // cambio44 = "";
+    // cambio54 = "";
+    // cambio64 = "";
+    // cambio74 = "";
+    // cambio84 = "";
+    // */
+    // /************************************************************************************************
+    //  * Nuevos valores a las variables que se encuentran en el archivo globales.hpp                  *
+    //  * variables para el MQTT2:                                                                     *
+    //  * *********************************************************************************************/
+    // /*
+    // mqtt_enable2 = false; // hacer una prueba enable y hacer con otro esp32 una prueba habilitado
+    // strlcpy(mqtt_user2, "lalo", sizeof(mqtt_user2));
+    // strlcpy(mqtt_id2, (DeviceID() + "Viewer").c_str(), sizeof(mqtt_id2));
+    // strlcpy(mqtt_server2, "iotmx.com", sizeof(mqtt_server2));
+    // mqtt_port2 = 1883;                                                                  // verificar
+    // strlcpy(mqtt_willTopic2, PathMqttTopic("status").c_str(), sizeof(mqtt_willTopic2)); // tengo mis dudas
+    // strlcpy(mqtt_password2, "public", sizeof(mqtt_password2));
+    // mqtt_willQoS2 = 0;
+    // mqtt_clean_sessions2 = true; // true significa que eliminará todos los temas suscritos (topicos)
+    // mqtt_time_send2 = true;
+    // mqtt_willRetain2 = true; // verificar false
+    // strlcpy(mqtt_willMessage2, "{\"connected\":false}", sizeof(mqtt_willMessage2));
+    // strlcpy(mqtt_extraTopic, "lalo/ESP3263A7DBCC2CC1", sizeof(mqtt_extraTopic)); // lalo/ESP3263A7DBCC2CC1 ponerlo en carcaza y sin carcaza lalo/ESP32A11B5AE04002
+    // mqtt_retain2 = false;
+    // mqtt_qos2 = 0;
+    // mqtt_time_interval2 = 10000;
+    // mqtt_status_send2 = false;
+    // */
+    // //-------------------------------------------------------------------
+    // // Zona Dimer
+    // //-------------------------------------------------------------------
+    // dim = 0;
+    log("INFO", "specialReset.hpp", "Se reiniciaron todos los valores de fabrica.");
 }
