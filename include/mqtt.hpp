@@ -149,6 +149,7 @@ String Json()
     // Capturar el valor de temperatura
     // readSensor(); //toma lecturas del sensor DS18B20
     // Crear JSON
+    jsonDoc["lugar"] = String(LUGAR);
     jsonDoc["serial"] = DeviceID();
     jsonDoc["MACWiFi"] = String(WiFi.macAddress());
     jsonDoc["ip"] = ipStr(WiFi.localIP());

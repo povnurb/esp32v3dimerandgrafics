@@ -2,9 +2,10 @@
 // para ver los datos en el explorador
 // se modifican los datos en reset.hpp
 #include <Arduino.h>
-#include <EEPROM.h> //aqui se guardara el contador de reinicios
-#include <SPIFFS.h> //donde se tomaran los metodos para almacenar informacion
-#include <WiFi.h>   //metodos para la conexion del dispositivo a una red wifi
+#include <esp32-hal.h> //probando para evitar que se reinicie el dispositivo
+#include <EEPROM.h>    //aqui se guardara el contador de reinicios
+#include <SPIFFS.h>    //donde se tomaran los metodos para almacenar informacion
+#include <WiFi.h>      //metodos para la conexion del dispositivo a una red wifi
 #include <DNSServer.h>
 #include <ESPmDNS.h>
 #include <ArduinoJson.h> //metodos para manejar archivos JSON
@@ -56,6 +57,7 @@ void setup()
 {
   // put your setup code here, to run once:
   Serial.begin(115200);
+
   log("INFO", "main.cpp", "Iniciando el setup");
   if (produccion) // cuando ya este en funcionamiento se le pone true
   {               // en el archivo globales linea 88 aprox
@@ -141,6 +143,7 @@ void setup()
 
 void loop()
 {
+  ESP_RST_TASK_WDT;       // reiniciar el perro guardian  por si alguna tarea dura mas tiempo del esperado al no reiniciarlo el reiniciara el dispositivo
   ctrlRelays();           // checa el estado de los relays para prenderlos o apagarlos
   statusAlarmVariables(); // actualiza el estado de las variables de las alarmas
   contadorAlarmas();      // cuenta la cantidad de alarmas y le pone la fecha

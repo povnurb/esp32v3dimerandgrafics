@@ -17,6 +17,7 @@ bool settingsSave()
          * Zona configuracion Dispositivo settings.json asignando nuevo valores         *
          * a las variables que se encuentran en el archivo file                         *
          *******************************************************************************/
+        jsonSettings["LUGAR"] = LUGAR;
         jsonSettings["device_id"] = device_id;
         jsonSettings["device_name"] = device_name;
         jsonSettings["device_user"] = device_user;
@@ -64,14 +65,69 @@ bool settingsSave()
         mqttObj["mqtt_password"] = mqtt_password;
         mqttObj["mqtt_clean_sessions"] = mqtt_clean_sessions;
         mqttObj["mqtt_willTopic"] = mqtt_willTopic;
-
         mqttObj["mqtt_willMessage"] = mqtt_willMessage;
         mqttObj["mqtt_willQoS"] = mqtt_willQoS;
         mqttObj["mqtt_willRetain"] = mqtt_willRetain;
         mqttObj["mqtt_time_send"] = mqtt_time_send;
         mqttObj["mqtt_time_interval"] = mqtt_time_interval;
         mqttObj["mqtt_status_send"] = mqtt_status_send;
-
+        //----------------------------------------------------------------------------------------------
+        /********************************************************************************
+         * Zona configuracion Dispositivo especial.json asignando nuevo valores         *
+         * a las variables que se encuentran en el archivo especial                     *
+         * variables para los actuadres RELAYS                                          *
+         *******************************************************************************/
+        JsonObject relayObj = jsonSettings.createNestedObject("RELAY");
+        relayObj["R_NAME1"] = R_NAME1;     // variables de tipo char primero se define la variable (R_NAME1)
+        relayObj["R_NAME2"] = R_NAME2;     // variables de tipo char primero se define la variable (R_NAME2)
+        relayObj["R_STATUS1"] = R_STATUS1; // como no es un char es diferente este es un bool
+        relayObj["R_STATUS2"] = R_STATUS2; // como no es un char es diferente este es un bool
+        relayObj["R_LOGIC1"] = R_LOGIC1;
+        relayObj["R_LOGIC2"] = R_LOGIC2;
+        relayObj["R_DESCRIPTION1"] = R_DESCRIPTION1;
+        relayObj["R_DESCRIPTION2"] = R_DESCRIPTION2;
+        relayObj["R_TIMERON1"] = R_TIMERON1;       // indica si se activa el timer del relevador1
+        relayObj["R_TIMERON2"] = R_TIMERON2;       // indica si se activa el timer del relevador2
+        relayObj["TEMPORIZADOR1"] = TEMPORIZADOR1; // indica si hay un control por horario
+        relayObj["TEMPORIZADOR2"] = TEMPORIZADOR2; // indica si hay un control por hirario
+        relayObj["TIMEONRELAY1"] = TIMEONRELAY1;   // indica a que horas se prende
+        relayObj["TIMEOFFRELAY1"] = TIMEOFFRELAY1; // indica a que horas se apaga
+        relayObj["TIMEONRELAY2"] = TIMEONRELAY2;   // indica a que horas se prende
+        relayObj["TIMEOFFRELAY2"] = TIMEOFFRELAY2; // indica a que horas se apaga
+        relayObj["programado1"] = programado1;
+        relayObj["programado2"] = programado2;
+        /************************************************************************************************
+         * Zona configuracion Dispositivo especial.json asignando nuevo valores                         *
+         * a las variables que se encuentran en el archivo globales.hpp                                 *
+         * variables para los sensores de alarmas:                                                      *
+         ***********************************************************************************************/
+        JsonObject alrmsObj = jsonSettings.createNestedObject("ALRMS");
+        alrmsObj["ALRM_LOGIC1"] = ALRM_LOGIC1;
+        alrmsObj["ALRM_NAME1"] = ALRM_NAME1;
+        alrmsObj["ALRM_CONT1"] = ALRM_CONT1;
+        alrmsObj["ALRM_TON1"] = ALRM_TON1;
+        alrmsObj["ALRM_TOFF1"] = ALRM_TOFF1;
+        alrmsObj["ALRM_LOGIC2"] = ALRM_LOGIC2;
+        alrmsObj["ALRM_NAME2"] = ALRM_NAME2;
+        alrmsObj["ALRM_CONT2"] = ALRM_CONT2;
+        alrmsObj["ALRM_TON2"] = ALRM_TON2;
+        alrmsObj["ALRM_TOFF2"] = ALRM_TOFF2;
+        alrmsObj["ALRM_LOGIC3"] = ALRM_LOGIC3;
+        alrmsObj["ALRM_NAME3"] = ALRM_NAME3;
+        alrmsObj["ALRM_CONT3"] = ALRM_CONT3;
+        alrmsObj["ALRM_TON3"] = ALRM_TON3;
+        alrmsObj["ALRM_TOFF3"] = ALRM_TOFF3;
+        alrmsObj["ALRM_LOGIC4"] = ALRM_LOGIC4;
+        alrmsObj["ALRM_NAME4"] = ALRM_NAME4;
+        alrmsObj["ALRM_CONT4"] = ALRM_CONT4;
+        alrmsObj["ALRM_TON4"] = ALRM_TON4;
+        alrmsObj["ALRM_TOFF4"] = ALRM_TOFF4;
+        alrmsObj["ALRM_LOGIC5"] = ALRM_LOGIC5;
+        alrmsObj["ALRM_NAME5"] = ALRM_NAME5;
+        alrmsObj["ALRM_CONT5"] = ALRM_CONT5;
+        alrmsObj["ALRM_TON5"] = ALRM_TON5;
+        alrmsObj["ALRM_TOFF5"] = ALRM_TOFF5;
+        //----------------------------------------------------------------------------------------------
         // ---------------------------------------------------------------------------------
         // TIME settings.json
         // -------------------------------------------------------------------
@@ -164,7 +220,7 @@ bool especialSave()
          * a las variables que se encuentran en el archivo globales.hpp                                 *
          * variables para los nombres de las alarmas emitidos por el protocolo espnow                   *
          ***********************************************************************************************/
-
+        /*
         JsonObject espnowObj = jsonEspecial.createNestedObject("espnow");
         espnowObj["cambio11"] = cambio11;
         espnowObj["cambio21"] = cambio21;
@@ -201,10 +257,12 @@ bool especialSave()
         espnowObj["cambio64"] = cambio64;
         espnowObj["cambio74"] = cambio74;
         espnowObj["cambio84"] = cambio84;
+        */
         /************************************************************************************************
          * Nuevos valores a las variables que se encuentran en el archivo globales.hpp                  *
          * variables para el MQTT2:                                                                     *
          * *********************************************************************************************/
+        /*
         JsonObject mqtt2Obj = jsonEspecial.createNestedObject("mqtt2");
         mqtt2Obj["mqtt_enable2"] = mqtt_enable2;
         mqtt2Obj["mqtt_user2"] = mqtt_user2;
@@ -222,7 +280,7 @@ bool especialSave()
         mqtt2Obj["mqtt_retain2"] = mqtt_retain2;
         mqtt2Obj["mqtt_qos2"] = mqtt_qos2;
         mqtt2Obj["mqtt_time_interval2"] = mqtt_time_interval2;
-        mqtt2Obj["mqtt_status_send2"] = mqtt_status_send2;
+        mqtt2Obj["mqtt_status_send2"] = mqtt_status_send2; */
         //-------------------------------------------------------------------
         // Zona Dimer
         //-------------------------------------------------------------------

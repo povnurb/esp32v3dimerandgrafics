@@ -11,6 +11,7 @@ void settingsReset()
      * Zona configuracion Dispositivo settings.json asignando nuevo valores         *
      * a las variables que se encuentran en el archivo globales.hpp                 *
      *******************************************************************************/
+    strlcpy(LUGAR, "IGL-PTTI", sizeof(LUGAR));
     strlcpy(device_id, DeviceID().c_str(), sizeof(device_id));
     strlcpy(device_name, extractNumbers(DeviceID()).c_str(), sizeof(device_name));
     strlcpy(device_user, "admin", sizeof(device_user));
@@ -63,6 +64,47 @@ void settingsReset()
     mqtt_time_send = true;
     mqtt_time_interval = 60000; // esta en milisegundo
     mqtt_status_send = true;
+    //--------------------------------------------------------------------------------------------
+    /********************************************************************************
+     * Zona configuracion Dispositivo especial.json asignando nuevo valores         *
+     * a las variables que se encuentran en el archivo globales.hpp                 *
+     * variables para los actuadores RELAYS                                          *
+     *******************************************************************************/
+    strlcpy(R_NAME1, "RELAY1", sizeof(R_NAME1)); // variables de tipo char primero se define la variable (R_NAME1)
+    strlcpy(R_NAME2, "RELAY2", sizeof(R_NAME2)); // variables de tipo char primero se define la variable (R_NAME2)
+    R_STATUS1 = false;
+    R_STATUS2 = false;
+    R_LOGIC1 = true; // verificar si no es true ------------------------------------------
+    R_LOGIC2 = true; // verificar si no es true ------------------------------------------
+    R_DESCRIPTION1 = "Control D04";
+    R_DESCRIPTION2 = "control D02";
+    R_TIMERON1 = false;      // indica si se activa el timer del relevador1
+    R_TIMERON2 = false;      // indica si se activa el timer del relevador2
+    TEMPORIZADOR1 = false;   // indica si hay un control por horario
+    TEMPORIZADOR2 = false;   // indica si hay un control por hirario
+    TIMEONRELAY1 = "00:00";  // indica a que horas se prende
+    TIMEOFFRELAY1 = "00:00"; // indica a que horas se apaga
+    TIMEONRELAY2 = "00:00";  // indica a que horas se prende
+    TIMEOFFRELAY2 = "00:00"; // indica a que horas se apaga
+    programado1 = false;
+    programado2 = false;
+
+    /************************************************************************************************
+     * Zona configuracion Dispositivo especial.json asignando nuevo valores                         *
+     * a las variables que se encuentran en el archivo globales.hpp                                 *
+     * variables para los sensores de alarmas:                                                      *
+     ***********************************************************************************************/
+    ALRM_LOGIC1 = false;
+    ALRM_NAME1 = "ALTA TEMPERATURA EN SALA";
+    ALRM_LOGIC2 = false;
+    ALRM_NAME2 = "F. COMPRESOR A";
+    ALRM_LOGIC3 = false;
+    ALRM_NAME3 = "F. COMPRESOR B";
+    ALRM_LOGIC4 = false;
+    ALRM_NAME4 = "CLIMA A";
+    ALRM_LOGIC5 = false;
+    ALRM_NAME5 = "CLIMA B";
+    //--------------------------------------------------------------------------------------------
     // -------------------------------------------------------------------
     // Time settings.json
     // -------------------------------------------------------------------
@@ -128,7 +170,7 @@ void especialReset()
      * a las variables que se encuentran en el archivo globales.hpp                                 *
      * variables para los nombres de las alarmas emitidos por el protocolo espnow                   *
      ***********************************************************************************************/
-
+    /*
     cambio11 = "";
     cambio21 = "";
     cambio31 = "";
@@ -161,11 +203,12 @@ void especialReset()
     cambio64 = "";
     cambio74 = "";
     cambio84 = "";
-
+    */
     /************************************************************************************************
      * Nuevos valores a las variables que se encuentran en el archivo globales.hpp                  *
      * variables para el MQTT2:                                                                     *
      * *********************************************************************************************/
+    /*
     mqtt_enable2 = false; // hacer una prueba enable y hacer con otro esp32 una prueba habilitado
     strlcpy(mqtt_user2, "lalo", sizeof(mqtt_user2));
     strlcpy(mqtt_id2, (DeviceID() + "Viewer").c_str(), sizeof(mqtt_id2));
@@ -183,6 +226,7 @@ void especialReset()
     mqtt_qos2 = 0;
     mqtt_time_interval2 = 10000;
     mqtt_status_send2 = false;
+    */
     //-------------------------------------------------------------------
     // Zona Dimer
     //-------------------------------------------------------------------

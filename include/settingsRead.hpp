@@ -37,6 +37,7 @@ bool settingsRead()
          * Zona configuracion Dispositivo settings.json asignando nuevo valores         *
          * a las variables que se encuentran en el archivo globales.hpp                 *
          *******************************************************************************/
+        strlcpy(LUGAR, jsonSettings["LUGAR"], sizeof(LUGAR));
         strlcpy(device_id, jsonSettings["device_id"], sizeof(device_id));       // variables de tipo char primero se define la variable (device_id)
         strlcpy(device_name, jsonSettings["device_name"], sizeof(device_name)); // luego el dato (jsonSettings["device_name"])
         strlcpy(device_user, jsonSettings["device_user"], sizeof(device_user)); // y por ultimo el tamaño
@@ -82,14 +83,24 @@ bool settingsRead()
         strlcpy(mqtt_password, jsonSettings["mqtt"]["mqtt_password"], sizeof(mqtt_password));
         mqtt_clean_sessions = jsonSettings["mqtt"]["mqtt_clean_sessions"];
         strlcpy(mqtt_willTopic, jsonSettings["mqtt"]["mqtt_willTopic"], sizeof(mqtt_willTopic));
-
         strlcpy(mqtt_willMessage, jsonSettings["mqtt"]["mqtt_willMessage"], sizeof(mqtt_willMessage));
         mqtt_willQoS = jsonSettings["mqtt"]["mqtt_willQoS"];
         mqtt_willRetain = jsonSettings["mqtt"]["mqtt_willRetain"];
         mqtt_time_send = jsonSettings["mqtt"]["mqtt_time_send"];
         mqtt_time_interval = jsonSettings["mqtt"]["mqtt_time_interval"];
         mqtt_status_send = jsonSettings["mqtt"]["mqtt_status_send"];
-
+        //------------------------------------------------------------------------------- para mi que falta info
+        ALRM_LOGIC1 = jsonSettings["ALRMS"]["ALRM_LOGIC1"].as<bool>();
+        ALRM_NAME1 = jsonSettings["ALRMS"]["ALRM_NAME1"].as<String>();
+        ALRM_LOGIC2 = jsonSettings["ALRMS"]["ALRM_LOGIC2"].as<bool>();
+        ALRM_NAME2 = jsonSettings["ALRMS"]["ALRM_NAME2"].as<String>();
+        ALRM_LOGIC3 = jsonSettings["ALRMS"]["ALRM_LOGIC3"].as<bool>();
+        ALRM_NAME3 = jsonSettings["ALRMS"]["ALRM_NAME3"].as<String>();
+        ALRM_LOGIC4 = jsonSettings["ALRMS"]["ALRM_LOGIC4"].as<bool>();
+        ALRM_NAME4 = jsonSettings["ALRMS"]["ALRM_NAME4"].as<String>();
+        ALRM_LOGIC5 = jsonSettings["ALRMS"]["ALRM_LOGIC5"].as<bool>();
+        ALRM_NAME5 = jsonSettings["ALRMS"]["ALRM_NAME5"].as<String>();
+        //-------------------------------------------------------------------------------
         // Time settings.json
         time_ajuste = jsonSettings["time_ajuste"];
         strlcpy(time_date, jsonSettings["time_date"], sizeof(time_date));
@@ -170,7 +181,7 @@ bool especialRead()
          * a las variables que se encuentran en el archivo globales.hpp                                 *
          * variables para los nombres de alarmas emitidos por el protocolo espnow                       *
          ***********************************************************************************************/
-
+        /*
         cambio11 = jsonEspecial["espnow"]["cambio11"].as<String>();
         cambio21 = jsonEspecial["espnow"]["cambio21"].as<String>();
         cambio31 = jsonEspecial["espnow"]["cambio31"].as<String>();
@@ -206,10 +217,12 @@ bool especialRead()
         cambio64 = jsonEspecial["espnow"]["cambio64"].as<String>();
         cambio74 = jsonEspecial["espnow"]["cambio74"].as<String>();
         cambio84 = jsonEspecial["espnow"]["cambio84"].as<String>();
+        */
         /************************************************************************************************
          * Nuevos valores a las variables que se encuentran en el archivo globales.hpp                  *
          * variables para el MQTT2:                                                                     *
          * *********************************************************************************************/
+        /*
         mqtt_enable2 = jsonEspecial["mqtt2"]["mqtt_enable2"];
         strlcpy(mqtt_user2, jsonEspecial["mqtt2"]["mqtt_user2"], sizeof(mqtt_user2));
         strlcpy(mqtt_id2, jsonEspecial["mqtt2"]["mqtt_id2"], sizeof(mqtt_id2));
@@ -227,7 +240,7 @@ bool especialRead()
         mqtt_qos2 = jsonEspecial["mqtt2"]["mqtt_qos2"];
         mqtt_time_interval2 = jsonEspecial["mqtt2"]["mqtt_time_interval2"];
         mqtt_status_send2 = jsonEspecial["mqtt2"]["mqtt_status_send2"]; // Habilitar envio de estados
-
+        */
         //-------------------------------------------------------------------
         // Zona Dimer
         //-------------------------------------------------------------------

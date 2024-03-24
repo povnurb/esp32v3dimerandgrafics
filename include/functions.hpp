@@ -343,6 +343,7 @@ bool especial(String command)
         ALRM_NAME5 = JsonCommand["value"].as<String>();
         return true;
     }
+    /*
     if (JsonCommand["varible"] == "cambio11")
     {
         cambio11 = JsonCommand["value"].as<String>();
@@ -503,7 +504,7 @@ bool especial(String command)
         cambio84 = JsonCommand["value"].as<String>();
         return true;
     }
-
+    */
     if (JsonCommand["varible"] == "CONTRASEÑA")
     {
         // {"protocol":"MQTT", "varible": "CONTRASEÑA", "value":"211179" }
@@ -1218,9 +1219,23 @@ void mostrar()
             OLED.println("CLIMAS NO OPERANDO");
         }
         OLED.println(getDateTime());
-        OLED.print(Temperatura());
+        if (tempC < 2)
+        {
+            OLED.print("WAIT");
+        }
+        else
+        {
+            OLED.print(tempC);
+        }
         OLED.print(" C   ");
-        OLED.print(Humedad());
+        if (humedad < 2)
+        {
+            OLED.print("WAIT");
+        }
+        else
+        {
+            OLED.print(humedad);
+        }
         OLED.println(" %");
         OLED.display();
     }
