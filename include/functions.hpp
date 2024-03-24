@@ -1124,14 +1124,22 @@ float tempMin()
 {
 
     float min = Temperatura();
-    if (min < min2)
+    if (min <= 1)
+    {
+        min2 == min2;
+    }
+    else if (min < min2)
     {
         min2 = min;
     }
-    else if (min == 0)
-    {
-        min2 = Temperatura();
-    }
+    // if (min < min2)
+    // {
+    //     min2 = min;
+    // }
+    // else if (min == 0)
+    // {
+    //     min2 = Temperatura();
+    // }
     // Serial.println(min2);
     return min2;
 }
@@ -1161,9 +1169,9 @@ void mostrar()
         OLED.setCursor(0, 0);
         OLED.println(String(ap_ssid));
         OLED.println(ipStr(WiFi.softAPIP()));
-        OLED.print(Temperatura());
+        OLED.print(tempC); // no llamar a funciones
         OLED.print(" C ");
-        OLED.print(Humedad());
+        OLED.print(humedad); // llamar a variables
         OLED.println("%");
         OLED.display();
         log("INFO", "functions.hpp", "Mostrando información en pantalla LCD (AP)");
@@ -1190,19 +1198,16 @@ void mostrar()
         OLED.setTextSize(1);
         OLED.setTextColor(WHITE);
         OLED.setCursor(0, 0);
-        OLED.print(Temperatura());
-        OLED.print(" C ");
-        OLED.print(Humedad());
-        OLED.println("%");
-        OLED.println(getDateTime());
         OLED.println(ipStr(WiFi.localIP()));
         if (!digitalRead(26))
         {
-            OLED.println("CLIMA A OPERANDO");
+            OLED.print(ALRM_NAME4);
+            OLED.println(" OPERANDO");
         }
         else if (!digitalRead(27))
         {
-            OLED.println("CLIMA B OPERANDO");
+            OLED.print(ALRM_NAME5);
+            OLED.println(" OPERANDO");
         }
         else if (!digitalRead(27) && !digitalRead(27))
         {
@@ -1212,6 +1217,11 @@ void mostrar()
         {
             OLED.println("CLIMAS NO OPERANDO");
         }
+        OLED.println(getDateTime());
+        OLED.print(Temperatura());
+        OLED.print(" C   ");
+        OLED.print(Humedad());
+        OLED.println(" %");
         OLED.display();
     }
 }
