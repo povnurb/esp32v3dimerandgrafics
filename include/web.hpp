@@ -41,7 +41,7 @@
 // IMG
 #include "./webh/logo.png.gz.h"
 #include "./webh/favicon.png.gz.h"
-// #include "./webh/loadre.png.gz.h"
+#include "./webh/loader.png.gz.h"
 
 // Definir tipos de datos para la respuesta a la solicitud del navegador
 const char *dataTypeHTML = "text/html";
@@ -58,11 +58,11 @@ const char *dataTypeJavaScripts = "application/javascript";
 //--------------------------------------------------------------------------
 void handleIndex(AsyncWebServerRequest *request)
 {
-    // if (security)
-    // {
-    //     if (!request->authenticate(device_user, device_password))
-    //         return request->requestAuthentication();
-    // }
+    if (security)
+    {
+        if (!request->authenticate(device_user, device_password))
+            return request->requestAuthentication();
+    }
     AsyncWebServerResponse *response = request->beginResponse_P(200, dataTypeHTML, index_html_gz, index_html_gz_len);
     response->addHeader("Content-Encoding", "gzip");
     request->send(response);
@@ -560,15 +560,15 @@ void handleFavIconPng(AsyncWebServerRequest *request)
 // -------------------------------------------------------------------
 // Manejo de los Archivos estáticos del Servidor Web loader.png
 // -------------------------------------------------------------------
-// void handleLoaderPng(AsyncWebServerRequest *request)
-// {
-//     if (security)
-//     {
-//         if (!request->authenticate(device_user, device_password))
-//             return request->requestAuthentication();
-//     }
-//     AsyncWebServerResponse *response = request->beginResponse_P(200, dataTypePNG, loader_png_gz, loader_png_gz_len);
-//     response->addHeader("Content-Encoding", "gzip");
-//     response->addHeader("Access-Control-Max-Age", "600");
-//     request->send(response);
-// }
+void handleLoaderPng(AsyncWebServerRequest *request)
+{
+    if (security)
+    {
+        if (!request->authenticate(device_user, device_password))
+            return request->requestAuthentication();
+    }
+    AsyncWebServerResponse *response = request->beginResponse_P(200, dataTypePNG, loader_png_gz, loader_png_gz_len);
+    response->addHeader("Content-Encoding", "gzip");
+    response->addHeader("Access-Control-Max-Age", "600");
+    request->send(response);
+}

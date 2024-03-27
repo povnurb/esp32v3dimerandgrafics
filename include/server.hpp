@@ -263,7 +263,6 @@ void initServer()
     //---------------------------------------------------------------------------------
     server.on(
         "/api/time", HTTP_POST, [](AsyncWebServerRequest *request) {}, NULL, handleApiPostTime);
-
     //-------------------------------------------------------------------------------------------------
     // Zona servidor web
     //--------------------------------------------------------------------------------------
@@ -425,7 +424,7 @@ void initServer()
     // -------------------------------------------------------------------
     // Cargar de Archivos complementarios /assets/img/loader.png
     // -------------------------------------------------------------------
-    // server.on("/assets/img/loader.png", HTTP_GET, handleLoaderPng);
+    server.on("/assets/img/loader.png", HTTP_GET, handleLoaderPng);
 
     // manejador de error 404
     server.onNotFound([](AsyncWebServerRequest *request)

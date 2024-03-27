@@ -48,8 +48,8 @@
 #include "mqtt.hpp"
 #include "server.hpp"
 #include "alarmremote.hpp"
-
 #include "tareas.hpp"
+#include "websockets.hpp"
 
 // put function declarations here:
 
@@ -116,6 +116,8 @@ void setup()
   actualizaciontime.attach(1, actualizaTime); // actualizara el tiempo cada 1 segundo
   // iniciamos el servidor
   initServer();
+  // iniciamos websockets
+  initWebsockets();
   // crear Tarea Reconexión WIFI
   xTaskCreate(TaskWifiReconnect, "TaskWifiReconnect", 1024 * 6, NULL, 2, NULL);
   // crear Tarea de reconexión MQTT
