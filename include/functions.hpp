@@ -1406,12 +1406,102 @@ String getSendJson(String msg, String type)
     return response;
 }
 
-// funciopn printProgress
+// funcion printProgress
+int c = 0;
 void printProgress(size_t prog, size_t sz)
 {
     int progress = (prog * 100) / content_len;
     if (progress == 10)
     {
+        c++;
+        if (c > 2)
+            c = 1; // para que se siempre se envie maximo 2 veces
+        if (c == 1)
+            ;
         wsMessageSend(getSendJson(String(10), "update"), "", "");
+    }
+    else if (progress == 10)
+    {
+        c++;
+        if (c > 2)
+            c = 1; // para que se siempre se envie maximo 2 veces
+        if (c == 1)
+            ;
+        wsMessageSend(getSendJson(String(10), "update"), "", "");
+    }
+    else if (progress == 20)
+    {
+        c++;
+        if (c > 2)
+            c = 1; // para que se siempre se envie maximo 2 veces
+        if (c == 1)
+            ;
+        wsMessageSend(getSendJson(String(20), "update"), "", "");
+    }
+    else if (progress == 30)
+    {
+        c++;
+        if (c > 2)
+            c = 1; // para que se siempre se envie maximo 2 veces
+        if (c == 1)
+            ;
+        wsMessageSend(getSendJson(String(30), "update"), "", "");
+    }
+    else if (progress == 40)
+    {
+        c++;
+        if (c > 2)
+            c = 1; // para que se siempre se envie maximo 2 veces
+        if (c == 1)
+            ;
+        wsMessageSend(getSendJson(String(40), "update"), "", "");
+    }
+    else if (progress == 50)
+    {
+        c++;
+        if (c > 2)
+            c = 1; // para que se siempre se envie maximo 2 veces
+        if (c == 1)
+            ;
+        wsMessageSend(getSendJson(String(50), "update"), "", "");
+    }
+    else if (progress == 60)
+    {
+        c++;
+        if (c > 2)
+            c = 1; // para que se siempre se envie maximo 2 veces
+        if (c == 1)
+            ;
+        wsMessageSend(getSendJson(String(60), "update"), "", "");
+    }
+    else if (progress == 80)
+    {
+        c++;
+        if (c > 2)
+            c = 1; // para que se siempre se envie maximo 2 veces
+        if (c == 1)
+            ;
+        wsMessageSend(getSendJson(String(80), "update"), "", "");
+    }
+    else if (progress == 90)
+    {
+        c++;
+        if (c > 2)
+            c = 1; // para que se siempre se envie maximo 2 veces
+        if (c == 1)
+            ;
+        wsMessageSend(getSendJson(String(90), "update"), "", "");
+    }
+    else if (progress == 96)
+    {
+        c++;
+        if (c > 2)
+            c = 1; // para que se siempre se envie maximo 2 veces
+        if (c == 1)
+            ;
+        wsMessageSend(getSendJson(String(100), "update"), "", "");
+    }
+    else
+    {
     }
 }
