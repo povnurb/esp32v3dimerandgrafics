@@ -16,6 +16,8 @@ bool settingsSave();
 void offRelay1();
 void offRelay2();
 void setDyMsYr();
+void wsMessageSend(String msg, String icon, String Type);
+
 /**
  * void log Genera mensajes personalizados en el puerto Serial
  */
@@ -109,6 +111,11 @@ void gpioDefine()
     pinMode(MQTTLED, OUTPUT);
     pinMode(RELAY1, OUTPUT);
     pinMode(RELAY2, OUTPUT);
+    pinMode(ALARM_PIN1, INPUT_PULLUP);
+    pinMode(ALARM_PIN2, INPUT_PULLUP);
+    pinMode(ALARM_PIN3, INPUT_PULLUP);
+    pinMode(CLIMAA, INPUT_PULLUP);
+    pinMode(CLIMAB, INPUT_PULLUP);
     pinMode(ACTRELE1, INPUT_PULLUP); // GPIO 35
     pinMode(ACTRELE2, INPUT_PULLUP); // GPIO 32
     // PWM (DIMMER) dimerizar el led o foco o motor
@@ -571,64 +578,65 @@ void muestraInfoMqtt(String command)
     deserializeJson(JsonCommand, command);
     log("INFO", "functions", "pendiente de mostrar informacion");
 }
-void muestraInfoMqtt2(String command)
-{ // muestra informacion del dispositivo remoto y lo almacena en las variables
-    DynamicJsonDocument JsonCommand(capacitySettings);
-    deserializeJson(JsonCommand, command); // lo que llega a command se manda al JsonCommand
-    log("INFO", "functions.hpp", "Informacion remota recibida");
-    // serializeJsonPretty(JsonCommand, Serial);
-    log("INFO", "functions.hpp", "Asignando valores a las variables REMOTAS ");
-    REMOTE_serial = JsonCommand["serial"].as<String>();
-    REMOTE_MACWiFi = JsonCommand["MACWiFi"].as<String>();
-    REMOTE_ALRM_STATUS1 = JsonCommand["especial"]["ALRM_STATUS1"].as<bool>();
-    REMOTE_ALRM_STATUS2 = JsonCommand["especial"]["ALRM_STATUS2"].as<bool>();
-    REMOTE_ALRM_STATUS3 = JsonCommand["especial"]["ALRM_STATUS3"].as<bool>();
-    REMOTE_ALRM_STATUS4 = JsonCommand["especial"]["ALRM_STATUS4"].as<bool>();
-    REMOTE_ALRM_STATUS5 = JsonCommand["especial"]["ALRM_STATUS5"].as<bool>();
-    REMOTE_ALRM_STATUS6 = JsonCommand["especial"]["ALRM_STATUS6"].as<bool>();
-    REMOTE_ALRM_STATUS7 = JsonCommand["especial"]["ALRM_STATUS7"].as<bool>();
-    REMOTE_ALRM_NAME1 = JsonCommand["especial"]["ALRM_NAME1"].as<String>();
-    REMOTE_ALRM_NAME2 = JsonCommand["especial"]["ALRM_NAME2"].as<String>();
-    REMOTE_ALRM_NAME3 = JsonCommand["especial"]["ALRM_NAME3"].as<String>();
-    REMOTE_ALRM_NAME4 = JsonCommand["especial"]["ALRM_NAME4"].as<String>();
-    REMOTE_ALRM_NAME5 = JsonCommand["especial"]["ALRM_NAME5"].as<String>();
-    REMOTE_ALRM_NAME7 = JsonCommand["especial"]["ALRM_NAME7"].as<String>();
-    REMOTE_ALRM_NAME7 = JsonCommand["especial"]["ALRM_NAME7"].as<String>();
-    REMOTE_ALRM_LOGIC1 = JsonCommand["especial"]["ALRM_LOGIC1"].as<bool>();
-    REMOTE_ALRM_LOGIC2 = JsonCommand["especial"]["ALRM_LOGIC2"].as<bool>();
-    REMOTE_ALRM_LOGIC3 = JsonCommand["especial"]["ALRM_LOGIC3"].as<bool>();
-    REMOTE_ALRM_LOGIC4 = JsonCommand["especial"]["ALRM_LOGIC4"].as<bool>();
-    REMOTE_ALRM_LOGIC5 = JsonCommand["especial"]["ALRM_LOGIC5"].as<bool>();
-    REMOTE_ALRM_LOGIC6 = JsonCommand["especial"]["ALRM_LOGIC6"].as<bool>();
-    REMOTE_ALRM_LOGIC7 = JsonCommand["especial"]["ALRM_LOGIC7"].as<bool>();
-    REMOTE_ALRM_TON1 = JsonCommand["especial"]["ALRM_TON1"].as<String>();
-    REMOTE_ALRM_TON2 = JsonCommand["especial"]["ALRM_TON2"].as<String>();
-    REMOTE_ALRM_TON3 = JsonCommand["especial"]["ALRM_TON3"].as<String>();
-    REMOTE_ALRM_TON4 = JsonCommand["especial"]["ALRM_TON4"].as<String>();
-    REMOTE_ALRM_TON5 = JsonCommand["especial"]["ALRM_TON5"].as<String>();
-    REMOTE_ALRM_TON6 = JsonCommand["especial"]["ALRM_TON6"].as<String>();
-    REMOTE_ALRM_TON7 = JsonCommand["especial"]["ALRM_TON7"].as<String>();
-    REMOTE_ALRM_TOFF1 = JsonCommand["especial"]["ALRM_TOFF1"].as<String>();
-    REMOTE_ALRM_TOFF2 = JsonCommand["especial"]["ALRM_TOFF2"].as<String>();
-    REMOTE_ALRM_TOFF3 = JsonCommand["especial"]["ALRM_TOFF3"].as<String>();
-    REMOTE_ALRM_TOFF4 = JsonCommand["especial"]["ALRM_TOFF4"].as<String>();
-    REMOTE_ALRM_TOFF5 = JsonCommand["especial"]["ALRM_TOFF5"].as<String>();
-    REMOTE_ALRM_TOFF6 = JsonCommand["especial"]["ALRM_TOFF6"].as<String>();
-    REMOTE_ALRM_TOFF7 = JsonCommand["especial"]["ALRM_TOFF7"].as<String>();
-    REMOTE_ALRM_CONT1 = JsonCommand["especial"]["ALRM_CONT1"].as<int>();
-    REMOTE_ALRM_CONT2 = JsonCommand["especial"]["ALRM_CONT2"].as<int>();
-    REMOTE_ALRM_CONT3 = JsonCommand["especial"]["ALRM_CONT3"].as<int>();
-    REMOTE_ALRM_CONT4 = JsonCommand["especial"]["ALRM_CONT4"].as<int>();
-    REMOTE_ALRM_CONT5 = JsonCommand["especial"]["ALRM_CONT5"].as<int>();
-    REMOTE_ALRM_CONT6 = JsonCommand["especial"]["ALRM_CONT6"].as<int>();
-    REMOTE_ALRM_CONT7 = JsonCommand["especial"]["ALRM_CONT7"].as<int>();
-    REMOTE_R_NAME1 = JsonCommand["especial"]["R_NAME1"].as<String>();
-    REMOTE_R_NAME2 = JsonCommand["especial"]["R_NAME2"].as<String>();
-    REMOTE_R_STATUS1 = JsonCommand["especial"]["R_STATUS1"].as<bool>();
-    REMOTE_R_STATUS2 = JsonCommand["especial"]["R_STATUS2"].as<bool>();
-    REMOTE_R_LOGIC1 = JsonCommand["especial"]["R_LOGIC1"].as<bool>();
-    REMOTE_R_LOGIC2 = JsonCommand["especial"]["R_LOGIC2"].as<bool>();
-}
+// void muestraInfoMqtt2(String command)
+// { // muestra informacion del dispositivo remoto y lo almacena en las variables
+//     DynamicJsonDocument JsonCommand(capacitySettings);
+//     deserializeJson(JsonCommand, command); // lo que llega a command se manda al JsonCommand
+//     log("INFO", "functions.hpp", "Informacion remota recibida");
+//     // serializeJsonPretty(JsonCommand, Serial);
+//     log("INFO", "functions.hpp", "Asignando valores a las variables REMOTAS ");
+//     REMOTE_serial = JsonCommand["serial"].as<String>();
+//     REMOTE_MACWiFi = JsonCommand["MACWiFi"].as<String>();
+//     REMOTE_ALRM_STATUS1 = JsonCommand["especial"]["ALRM_STATUS1"].as<bool>();
+//     REMOTE_ALRM_STATUS2 = JsonCommand["especial"]["ALRM_STATUS2"].as<bool>();
+//     REMOTE_ALRM_STATUS3 = JsonCommand["especial"]["ALRM_STATUS3"].as<bool>();
+//     REMOTE_ALRM_STATUS4 = JsonCommand["especial"]["ALRM_STATUS4"].as<bool>();
+//     REMOTE_ALRM_STATUS5 = JsonCommand["especial"]["ALRM_STATUS5"].as<bool>();
+//     REMOTE_ALRM_STATUS6 = JsonCommand["especial"]["ALRM_STATUS6"].as<bool>();
+//     REMOTE_ALRM_STATUS7 = JsonCommand["especial"]["ALRM_STATUS7"].as<bool>();
+//     REMOTE_ALRM_NAME1 = JsonCommand["especial"]["ALRM_NAME1"].as<String>();
+//     REMOTE_ALRM_NAME2 = JsonCommand["especial"]["ALRM_NAME2"].as<String>();
+//     REMOTE_ALRM_NAME3 = JsonCommand["especial"]["ALRM_NAME3"].as<String>();
+//     REMOTE_ALRM_NAME4 = JsonCommand["especial"]["ALRM_NAME4"].as<String>();
+//     REMOTE_ALRM_NAME5 = JsonCommand["especial"]["ALRM_NAME5"].as<String>();
+//     REMOTE_ALRM_NAME7 = JsonCommand["especial"]["ALRM_NAME7"].as<String>();
+//     REMOTE_ALRM_NAME7 = JsonCommand["especial"]["ALRM_NAME7"].as<String>();
+//     REMOTE_ALRM_LOGIC1 = JsonCommand["especial"]["ALRM_LOGIC1"].as<bool>();
+//     REMOTE_ALRM_LOGIC2 = JsonCommand["especial"]["ALRM_LOGIC2"].as<bool>();
+//     REMOTE_ALRM_LOGIC3 = JsonCommand["especial"]["ALRM_LOGIC3"].as<bool>();
+//     REMOTE_ALRM_LOGIC4 = JsonCommand["especial"]["ALRM_LOGIC4"].as<bool>();
+//     REMOTE_ALRM_LOGIC5 = JsonCommand["especial"]["ALRM_LOGIC5"].as<bool>();
+//     REMOTE_ALRM_LOGIC6 = JsonCommand["especial"]["ALRM_LOGIC6"].as<bool>();
+//     REMOTE_ALRM_LOGIC7 = JsonCommand["especial"]["ALRM_LOGIC7"].as<bool>();
+//     REMOTE_ALRM_TON1 = JsonCommand["especial"]["ALRM_TON1"].as<String>();
+//     REMOTE_ALRM_TON2 = JsonCommand["especial"]["ALRM_TON2"].as<String>();
+//     REMOTE_ALRM_TON3 = JsonCommand["especial"]["ALRM_TON3"].as<String>();
+//     REMOTE_ALRM_TON4 = JsonCommand["especial"]["ALRM_TON4"].as<String>();
+//     REMOTE_ALRM_TON5 = JsonCommand["especial"]["ALRM_TON5"].as<String>();
+//     REMOTE_ALRM_TON6 = JsonCommand["especial"]["ALRM_TON6"].as<String>();
+//     REMOTE_ALRM_TON7 = JsonCommand["especial"]["ALRM_TON7"].as<String>();
+//     REMOTE_ALRM_TOFF1 = JsonCommand["especial"]["ALRM_TOFF1"].as<String>();
+//     REMOTE_ALRM_TOFF2 = JsonCommand["especial"]["ALRM_TOFF2"].as<String>();
+//     REMOTE_ALRM_TOFF3 = JsonCommand["especial"]["ALRM_TOFF3"].as<String>();
+//     REMOTE_ALRM_TOFF4 = JsonCommand["especial"]["ALRM_TOFF4"].as<String>();
+//     REMOTE_ALRM_TOFF5 = JsonCommand["especial"]["ALRM_TOFF5"].as<String>();
+//     REMOTE_ALRM_TOFF6 = JsonCommand["especial"]["ALRM_TOFF6"].as<String>();
+//     REMOTE_ALRM_TOFF7 = JsonCommand["especial"]["ALRM_TOFF7"].as<String>();
+//     REMOTE_ALRM_CONT1 = JsonCommand["especial"]["ALRM_CONT1"].as<int>();
+//     REMOTE_ALRM_CONT2 = JsonCommand["especial"]["ALRM_CONT2"].as<int>();
+//     REMOTE_ALRM_CONT3 = JsonCommand["especial"]["ALRM_CONT3"].as<int>();
+//     REMOTE_ALRM_CONT4 = JsonCommand["especial"]["ALRM_CONT4"].as<int>();
+//     REMOTE_ALRM_CONT5 = JsonCommand["especial"]["ALRM_CONT5"].as<int>();
+//     REMOTE_ALRM_CONT6 = JsonCommand["especial"]["ALRM_CONT6"].as<int>();
+//     REMOTE_ALRM_CONT7 = JsonCommand["especial"]["ALRM_CONT7"].as<int>();
+//     REMOTE_R_NAME1 = JsonCommand["especial"]["R_NAME1"].as<String>();
+//     REMOTE_R_NAME2 = JsonCommand["especial"]["R_NAME2"].as<String>();
+//     REMOTE_R_STATUS1 = JsonCommand["especial"]["R_STATUS1"].as<bool>();
+//     REMOTE_R_STATUS2 = JsonCommand["especial"]["R_STATUS2"].as<bool>();
+//     REMOTE_R_LOGIC1 = JsonCommand["especial"]["R_LOGIC1"].as<bool>();
+//     REMOTE_R_LOGIC2 = JsonCommand["especial"]["R_LOGIC2"].as<bool>();
+// }
+
 // -------------------------------------------------------------------
 // Retorna segundos como "d:hh:mm"
 // -------------------------------------------------------------------
@@ -1385,5 +1393,25 @@ void temporelevares()
             digitalWrite(RELAY2, false);
             R_STATUS2 = false;
         }
+    }
+}
+// Empaqueta el JSON para enviar por WS (progress en %)
+String getSendJson(String msg, String type)
+{
+    String response = "";
+    DynamicJsonDocument doc(64);
+    doc["type"] = type;
+    doc["msg"] = msg;
+    serializeJson(doc, response);
+    return response;
+}
+
+// funciopn printProgress
+void printProgress(size_t prog, size_t sz)
+{
+    int progress = (prog * 100) / content_len;
+    if (progress == 10)
+    {
+        wsMessageSend(getSendJson(String(10), "update"), "", "");
     }
 }

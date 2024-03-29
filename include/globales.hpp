@@ -12,23 +12,28 @@
 #define DHT22 13         // Sensor de temperatura y humedad
 #define WIFILED 14       // Led de señal WIFI
 #define BUZZER 15        // Zumbador de indicacion de Alarma
-#define ALARM_PIN1 16    // GPIO16 entrada de alarma con tierra
-#define ALARM_PIN2 17    // GPIO17 entrada de alarma con tierra
+#define ALARM_PIN1 16    // GPIO16 entrada de alarma con tierra  ----RX2
+#define ALARM_PIN2 17    // GPIO17 entrada de alarma con tierra  ----TX2
 #define TRIACPOTEN 18    // aun no se para que sirve
 #define TMOSFET2 19      // GPIO19 Salida que alimenta a un MOSFET
 #define TMOSFET1 23      // GPIO23 Salida que alimenta a un MOSFET
-#define ALARM_PIN3 25    // GPIO25 entrada de alarma con tierra
+#define ALARM_PIN3 25    // GPIO25 entrada de alarma con tierra  ----D25
 #define CLIMAA 26    // GPIO26 entrada con acoplador a 5-24 volts indicarian si sigue operando un compresor1
 #define CLIMAB 27    // GPIO27 entrada con acoplador a 5-24 volts indicarian si sigue operando un compresor2
 #define POTENCIOMETRO 36 // señal del potenciometro
 #define NTC10K 39        // conector para termistor
 */
-#define RELAY1 4   // GPIO04 para el relay
-#define RELAY2 2   // GPIO02 para el relay
-#define DIMMER 5   // GPIO05 se modificara por comando por eso no se define
-#define WIFILED 12 // GPIO12 LED INDICADOR WIFI
-#define MQTTLED 14 // GPIO14 LED INDICADOR MQTT
-#define BUZZER 15  // GPIO15 ZUMBADOR
+#define RELAY1 4      // GPIO04 para el relay
+#define RELAY2 2      // GPIO02 para el relay
+#define DIMMER 5      // GPIO05 se modificara por comando por eso no se define
+#define WIFILED 12    // GPIO12 LED INDICADOR WIFI
+#define MQTTLED 14    // GPIO14 LED INDICADOR MQTT
+#define BUZZER 15     // GPIO15 ZUMBADOR
+#define ALARM_PIN1 16 // GPIO16 entrada de alarma con tierra  ----RX2
+#define ALARM_PIN2 17 // GPIO17 entrada de alarma con tierra  ----TX2
+#define ALARM_PIN3 25 // GPIO25 entrada de alarma con tierra  ----D25
+#define CLIMAA 26     // GPIO26 entrada con acoplador a 5-24 volts indicarian si sigue operando un compresor1
+#define CLIMAB 27     // GPIO27 entrada con acoplador a 5-24 volts indicarian si sigue operando un compresor2
 //--------------------------------------------------------------------------
 // Calcular la capacidad del JSON
 // Asistente ArduinoJson: https://arduinojson.org/v6/assistant/
@@ -245,12 +250,18 @@ volatile unsigned long tiempoDeInterrupcion1 = 0; // sirve para omitir rebotes e
 // void IRAM_ATTR activarAlarmas();
 
 /// variables que se requieren para obtener la informacion del dispositivo remoto
-String REMOTE_serial, REMOTE_MACWiFi;
-bool REMOTE_ALRM_STATUS1, REMOTE_ALRM_STATUS2, REMOTE_ALRM_STATUS3, REMOTE_ALRM_STATUS4, REMOTE_ALRM_STATUS5, REMOTE_ALRM_STATUS6, REMOTE_ALRM_STATUS7;
-bool REMOTE_ALRM_LOGIC1, REMOTE_ALRM_LOGIC2, REMOTE_ALRM_LOGIC3, REMOTE_ALRM_LOGIC4, REMOTE_ALRM_LOGIC5, REMOTE_ALRM_LOGIC6, REMOTE_ALRM_LOGIC7;
-String REMOTE_ALRM_NAME1, REMOTE_ALRM_NAME2, REMOTE_ALRM_NAME3, REMOTE_ALRM_NAME4, REMOTE_ALRM_NAME5, REMOTE_ALRM_NAME6, REMOTE_ALRM_NAME7;
-String REMOTE_ALRM_TON1, REMOTE_ALRM_TON2, REMOTE_ALRM_TON3, REMOTE_ALRM_TON4, REMOTE_ALRM_TON5, REMOTE_ALRM_TON6, REMOTE_ALRM_TON7;
-String REMOTE_ALRM_TOFF1, REMOTE_ALRM_TOFF2, REMOTE_ALRM_TOFF3, REMOTE_ALRM_TOFF4, REMOTE_ALRM_TOFF5, REMOTE_ALRM_TOFF6, REMOTE_ALRM_TOFF7;
-int REMOTE_ALRM_CONT1, REMOTE_ALRM_CONT2, REMOTE_ALRM_CONT3, REMOTE_ALRM_CONT4, REMOTE_ALRM_CONT5, REMOTE_ALRM_CONT6, REMOTE_ALRM_CONT7; // registra el valor del contador
-String REMOTE_R_NAME1, REMOTE_R_NAME2;
-bool REMOTE_R_STATUS1, REMOTE_R_STATUS2, REMOTE_R_LOGIC1, REMOTE_R_LOGIC2;
+// String REMOTE_serial, REMOTE_MACWiFi;
+// bool REMOTE_ALRM_STATUS1, REMOTE_ALRM_STATUS2, REMOTE_ALRM_STATUS3, REMOTE_ALRM_STATUS4, REMOTE_ALRM_STATUS5, REMOTE_ALRM_STATUS6, REMOTE_ALRM_STATUS7;
+// bool REMOTE_ALRM_LOGIC1, REMOTE_ALRM_LOGIC2, REMOTE_ALRM_LOGIC3, REMOTE_ALRM_LOGIC4, REMOTE_ALRM_LOGIC5, REMOTE_ALRM_LOGIC6, REMOTE_ALRM_LOGIC7;
+// String REMOTE_ALRM_NAME1, REMOTE_ALRM_NAME2, REMOTE_ALRM_NAME3, REMOTE_ALRM_NAME4, REMOTE_ALRM_NAME5, REMOTE_ALRM_NAME6, REMOTE_ALRM_NAME7;
+// String REMOTE_ALRM_TON1, REMOTE_ALRM_TON2, REMOTE_ALRM_TON3, REMOTE_ALRM_TON4, REMOTE_ALRM_TON5, REMOTE_ALRM_TON6, REMOTE_ALRM_TON7;
+// String REMOTE_ALRM_TOFF1, REMOTE_ALRM_TOFF2, REMOTE_ALRM_TOFF3, REMOTE_ALRM_TOFF4, REMOTE_ALRM_TOFF5, REMOTE_ALRM_TOFF6, REMOTE_ALRM_TOFF7;
+// int REMOTE_ALRM_CONT1, REMOTE_ALRM_CONT2, REMOTE_ALRM_CONT3, REMOTE_ALRM_CONT4, REMOTE_ALRM_CONT5, REMOTE_ALRM_CONT6, REMOTE_ALRM_CONT7; // registra el valor del contador
+// String REMOTE_R_NAME1, REMOTE_R_NAME2;
+// bool REMOTE_R_STATUS1, REMOTE_R_STATUS2, REMOTE_R_LOGIC1, REMOTE_R_LOGIC2;
+//-------------------------------------------------------------------
+// variables para actualizar el Firmware
+//----------------------------------------------------------------------------
+
+size_t content_len; // para la barra de progreso del firmware
+#define U_PART U_SPIFFS

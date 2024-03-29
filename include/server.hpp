@@ -8,10 +8,6 @@ AsyncWebServer server(80);          // iniciamos el servidor en el puerto 80
 AsyncWebSocket ws("/ws");           // iniciamos el webSocket
 AsyncEventSource events("/events"); // eventos para el webSockets
 
-// variables para actualizar el Firmware
-size_t content_len;
-#define U_PART U_SPIFFS
-
 // particion del codigo
 #include "api.hpp"
 #include "web.hpp"
@@ -232,13 +228,13 @@ void initServer()
     // url: /api/connection/mqtt2
     // Método: GET
     // -------------------------------------------------------------------
-    server.on("/api/connection/mqtt2", HTTP_GET, handleApiMQTT2);
+    // server.on("/api/connection/mqtt2", HTTP_GET, handleApiMQTT2);
     // -------------------------------------------------------------------
     // Parámetros de configuración MQTT y obtener las alarmas remotas
     // url: /api/connection/alarmasremotas
     // Método: GET
     // -------------------------------------------------------------------
-    server.on("/api/connection/alarmasremotas", HTTP_GET, handleApiAlarmRemote);
+    // server.on("/api/connection/alarmasremotas", HTTP_GET, handleApiAlarmRemote);
 
     // primero configurar el post para despues obtener el get
     //  -------------------------------------------------------------------
@@ -444,5 +440,6 @@ void initServer()
     DefaultHeaders::Instance().addHeader("Access-Control-Allow-Headers", "*");
     DefaultHeaders::Instance().addHeader("Access-Control-Allow-Method", "POST, GET, OPTIONS, DELETE");
     server.begin();
+    Update.onProgress(printProgress);
     log("INFO", "server.hpp", "Servidor HTTP iniciado");
 }

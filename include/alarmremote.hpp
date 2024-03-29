@@ -85,23 +85,23 @@ bool mqtt_connect2(){
 // -----------------------------------------------------------------------------------
 // Manejo de los mensajes Entrantes
 // -----------------------------------------------------------------------------------
-void callback2(char *topic2, byte *payload, unsigned int length){
-    String command = ""; //lo que venga en device que es donde estoy publicando
-    String str_topic2(topic2);
-    for(int16_t i = 0; i < length; i++){
-        command+= (char)payload[i];
-        //TODO: pestañeo de led MQTT
-    }
-    //metodo trim() que limpia los espacion
-    command.trim();
-    log("INFO","alarmremote.hpp","MQTT Tópico  --> " + str_topic2);
-    //log("INFO","alarmremote.hpp","MQTT Mensaje --> " + command);
+// void callback2(char *topic2, byte *payload, unsigned int length){
+//     String command = ""; //lo que venga en device que es donde estoy publicando
+//     String str_topic2(topic2);
+//     for(int16_t i = 0; i < length; i++){
+//         command+= (char)payload[i];
+//         //TODO: pestañeo de led MQTT
+//     }
+//     //metodo trim() que limpia los espacion
+//     command.trim();
+//     log("INFO","alarmremote.hpp","MQTT Tópico  --> " + str_topic2);
+//     //log("INFO","alarmremote.hpp","MQTT Mensaje --> " + command);
 
-    log("INFO","alarmremote.hpp","Muestra información de otro dispositivo");
-    muestraInfoMqtt2(command); //y agrega los valores a las variables
+//     log("INFO","alarmremote.hpp","Muestra información de otro dispositivo");
+//     muestraInfoMqtt2(command); //y agrega los valores a las variables
     
-    //TODO: responder al mqtt el estado de los relays
-}
+//     //TODO: responder al mqtt el estado de los relays
+// }
 
 // -----------------------------------------------------------------------------------
 // Manejo de los mensajes Salientes aqui solo seran los estados de los relays y buzzer ****************TODO: aun no se ha hehco 28/05/2023

@@ -38,10 +38,10 @@ void TaskMqttReconnect(void *pvParamenters)
             { // ya estaconectado
                 // llamar a la funcion del loop mqtt
                 mqttloop();
-                if (mqtt_enable2)
-                {
-                    mqttloop2(); // agregado
-                }
+                // if (mqtt_enable2)
+                // {
+                //     mqttloop2(); // agregado
+                // }
                 // Enviar por MQTT el json siempre y cuando este habilitado el envio
                 if (mqttClient.connected() && mqtt_status_send)
                 {
@@ -115,5 +115,17 @@ void TaskTimeRele(void *pvParameters)
     {
         vTaskDelay(10 / portTICK_PERIOD_MS);
         temporelevares(); // activa los relevadores de manera local
+    }
+}
+//---------------------------------------------------------
+// tarea websocket cada segundo
+//----------------------------------------------------------
+void TaskWsSend(void *pvParameters)
+{
+    (void)pvParameters;
+    while (1)
+    {
+        vTaskDelay(1000 / portTICK_PERIOD_MS); // esto es igual a 1 segundo lo cual hara lo siguiente:
+        wsMessageSend(getJsonIndex(), "", "");
     }
 }

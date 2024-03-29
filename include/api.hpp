@@ -1461,89 +1461,89 @@ void handleApiMQTT2(AsyncWebServerRequest *request)
 // url: /api/connection/alarmasremotas
 // Método: GET
 //--------------------------------------------------------
-void handleApiAlarmRemote(AsyncWebServerRequest *request)
-{ // lo que viene de el mqtt
-    // agregar el usuario y contraseña
-    if (security)
-    {
-        if (!request->authenticate(device_user, device_password))
-        {
-            return request->requestAuthentication(); // aqui se queda en circulos seria bueno agregar un contador para que salga del bucle
-        }
-    }
-    String json = "";
+// void handleApiAlarmRemote(AsyncWebServerRequest *request)
+// { // lo que viene de el mqtt
+//     // agregar el usuario y contraseña
+//     if (security)
+//     {
+//         if (!request->authenticate(device_user, device_password))
+//         {
+//             return request->requestAuthentication(); // aqui se queda en circulos seria bueno agregar un contador para que salga del bucle
+//         }
+//     }
+//     String json = "";
 
-    json = "{";
-    json += "\"serial\": \"" + String(REMOTE_serial) + "\"";
-    json += ",\"MACWiFi\": \"" + String(REMOTE_MACWiFi) + "\"";
-    json += ",\"RELAYS\":";
-    json += "{";
-    json += "\"REMOTE_R_NAME1\": \"" + String(REMOTE_R_NAME1) + "\"";
-    json += ",\"REMOTE_R_NAME2\": \"" + String(REMOTE_R_NAME2) + "\"";
-    REMOTE_R_STATUS1 ? json += ",\"REMOTE_R_STATUS1\": true" : json += ",\"REMOTE_R_STATUS1\": false";
-    REMOTE_R_STATUS2 ? json += ",\"REMOTE_R_STATUS2\": true" : json += ",\"REMOTE_R_STATUS2\": false";
-    REMOTE_R_LOGIC1 ? json += ",\"REMOTE_R_LOGIC1\": true" : json += ",\"REMOTE_R_LOGIC1\": false";
-    REMOTE_R_LOGIC2 ? json += ",\"REMOTE_R_LOGIC2\": true" : json += ",\"REMOTE_R_LOGIC2\": false";
-    json += "}";
-    json += ",\"ALRMS\":";
-    json += "{";
-    json += "\"REMOTE_ALRM_NAME1\": \"" + String(REMOTE_ALRM_NAME1) + "\"";
-    REMOTE_ALRM_STATUS1 ? json += ",\"REMOTE_ALRM_STATUS1\": true" : json += ",\"REMOTE_ALRM_STATUS1\": false";
-    REMOTE_ALRM_LOGIC1 ? json += ",\"REMOTE_ALRM_LOGIC1\": true" : json += ",\"REMOTE_ALRM_LOGIC1\": false";
-    json += ",\"REMOTE_ALRM_TON1\": \"" + String(REMOTE_ALRM_TON1) + "\"";
-    json += ",\"REMOTE_ALRM_TOFF1\": \"" + String(REMOTE_ALRM_TOFF1) + "\"";
-    json += ",\"REMOTE_ALRM_CONT1\": \"" + String(REMOTE_ALRM_CONT1) + "\"";
-    //---------------------------------------------------
-    json += ",\"REMOTE_ALRM_NAME2\": \"" + String(REMOTE_ALRM_NAME2) + "\"";
-    REMOTE_ALRM_STATUS2 ? json += ",\"REMOTE_ALRM_STATUS2\": true" : json += ",\"REMOTE_ALRM_STATUS2\": false";
-    REMOTE_ALRM_LOGIC2 ? json += ",\"REMOTE_ALRM_LOGIC2\": true" : json += ",\"REMOTE_ALRM_LOGIC2\": false";
-    json += ",\"REMOTE_ALRM_TON2\": \"" + String(REMOTE_ALRM_TON2) + "\"";
-    json += ",\"REMOTE_ALRM_TOFF2\": \"" + String(REMOTE_ALRM_TOFF2) + "\"";
-    json += ",\"REMOTE_ALRM_CONT2\": \"" + String(REMOTE_ALRM_CONT2) + "\"";
-    //-------------------------------------------------------------------------------------------
-    json += ",\"REMOTE_ALRM_NAME3\": \"" + String(REMOTE_ALRM_NAME3) + "\"";
-    REMOTE_ALRM_STATUS3 ? json += ",\"REMOTE_ALRM_STATUS3\": true" : json += ",\"REMOTE_ALRM_STATUS3\": false";
-    REMOTE_ALRM_LOGIC3 ? json += ",\"REMOTE_ALRM_LOGIC3\": true" : json += ",\"REMOTE_ALRM_LOGIC3\": false";
-    json += ",\"REMOTE_ALRM_TON3\": \"" + String(REMOTE_ALRM_TON3) + "\"";
-    json += ",\"REMOTE_ALRM_TOFF3\": \"" + String(REMOTE_ALRM_TOFF3) + "\"";
-    json += ",\"REMOTE_ALRM_CONT3\": \"" + String(REMOTE_ALRM_CONT3) + "\"";
-    //-------------------------------------------------------------------------------------------
-    json += ",\"REMOTE_ALRM_NAME4\": \"" + String(REMOTE_ALRM_NAME4) + "\"";
-    REMOTE_ALRM_STATUS4 ? json += ",\"REMOTE_ALRM_STATUS4\": true" : json += ",\"REMOTE_ALRM_STATUS4\": false";
-    REMOTE_ALRM_LOGIC4 ? json += ",\"REMOTE_ALRM_LOGIC4\": true" : json += ",\"REMOTE_ALRM_LOGIC4\": false";
-    json += ",\"REMOTE_ALRM_TON4\": \"" + String(REMOTE_ALRM_TON4) + "\"";
-    json += ",\"REMOTE_ALRM_TOFF4\": \"" + String(REMOTE_ALRM_TOFF4) + "\"";
-    json += ",\"REMOTE_ALRM_CONT4\": \"" + String(REMOTE_ALRM_CONT4) + "\"";
-    //-------------------------------------------------------------------------------------------
-    json += ",\"REMOTE_ALRM_NAME5\": \"" + String(REMOTE_ALRM_NAME5) + "\"";
-    REMOTE_ALRM_STATUS5 ? json += ",\"REMOTE_ALRM_STATUS5\": true" : json += ",\"REMOTE_ALRM_STATUS5\": false";
-    REMOTE_ALRM_LOGIC5 ? json += ",\"REMOTE_ALRM_LOGIC5\": true" : json += ",\"REMOTE_ALRM_LOGIC5\": false";
-    json += ",\"REMOTE_ALRM_TON5\": \"" + String(REMOTE_ALRM_TON5) + "\"";
-    json += ",\"REMOTE_ALRM_TOFF5\": \"" + String(REMOTE_ALRM_TOFF5) + "\"";
-    json += ",\"REMOTE_ALRM_CONT5\": \"" + String(REMOTE_ALRM_CONT5) + "\"";
-    //-------------------------------------------------------------------------------------------
-    json += ",\"REMOTE_ALRM_NAME6\": \"" + String(REMOTE_ALRM_NAME6) + "\"";
-    REMOTE_ALRM_STATUS6 ? json += ",\"REMOTE_ALRM_STATUS6\": true" : json += ",\"REMOTE_ALRM_STATUS6\": false";
-    REMOTE_ALRM_LOGIC6 ? json += ",\"REMOTE_ALRM_LOGIC6\": true" : json += ",\"REMOTE_ALRM_LOGIC6\": false";
-    json += ",\"REMOTE_ALRM_TON6\": \"" + String(REMOTE_ALRM_TON6) + "\"";
-    json += ",\"REMOTE_ALRM_TOFF6\": \"" + String(REMOTE_ALRM_TOFF6) + "\"";
-    json += ",\"REMOTE_ALRM_CONT6\": \"" + String(REMOTE_ALRM_CONT6) + "\"";
-    //-------------------------------------------------------------------------------------------
-    json += ",\"REMOTE_ALRM_NAME7\": \"" + String(REMOTE_ALRM_NAME7) + "\"";
-    REMOTE_ALRM_STATUS7 ? json += ",\"REMOTE_ALRM_STATUS7\": true" : json += ",\"REMOTE_ALRM_STATUS7\": false";
-    REMOTE_ALRM_LOGIC7 ? json += ",\"REMOTE_ALRM_LOGIC7\": true" : json += ",\"REMOTE_ALRM_LOGIC7\": false";
-    json += ",\"REMOTE_ALRM_TON7\": \"" + String(REMOTE_ALRM_TON7) + "\"";
-    json += ",\"REMOTE_ALRM_TOFF7\": \"" + String(REMOTE_ALRM_TOFF7) + "\"";
-    json += ",\"REMOTE_ALRM_CONT7\": \"" + String(REMOTE_ALRM_CONT7) + "\"";
-    //-------------------------------------------------------------------------------------------
-    Activar ? json += ",\"Activar\": true" : json += ",\"Activar\": false";
-    json += "}";
-    json += "}";
+//     json = "{";
+//     json += "\"serial\": \"" + String(REMOTE_serial) + "\"";
+//     json += ",\"MACWiFi\": \"" + String(REMOTE_MACWiFi) + "\"";
+//     json += ",\"RELAYS\":";
+//     json += "{";
+//     json += "\"REMOTE_R_NAME1\": \"" + String(REMOTE_R_NAME1) + "\"";
+//     json += ",\"REMOTE_R_NAME2\": \"" + String(REMOTE_R_NAME2) + "\"";
+//     REMOTE_R_STATUS1 ? json += ",\"REMOTE_R_STATUS1\": true" : json += ",\"REMOTE_R_STATUS1\": false";
+//     REMOTE_R_STATUS2 ? json += ",\"REMOTE_R_STATUS2\": true" : json += ",\"REMOTE_R_STATUS2\": false";
+//     REMOTE_R_LOGIC1 ? json += ",\"REMOTE_R_LOGIC1\": true" : json += ",\"REMOTE_R_LOGIC1\": false";
+//     REMOTE_R_LOGIC2 ? json += ",\"REMOTE_R_LOGIC2\": true" : json += ",\"REMOTE_R_LOGIC2\": false";
+//     json += "}";
+//     json += ",\"ALRMS\":";
+//     json += "{";
+//     json += "\"REMOTE_ALRM_NAME1\": \"" + String(REMOTE_ALRM_NAME1) + "\"";
+//     REMOTE_ALRM_STATUS1 ? json += ",\"REMOTE_ALRM_STATUS1\": true" : json += ",\"REMOTE_ALRM_STATUS1\": false";
+//     REMOTE_ALRM_LOGIC1 ? json += ",\"REMOTE_ALRM_LOGIC1\": true" : json += ",\"REMOTE_ALRM_LOGIC1\": false";
+//     json += ",\"REMOTE_ALRM_TON1\": \"" + String(REMOTE_ALRM_TON1) + "\"";
+//     json += ",\"REMOTE_ALRM_TOFF1\": \"" + String(REMOTE_ALRM_TOFF1) + "\"";
+//     json += ",\"REMOTE_ALRM_CONT1\": \"" + String(REMOTE_ALRM_CONT1) + "\"";
+//     //---------------------------------------------------
+//     json += ",\"REMOTE_ALRM_NAME2\": \"" + String(REMOTE_ALRM_NAME2) + "\"";
+//     REMOTE_ALRM_STATUS2 ? json += ",\"REMOTE_ALRM_STATUS2\": true" : json += ",\"REMOTE_ALRM_STATUS2\": false";
+//     REMOTE_ALRM_LOGIC2 ? json += ",\"REMOTE_ALRM_LOGIC2\": true" : json += ",\"REMOTE_ALRM_LOGIC2\": false";
+//     json += ",\"REMOTE_ALRM_TON2\": \"" + String(REMOTE_ALRM_TON2) + "\"";
+//     json += ",\"REMOTE_ALRM_TOFF2\": \"" + String(REMOTE_ALRM_TOFF2) + "\"";
+//     json += ",\"REMOTE_ALRM_CONT2\": \"" + String(REMOTE_ALRM_CONT2) + "\"";
+//     //-------------------------------------------------------------------------------------------
+//     json += ",\"REMOTE_ALRM_NAME3\": \"" + String(REMOTE_ALRM_NAME3) + "\"";
+//     REMOTE_ALRM_STATUS3 ? json += ",\"REMOTE_ALRM_STATUS3\": true" : json += ",\"REMOTE_ALRM_STATUS3\": false";
+//     REMOTE_ALRM_LOGIC3 ? json += ",\"REMOTE_ALRM_LOGIC3\": true" : json += ",\"REMOTE_ALRM_LOGIC3\": false";
+//     json += ",\"REMOTE_ALRM_TON3\": \"" + String(REMOTE_ALRM_TON3) + "\"";
+//     json += ",\"REMOTE_ALRM_TOFF3\": \"" + String(REMOTE_ALRM_TOFF3) + "\"";
+//     json += ",\"REMOTE_ALRM_CONT3\": \"" + String(REMOTE_ALRM_CONT3) + "\"";
+//     //-------------------------------------------------------------------------------------------
+//     json += ",\"REMOTE_ALRM_NAME4\": \"" + String(REMOTE_ALRM_NAME4) + "\"";
+//     REMOTE_ALRM_STATUS4 ? json += ",\"REMOTE_ALRM_STATUS4\": true" : json += ",\"REMOTE_ALRM_STATUS4\": false";
+//     REMOTE_ALRM_LOGIC4 ? json += ",\"REMOTE_ALRM_LOGIC4\": true" : json += ",\"REMOTE_ALRM_LOGIC4\": false";
+//     json += ",\"REMOTE_ALRM_TON4\": \"" + String(REMOTE_ALRM_TON4) + "\"";
+//     json += ",\"REMOTE_ALRM_TOFF4\": \"" + String(REMOTE_ALRM_TOFF4) + "\"";
+//     json += ",\"REMOTE_ALRM_CONT4\": \"" + String(REMOTE_ALRM_CONT4) + "\"";
+//     //-------------------------------------------------------------------------------------------
+//     json += ",\"REMOTE_ALRM_NAME5\": \"" + String(REMOTE_ALRM_NAME5) + "\"";
+//     REMOTE_ALRM_STATUS5 ? json += ",\"REMOTE_ALRM_STATUS5\": true" : json += ",\"REMOTE_ALRM_STATUS5\": false";
+//     REMOTE_ALRM_LOGIC5 ? json += ",\"REMOTE_ALRM_LOGIC5\": true" : json += ",\"REMOTE_ALRM_LOGIC5\": false";
+//     json += ",\"REMOTE_ALRM_TON5\": \"" + String(REMOTE_ALRM_TON5) + "\"";
+//     json += ",\"REMOTE_ALRM_TOFF5\": \"" + String(REMOTE_ALRM_TOFF5) + "\"";
+//     json += ",\"REMOTE_ALRM_CONT5\": \"" + String(REMOTE_ALRM_CONT5) + "\"";
+//     //-------------------------------------------------------------------------------------------
+//     json += ",\"REMOTE_ALRM_NAME6\": \"" + String(REMOTE_ALRM_NAME6) + "\"";
+//     REMOTE_ALRM_STATUS6 ? json += ",\"REMOTE_ALRM_STATUS6\": true" : json += ",\"REMOTE_ALRM_STATUS6\": false";
+//     REMOTE_ALRM_LOGIC6 ? json += ",\"REMOTE_ALRM_LOGIC6\": true" : json += ",\"REMOTE_ALRM_LOGIC6\": false";
+//     json += ",\"REMOTE_ALRM_TON6\": \"" + String(REMOTE_ALRM_TON6) + "\"";
+//     json += ",\"REMOTE_ALRM_TOFF6\": \"" + String(REMOTE_ALRM_TOFF6) + "\"";
+//     json += ",\"REMOTE_ALRM_CONT6\": \"" + String(REMOTE_ALRM_CONT6) + "\"";
+//     //-------------------------------------------------------------------------------------------
+//     json += ",\"REMOTE_ALRM_NAME7\": \"" + String(REMOTE_ALRM_NAME7) + "\"";
+//     REMOTE_ALRM_STATUS7 ? json += ",\"REMOTE_ALRM_STATUS7\": true" : json += ",\"REMOTE_ALRM_STATUS7\": false";
+//     REMOTE_ALRM_LOGIC7 ? json += ",\"REMOTE_ALRM_LOGIC7\": true" : json += ",\"REMOTE_ALRM_LOGIC7\": false";
+//     json += ",\"REMOTE_ALRM_TON7\": \"" + String(REMOTE_ALRM_TON7) + "\"";
+//     json += ",\"REMOTE_ALRM_TOFF7\": \"" + String(REMOTE_ALRM_TOFF7) + "\"";
+//     json += ",\"REMOTE_ALRM_CONT7\": \"" + String(REMOTE_ALRM_CONT7) + "\"";
+//     //-------------------------------------------------------------------------------------------
+//     Activar ? json += ",\"Activar\": true" : json += ",\"Activar\": false";
+//     json += "}";
+//     json += "}";
 
-    request->addInterestingHeader("API ESP32 Server"); // este es el header se agrega
-    // send(estado,aplicacion,formato)
-    request->send(200, dataType, json);
-}
+//     request->addInterestingHeader("API ESP32 Server"); // este es el header se agrega
+//     // send(estado,aplicacion,formato)
+//     request->send(200, dataType, json);
+// }
 
 // -------------------------------------------------------------------
 // Actualizar las configuraciones para el MQTT2 Conexiones

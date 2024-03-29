@@ -47,9 +47,9 @@
 #include "espnow.hpp"
 #include "mqtt.hpp"
 #include "server.hpp"
-#include "alarmremote.hpp"
-#include "tareas.hpp"
+//#include "alarmremote.hpp"
 #include "websockets.hpp"
+#include "tareas.hpp"
 
 // put function declarations here:
 
@@ -123,13 +123,15 @@ void setup()
   // crear Tarea de reconexión MQTT
   xTaskCreate(TaskMqttReconnect, "TaskMqttReconnect", 1024 * 6, NULL, 2, NULL);
   // LED MQTT Task
-  xTaskCreate(TaskMQTTLed, "TaskMQTTLed", 1024 * 2, NULL, 1, NULL);
+  xTaskCreate(TaskMQTTLed, "TaskMQTTLed", 1024 * 2, NULL, 1, NULL); // le baje a solo 1024 y falla
   // crear Tarea mostrar pantalla LCD
   xTaskCreate(TaskLCD, "TaskLCD", 1024 * 4, NULL, 1, NULL); // necesita 4 * 1024 errores con menos
   // crear Tarea cambio de estado rele de manera local
   xTaskCreate(Taskrelcambio, "Taskrelcambio", 1024 * 2, NULL, 1, NULL);
   // crea tarea para ponerle horario a los relevadore
   xTaskCreate(TaskTimeRele, "TaskTimeRele", 1024 * 2, NULL, 1, NULL);
+  // Crear una tarea que envie los mensajes a websockets
+  xTaskCreate(TaskWsSend, "TaskWsSend", 1024 * 4, NULL, 1, NULL);
   // crear tarea estado de las alarmas
   // xTaskCreate(TaskAlarms, "TaskAlarms", 1024 * 2, NULL, 1, NULL);
 
