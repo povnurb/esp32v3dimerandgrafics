@@ -428,7 +428,13 @@ void initServer()
         if (request->method() == HTTP_OPTIONS){
         request->send(200);
         }else{
-            request->send(404);
+             if (security){
+                if (!request->authenticate(device_user, device_password))
+                    return request->requestAuthentication();
+            }
+            AsyncWebServerResponse *response = request->beginResponse_P(200, dataTypeHTML,page404_html_gz, page404_html_gz_len);
+            response->addHeader("Content-Encoding", "gzip");
+            request->send(response);
         } });
     //----------------------------------------------------------------------------
     //----------------------------------------------------------------------------
