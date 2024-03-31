@@ -5,7 +5,8 @@
 Ticker timerRelay1;       // para el manejo del relay1
 Ticker timerRelay2;       // para el manejo del relay2
 Ticker actualizaciontime; // actualizara el valor de la variable time cada 10 segundos
-
+Ticker guardatC;          // declaracion de una tarea que guarda el valor en un array de la temperatura
+Ticker guardaHum;
 // falta R_TIMER1 y R_TIMER2 para contabilizar el tiempo que lleva encendido
 
 String releTime(); // es el comparador para encender o apagar los relevadores
@@ -111,6 +112,8 @@ void gpioDefine()
     pinMode(MQTTLED, OUTPUT);
     pinMode(RELAY1, OUTPUT);
     pinMode(RELAY2, OUTPUT);
+    pinMode(TMOSFET1, OUTPUT);
+    pinMode(TMOSFET2, OUTPUT);
     pinMode(ALARM_PIN1, INPUT_PULLUP);
     pinMode(ALARM_PIN2, INPUT_PULLUP);
     pinMode(ALARM_PIN3, INPUT_PULLUP);
@@ -578,65 +581,6 @@ void muestraInfoMqtt(String command)
     deserializeJson(JsonCommand, command);
     log("INFO", "functions", "pendiente de mostrar informacion");
 }
-// void muestraInfoMqtt2(String command)
-// { // muestra informacion del dispositivo remoto y lo almacena en las variables
-//     DynamicJsonDocument JsonCommand(capacitySettings);
-//     deserializeJson(JsonCommand, command); // lo que llega a command se manda al JsonCommand
-//     log("INFO", "functions.hpp", "Informacion remota recibida");
-//     // serializeJsonPretty(JsonCommand, Serial);
-//     log("INFO", "functions.hpp", "Asignando valores a las variables REMOTAS ");
-//     REMOTE_serial = JsonCommand["serial"].as<String>();
-//     REMOTE_MACWiFi = JsonCommand["MACWiFi"].as<String>();
-//     REMOTE_ALRM_STATUS1 = JsonCommand["especial"]["ALRM_STATUS1"].as<bool>();
-//     REMOTE_ALRM_STATUS2 = JsonCommand["especial"]["ALRM_STATUS2"].as<bool>();
-//     REMOTE_ALRM_STATUS3 = JsonCommand["especial"]["ALRM_STATUS3"].as<bool>();
-//     REMOTE_ALRM_STATUS4 = JsonCommand["especial"]["ALRM_STATUS4"].as<bool>();
-//     REMOTE_ALRM_STATUS5 = JsonCommand["especial"]["ALRM_STATUS5"].as<bool>();
-//     REMOTE_ALRM_STATUS6 = JsonCommand["especial"]["ALRM_STATUS6"].as<bool>();
-//     REMOTE_ALRM_STATUS7 = JsonCommand["especial"]["ALRM_STATUS7"].as<bool>();
-//     REMOTE_ALRM_NAME1 = JsonCommand["especial"]["ALRM_NAME1"].as<String>();
-//     REMOTE_ALRM_NAME2 = JsonCommand["especial"]["ALRM_NAME2"].as<String>();
-//     REMOTE_ALRM_NAME3 = JsonCommand["especial"]["ALRM_NAME3"].as<String>();
-//     REMOTE_ALRM_NAME4 = JsonCommand["especial"]["ALRM_NAME4"].as<String>();
-//     REMOTE_ALRM_NAME5 = JsonCommand["especial"]["ALRM_NAME5"].as<String>();
-//     REMOTE_ALRM_NAME7 = JsonCommand["especial"]["ALRM_NAME7"].as<String>();
-//     REMOTE_ALRM_NAME7 = JsonCommand["especial"]["ALRM_NAME7"].as<String>();
-//     REMOTE_ALRM_LOGIC1 = JsonCommand["especial"]["ALRM_LOGIC1"].as<bool>();
-//     REMOTE_ALRM_LOGIC2 = JsonCommand["especial"]["ALRM_LOGIC2"].as<bool>();
-//     REMOTE_ALRM_LOGIC3 = JsonCommand["especial"]["ALRM_LOGIC3"].as<bool>();
-//     REMOTE_ALRM_LOGIC4 = JsonCommand["especial"]["ALRM_LOGIC4"].as<bool>();
-//     REMOTE_ALRM_LOGIC5 = JsonCommand["especial"]["ALRM_LOGIC5"].as<bool>();
-//     REMOTE_ALRM_LOGIC6 = JsonCommand["especial"]["ALRM_LOGIC6"].as<bool>();
-//     REMOTE_ALRM_LOGIC7 = JsonCommand["especial"]["ALRM_LOGIC7"].as<bool>();
-//     REMOTE_ALRM_TON1 = JsonCommand["especial"]["ALRM_TON1"].as<String>();
-//     REMOTE_ALRM_TON2 = JsonCommand["especial"]["ALRM_TON2"].as<String>();
-//     REMOTE_ALRM_TON3 = JsonCommand["especial"]["ALRM_TON3"].as<String>();
-//     REMOTE_ALRM_TON4 = JsonCommand["especial"]["ALRM_TON4"].as<String>();
-//     REMOTE_ALRM_TON5 = JsonCommand["especial"]["ALRM_TON5"].as<String>();
-//     REMOTE_ALRM_TON6 = JsonCommand["especial"]["ALRM_TON6"].as<String>();
-//     REMOTE_ALRM_TON7 = JsonCommand["especial"]["ALRM_TON7"].as<String>();
-//     REMOTE_ALRM_TOFF1 = JsonCommand["especial"]["ALRM_TOFF1"].as<String>();
-//     REMOTE_ALRM_TOFF2 = JsonCommand["especial"]["ALRM_TOFF2"].as<String>();
-//     REMOTE_ALRM_TOFF3 = JsonCommand["especial"]["ALRM_TOFF3"].as<String>();
-//     REMOTE_ALRM_TOFF4 = JsonCommand["especial"]["ALRM_TOFF4"].as<String>();
-//     REMOTE_ALRM_TOFF5 = JsonCommand["especial"]["ALRM_TOFF5"].as<String>();
-//     REMOTE_ALRM_TOFF6 = JsonCommand["especial"]["ALRM_TOFF6"].as<String>();
-//     REMOTE_ALRM_TOFF7 = JsonCommand["especial"]["ALRM_TOFF7"].as<String>();
-//     REMOTE_ALRM_CONT1 = JsonCommand["especial"]["ALRM_CONT1"].as<int>();
-//     REMOTE_ALRM_CONT2 = JsonCommand["especial"]["ALRM_CONT2"].as<int>();
-//     REMOTE_ALRM_CONT3 = JsonCommand["especial"]["ALRM_CONT3"].as<int>();
-//     REMOTE_ALRM_CONT4 = JsonCommand["especial"]["ALRM_CONT4"].as<int>();
-//     REMOTE_ALRM_CONT5 = JsonCommand["especial"]["ALRM_CONT5"].as<int>();
-//     REMOTE_ALRM_CONT6 = JsonCommand["especial"]["ALRM_CONT6"].as<int>();
-//     REMOTE_ALRM_CONT7 = JsonCommand["especial"]["ALRM_CONT7"].as<int>();
-//     REMOTE_R_NAME1 = JsonCommand["especial"]["R_NAME1"].as<String>();
-//     REMOTE_R_NAME2 = JsonCommand["especial"]["R_NAME2"].as<String>();
-//     REMOTE_R_STATUS1 = JsonCommand["especial"]["R_STATUS1"].as<bool>();
-//     REMOTE_R_STATUS2 = JsonCommand["especial"]["R_STATUS2"].as<bool>();
-//     REMOTE_R_LOGIC1 = JsonCommand["especial"]["R_LOGIC1"].as<bool>();
-//     REMOTE_R_LOGIC2 = JsonCommand["especial"]["R_LOGIC2"].as<bool>();
-// }
-
 // -------------------------------------------------------------------
 // Retorna segundos como "d:hh:mm"
 // -------------------------------------------------------------------
@@ -807,7 +751,7 @@ void ctrlRelays()
         if (TIMEOFFRELAY1 == releTime())
         {
             digitalWrite(RELAY1, LOW);
-            R_STATUS1 = LOW;
+            R_STATUS1 = false;
         }
     }
     if (programado2)
@@ -820,7 +764,7 @@ void ctrlRelays()
         if (TIMEOFFRELAY2 == releTime())
         {
             digitalWrite(RELAY2, LOW);
-            R_STATUS2 = LOW;
+            R_STATUS2 = false;
         }
     }
 
@@ -1273,31 +1217,7 @@ void buzzer(String buzzer)
 // Funcion para activar y desactivar los relevadores de manera local
 //-------------------------------------------------------------------------------
 void actRele()
-{ /*  //jala solo para el d35 pero no para d32 ya que esta conectado diferente
-  if (!digitalRead(ACTRELE1) && togle1)
-  {
-      togle1 = !togle1;
-      if (!digitalRead(RELAY1))
-      {
-          digitalWrite(RELAY1, true);
-          R_STATUS1 = true;
-          tiempoDeInterrupcion = millis();
-      }
-      else if (digitalRead(RELAY1))
-      {
-          digitalWrite(RELAY1, false);
-          R_STATUS1 = false;
-          tiempoDeInterrupcion = millis();
-      }
-  }
-  else
-  {
-      if (millis() - tiempoDeInterrupcion > tiempoDeRebote)
-      {
-          togle1 = !togle1;
-          tiempoDeInterrupcion = millis();
-      }
-  }*/
+{
     //-----------------------------------------------------------
     if (!digitalRead(RELAY1) && !digitalRead(ACTRELE1) && togle1)
     {
@@ -1504,4 +1424,119 @@ void printProgress(size_t prog, size_t sz)
     else
     {
     }
+}
+
+//-------------------------------------------------------------------------------
+// funciones necesarias para guarda un array de la temperatura -------------------------------------
+// --------------------------------------------------------------------------------
+
+int vTemp[NUM_VALORES];   // Array para almacenar los valores de temperatura
+int ultimoIndiceTemp = 0; // Índice del último valor almacenado
+
+// Función para mostrar los últimos valores de temperatura
+void mostrarValoresTemp()
+{
+    printf("Valores de temperatura: ");
+    for (int i = 0; i < NUM_VALORES; i++)
+    {
+        printf("%d ", vTemp[i]);
+    }
+    printf("\n");
+}
+
+// Función para simular la lectura del sensor de temperatura
+
+int pruebaTc()
+{
+    int nuevaTemperatura = tempC;
+
+    // Almacenar la nueva temperatura en el array y actualizar el índice
+    vTemp[ultimoIndiceTemp] = nuevaTemperatura;
+    ultimoIndiceTemp = (ultimoIndiceTemp + 1) % NUM_VALORES;
+
+    mostrarValoresTemp();
+
+    return 0;
+}
+
+void ejecutarTc()
+{
+    if (pruebaTc())
+    {
+        Serial.println("Error");
+    }
+}
+//-------------------------------------------------------------------------------
+// funciones necesarias para guarda un array de la Humedad -------------------------------------
+// --------------------------------------------------------------------------------
+int vHum[NUM_VALORES];   // Array para almacenar los valores de temperatura
+int ultimoIndiceHum = 0; // Índice del último valor almacenado
+
+// Función para mostrar los últimos valores de temperatura
+void mostrarValoresHum()
+{
+    printf("Valores de Humedad: ");
+    for (int i = 0; i < NUM_VALORES; i++)
+    {
+        printf("%d ", vHum[i]);
+    }
+    printf("\n");
+}
+
+// Función para simular la lectura del sensor de temperatura
+
+int pruebaHum()
+{
+    int nuevaHum = humedad;
+
+    // Almacenar la nueva temperatura en el array y actualizar el índice
+    vHum[ultimoIndiceHum] = nuevaHum;
+    ultimoIndiceHum = (ultimoIndiceHum + 1) % NUM_VALORES;
+
+    mostrarValoresHum();
+
+    return 0;
+}
+void ejecutarHum()
+{
+
+    if (pruebaHum())
+    {
+        Serial.println("Error");
+    }
+}
+
+//----------------------------------------------------------------------------------------------
+// copia del archivos SPIFFS
+//----------------------------------------------------------------------------------------------
+void copia()
+{
+
+    // Abre el primer archivo en modo lectura
+    File file1 = SPIFFS.open("/especial.json", "r");
+    if (!file1)
+    {
+        Serial.println("Failed to open file for reading");
+        return;
+    }
+
+    // Abre el segundo archivo en modo escritura
+    File file2 = SPIFFS.open("/settings.json", "w");
+    if (!file2)
+    {
+        Serial.println("Failed to open file for writing");
+        return;
+    }
+
+    // Lee el contenido del primer archivo y escribe en el segundo
+    while (file1.available())
+    {
+        file2.write(file1.read());
+    }
+
+    // Cierra ambos archivos
+    file1.close();
+    file2.close();
+
+    Serial.println("Archivo copiado exitosamente");
 }

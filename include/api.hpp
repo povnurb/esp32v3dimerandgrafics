@@ -344,7 +344,7 @@ void handleApiPostWiFi(AsyncWebServerRequest *request, uint8_t *data, size_t len
         ap_connect = doc["ap_connect"].as<int>();
     }
     // Save Settings.json  (salvar la data)
-    if (settingsSave())
+    if (especialSave())
     {
         request->addInterestingHeader("API ESP32 Server");
         request->send(200, dataType, "{ \"save\": true}");
@@ -954,7 +954,7 @@ void handleApiPostMQTT(AsyncWebServerRequest *request, uint8_t *data, size_t len
     // mqtt_status_send
     mqtt_status_send = doc["mqtt_status_send"].as<bool>();
     // Save Settings.json
-    if (settingsSave())
+    if (especialSave())
     {
         request->addInterestingHeader("API ESP32 Server");
         request->send(200, dataType, "{ \"save\": true }");
@@ -1318,7 +1318,7 @@ void handleApiPostUser(AsyncWebServerRequest *request, uint8_t *data, size_t len
                     return;
                 }
                 strlcpy(device_password, np.c_str(), sizeof(device_password)); // lo pasamos a char y la asignamos a device_password
-                if (settingsSave())
+                if (especialSave())
                 { // salcamos todo el settings
                     request->send(200, dataType, "{ \"save\": true, \"msg\": \"¡Contraseña actualizada correctamente!\" }");
                 }
@@ -1727,7 +1727,7 @@ void handleApiPostTime(AsyncWebServerRequest *request, uint8_t *data, size_t len
     }
 
     // Save Settings.json
-    if (settingsSave())
+    if (especialSave())
     {
         request->send(200, dataType, "{ \"save\": true }");
         log("INFO", "api.hpp", " Time Set OK");

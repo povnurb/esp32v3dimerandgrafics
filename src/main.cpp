@@ -9,7 +9,7 @@
 #include <DNSServer.h>
 #include <ESPmDNS.h>
 #include <ArduinoJson.h> //metodos para manejar archivos JSON
-#include <esp_now.h>     //libreria de protocolo esp_now que permite la comunicacion entre dispositivos esp
+// #include <esp_now.h>     //libreria de protocolo esp_now que permite la comunicacion entre dispositivos esp
 #include <TimeLib.h>
 #include <Ticker.h> //para los timer de los relays
 
@@ -44,10 +44,8 @@
 #include "settingsReset.hpp" // no
 #include "settingsRead.hpp"  //antes "esp32a_settings.hpp"
 #include "wifi.hpp"
-#include "espnow.hpp"
 #include "mqtt.hpp"
 #include "server.hpp"
-//#include "alarmremote.hpp"
 #include "websockets.hpp"
 #include "tareas.hpp"
 
@@ -85,9 +83,9 @@ void setup()
       ; // el dispositivo no continua hasta que logre iniciar el SPIFFS
   }
   // traer las configuraciones resientes desde json
-  if (!settingsRead())
-  {                 // se crea el archivo con los valores iniciales de reset
-    settingsSave(); // aqui guardamos
+  if (!settingsRead()) // si no hay
+  {                    // se crea el archivo con los valores iniciales de reset
+    settingsSave();    // aqui guardamos
     log("INFO", "main.cpp", "Información general Salvada.");
     // encaso que el settingsRead se a podido leer no se guarda nada para no andar tocando la memoria
   }
@@ -96,7 +94,8 @@ void setup()
   // configuraciones recientes especiales desde json
   if (!especialRead())
   {
-    especialSave();
+    Serial.println("No se pudo leer el archivo especial.json por lo tanto se tiene que volver a hacer");
+    especialSave(); // es un buleano
     log("INFO", "main.cpp", "Información de actuadores Salvada.");
   }
   // especialSave(); //aqui mostramos la información
@@ -113,8 +112,11 @@ void setup()
   wifi_setup();
   // seteamos el time
   timeSetup();
-  actualizaciontime.attach(1, actualizaTime); // actualizara el tiempo cada 1 segundo
-  // iniciamos el servidor
+  // zona de Tickers pero tienen que ser de poco tiempo ya que con retardos mas grandes reinician el dispositivo
+  actualizaciontime.attach(1, actualizaTime); // actualizara el tiempo cada 1 segundo para funciones pequenas
+  guardatC.attach(TimeMuestra, ejecutarTc);   // realiza una funcion void llamada result cada 10 minutos
+  guardaHum.attach(TimeMuestra, ejecutarHum); // realiza una funcion void llamada result cada 10 minutos
+  //    iniciamos el servidor
   initServer();
   // iniciamos websockets
   initWebsockets();
@@ -151,6 +153,8 @@ void loop()
   ctrlRelays();           // checa el estado de los relays para prenderlos o apagarlos
   statusAlarmVariables(); // actualiza el estado de las variables de las alarmas
   contadorAlarmas();      // cuenta la cantidad de alarmas y le pone la fecha
+  digitalWrite(TMOSFET1, R_STATUS1);
+  digitalWrite(TMOSFET2, R_STATUS2);
   // setupPinActivarAlarmas(); o crear una tarea o interrupcion
 }
 

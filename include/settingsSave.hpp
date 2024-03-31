@@ -140,7 +140,7 @@ bool settingsSave()
         jsonSettings["file_version"] = "3.0.0";
         serializeJsonPretty(jsonSettings, file); // escribe en el archivo file
         file.close();                            // ya que todo se leera se cierra el archivo
-        log("INFO", "settingsSave.hpp", "Configuración general guardada correctamente.");
+        log("INFO", "settingsSave.hpp", "Configuración general guardada correctamente en settingsSave.Json");
         // serializeJsonPretty(jsonSettings,Serial); //lo escribe en el monitor serial
         return true;
     }
@@ -347,7 +347,7 @@ bool especialSave()
         serializeJsonPretty(jsonEspecial, Serial);
         especial.close(); // ya que todo se leera se cierra el archivo
         Serial.println("");
-        log("INFO", "especialSave.hpp", "Configuraciones guardadas de los actuadores OK.");
+        log("INFO", "settingsSave.hpp", "Configuraciones guardadas de los actuadores OK.");
         // serializeJsonPretty(jsonEspecial,Serial); //muestra la informacion guardada en el monitor serial
         return true;
     }

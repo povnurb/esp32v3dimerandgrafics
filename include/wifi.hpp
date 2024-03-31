@@ -108,7 +108,7 @@ void wifi_setup()
         OLED.setCursor(0, 0);
         OLED.println("INICIANDO MODO AP");
         OLED.display();
-        startClient();
+        // startClient();
         startAP();
         log("INFO", "wifi.hpp", "WiFi en Modo AP");
     }

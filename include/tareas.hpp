@@ -118,14 +118,14 @@ void TaskTimeRele(void *pvParameters)
     }
 }
 //---------------------------------------------------------
-// tarea websocket cada segundo
+// tarea websocket cada 3 segundos
 //----------------------------------------------------------
 void TaskWsSend(void *pvParameters)
 {
     (void)pvParameters;
     while (1)
     {
-        vTaskDelay(1000 / portTICK_PERIOD_MS); // esto es igual a 1 segundo lo cual hara lo siguiente:
+        vTaskDelay(3000 / portTICK_PERIOD_MS); // esto es igual a 1 segundo lo cual hara lo siguiente:
         wsMessageSend(getJsonIndex(), "", "");
     }
 }

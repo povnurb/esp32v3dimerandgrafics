@@ -31,6 +31,8 @@
 #define BUZZER 15     // GPIO15 ZUMBADOR
 #define ALARM_PIN1 16 // GPIO16 entrada de alarma con tierra  ----RX2
 #define ALARM_PIN2 17 // GPIO17 entrada de alarma con tierra  ----TX2
+#define TMOSFET2 19   // GPIO19 Salida que alimenta a un MOSFET
+#define TMOSFET1 23   // GPIO23 Salida que alimenta a un MOSFET
 #define ALARM_PIN3 25 // GPIO25 entrada de alarma con tierra  ----D25
 #define CLIMAA 26     // GPIO26 entrada con acoplador a 5-24 volts indicarian si sigue operando un compresor1
 #define CLIMAB 27     // GPIO27 entrada con acoplador a 5-24 volts indicarian si sigue operando un compresor2
@@ -213,13 +215,13 @@ String hora;
 WiFiUDP ntpUDP;
 NTPClient ntpClient(ntpUDP); // para la hora y la fecha
 //-----------------------------------------------------------------
-// Zona ESPNOW
+// Zona ESPNOW Se quita para tener espacio en el esp32
 //-----------------------------------------------------------------
 // cambiar el nombre de las alarmas demanera locak
-String cambio11, cambio21, cambio31, cambio41, cambio51, cambio61, cambio71, cambio81;
-String cambio12, cambio22, cambio32, cambio42, cambio52, cambio62, cambio72, cambio82;
-String cambio13, cambio23, cambio33, cambio43, cambio53, cambio63, cambio73, cambio83;
-String cambio14, cambio24, cambio34, cambio44, cambio54, cambio64, cambio74, cambio84;
+// String cambio11, cambio21, cambio31, cambio41, cambio51, cambio61, cambio71, cambio81;
+// String cambio12, cambio22, cambio32, cambio42, cambio52, cambio62, cambio72, cambio82;
+// String cambio13, cambio23, cambio33, cambio43, cambio53, cambio63, cambio73, cambio83;
+// String cambio14, cambio24, cambio34, cambio44, cambio54, cambio64, cambio74, cambio84;
 
 //-----------------------------------------------------------------
 // Zona Otras
@@ -259,9 +261,14 @@ volatile unsigned long tiempoDeInterrupcion1 = 0; // sirve para omitir rebotes e
 // int REMOTE_ALRM_CONT1, REMOTE_ALRM_CONT2, REMOTE_ALRM_CONT3, REMOTE_ALRM_CONT4, REMOTE_ALRM_CONT5, REMOTE_ALRM_CONT6, REMOTE_ALRM_CONT7; // registra el valor del contador
 // String REMOTE_R_NAME1, REMOTE_R_NAME2;
 // bool REMOTE_R_STATUS1, REMOTE_R_STATUS2, REMOTE_R_LOGIC1, REMOTE_R_LOGIC2;
+
 //-------------------------------------------------------------------
 // variables para actualizar el Firmware
 //----------------------------------------------------------------------------
-
 size_t content_len; // para la barra de progreso del firmware
 #define U_PART U_SPIFFS
+//------------------------------------------------------------------------------
+// Variables necesarias para registrar temperaturas y humedades por 48 hrs
+//------------------------------------------------------------------------------
+int TimeMuestra = 3600; // son segundo
+#define NUM_VALORES 24  // no superar este valor ya que en websocket esta hardcodeado
