@@ -1,4 +1,3 @@
-
 This directory is intended for project header files.
 
 A header file is a file containing C declarations and macro definitions
@@ -31,9 +30,44 @@ header file names, and at most one dot.
 
 Read more about using header files in official GCC documentation:
 
-* Include Syntax
-* Include Operation
-* Once-Only Headers
-* Computed Includes
+- Include Syntax
+- Include Operation
+- Once-Only Headers
+- Computed Includes
 
 https://gcc.gnu.org/onlinedocs/cpp/Header-Files.html
+
+## los topidos para mandar a encender por mqtt son para el relay1:
+
+- MQTTusuario/serial/command =>siguiente ejemplo:
+- lalo/ESP32A11B5AE04002/command
+- {"output":"RELAY1","value": true}
+
+## los topidos para mandar a apagar por mqtt son para el relay1:
+
+- MQTTusuario/serial/command =>siguiente ejemplo:
+- lalo/ESP32A11B5AE04002/command
+- {"output":"RELAY1","value": false}
+
+## los topidos para mandar a encender por mqtt son para el relay2:
+
+- MQTTusuario/serial/command =>siguiente ejemplo:
+- lalo/ESP32A11B5AE04002/command
+- {"output":"RELAY2","value": true}
+
+## los topidos para mandar a apagar por mqtt son para el relay2:
+
+- MQTTusuario/serial/command =>siguiente ejemplo:
+
+* lalo/ESP32A11B5AE04002/command
+* {"output":"RELAY2","value": false}
+
+## los topidos para mandar a encender por mqtt el buzzer:
+
+- MQTTusuario/serial/command =>siguiente ejemplo:
+
+* lalo/ESP32A11B5AE04002/command
+* {"output":"BUZZER","value": true}
+* {"output":"BUZZER","value": false}
+
+## codigos sacado de functions.hpp lineas 220

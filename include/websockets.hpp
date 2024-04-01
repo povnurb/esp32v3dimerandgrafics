@@ -90,7 +90,7 @@ void onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventTyp
 // -------------------------------------------------------------------
 void ProcessRequest(AsyncWebSocketClient *client, String request)
 {
-
+    
     String command = request;
     command.trim(); // limpia espacios
 

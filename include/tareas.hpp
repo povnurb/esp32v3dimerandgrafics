@@ -122,6 +122,7 @@ void TaskTimeRele(void *pvParameters)
 //----------------------------------------------------------
 void TaskWsSend(void *pvParameters)
 {
+    ESP_RST_TASK_WDT;
     (void)pvParameters;
     while (1)
     {

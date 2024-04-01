@@ -1,7 +1,8 @@
 // http://192.168.1.68/api/index
 // para ver los datos en el explorador
-// se modifican los datos en reset.hpp
+// el dispositivo se reinicia supongo que es por que ya empieza a saturarse de información
 #include <Arduino.h>
+// #include "soc/rtc_wdt.h" //para desactivar el perro guardian
 #include <esp32-hal.h> //probando para evitar que se reinicie el dispositivo
 #include <EEPROM.h>    //aqui se guardara el contador de reinicios
 #include <SPIFFS.h>    //donde se tomaran los metodos para almacenar informacion
@@ -53,7 +54,8 @@
 
 void setup()
 {
-  // put your setup code here, to run once:
+  // rtc_wdt_disable(); // para probar ya que este desactiva el perro guardian y podria bloquear el codigo
+  //  put your setup code here, to run once:
   Serial.begin(115200);
 
   log("INFO", "main.cpp", "Iniciando el setup");
@@ -114,15 +116,15 @@ void setup()
   timeSetup();
   // zona de Tickers pero tienen que ser de poco tiempo ya que con retardos mas grandes reinician el dispositivo
   actualizaciontime.attach(1, actualizaTime); // actualizara el tiempo cada 1 segundo para funciones pequenas
-  guardatC.attach(TimeMuestra, ejecutarTc);   // realiza una funcion void llamada result cada 10 minutos
-  guardaHum.attach(TimeMuestra, ejecutarHum); // realiza una funcion void llamada result cada 10 minutos
-  //    iniciamos el servidor
+  muestraTemyHum.attach(10, muestra);         // realiza una funcion void llamada result cada 10 minutos
+  //     iniciamos el servidor
   initServer();
   // iniciamos websockets
   initWebsockets();
   // crear Tarea Reconexión WIFI
-  xTaskCreate(TaskWifiReconnect, "TaskWifiReconnect", 1024 * 6, NULL, 2, NULL);
-  // crear Tarea de reconexión MQTT
+  xTaskCreatePinnedToCore(TaskWifiReconnect, "TaskWifiReconnect", 1024 * 6, NULL, 2, NULL, 0); // se para la tarea al core 0
+  // xTaskCreate(TaskWifiReconnect, "TaskWifiReconnect", 1024 * 6, NULL, 2, NULL);
+  //  crear Tarea de reconexión MQTT
   xTaskCreate(TaskMqttReconnect, "TaskMqttReconnect", 1024 * 6, NULL, 2, NULL);
   // LED MQTT Task
   xTaskCreate(TaskMQTTLed, "TaskMQTTLed", 1024 * 2, NULL, 1, NULL); // le baje a solo 1024 y falla
@@ -133,7 +135,7 @@ void setup()
   // crea tarea para ponerle horario a los relevadore
   xTaskCreate(TaskTimeRele, "TaskTimeRele", 1024 * 2, NULL, 1, NULL);
   // Crear una tarea que envie los mensajes a websockets
-  xTaskCreate(TaskWsSend, "TaskWsSend", 1024 * 4, NULL, 1, NULL);
+  xTaskCreate(TaskWsSend, "TaskWsSend", 1024 * 4, NULL, 1, NULL); // mas memoria a WS antes 4 ahora 6
   // crear tarea estado de las alarmas
   // xTaskCreate(TaskAlarms, "TaskAlarms", 1024 * 2, NULL, 1, NULL);
 
@@ -149,12 +151,11 @@ void setup()
 
 void loop()
 {
-  ESP_RST_TASK_WDT;       // reiniciar el perro guardian  por si alguna tarea dura mas tiempo del esperado al no reiniciarlo el reiniciara el dispositivo
+
+  // ESP_RST_TASK_WDT;       // reiniciar el perro guardian  por si alguna tarea dura mas tiempo del esperado al no reiniciarlo el reiniciara el dispositivo
   ctrlRelays();           // checa el estado de los relays para prenderlos o apagarlos
   statusAlarmVariables(); // actualiza el estado de las variables de las alarmas
   contadorAlarmas();      // cuenta la cantidad de alarmas y le pone la fecha
-  digitalWrite(TMOSFET1, R_STATUS1);
-  digitalWrite(TMOSFET2, R_STATUS2);
   // setupPinActivarAlarmas(); o crear una tarea o interrupcion
 }
 

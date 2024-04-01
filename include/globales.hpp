@@ -62,7 +62,7 @@ String device_fw_version = ESCAPEQUOTE(BUILD_TAG); // lo toma de platformio
 char LUGAR[15];           // donde esta intalado el dispositivo
 int device_restart;       // Numero de reinicios
 char device_id[30];       // ID del dispositivo
-char device_name[30];     // Nombre del dispositivo
+char device_name[30];     // Nombre del dispositivo que sirve de mDNS
 char device_user[15];     // Usuario para acceso al servidor web
 char device_password[15]; // Contraseña del usuario servidor web
 int RESTART = 211179;     //= 211179;   //contraseña de 6 digitos para reiniciar el sistema (211179) Guarda informacion aun por hacer ------------
@@ -144,7 +144,7 @@ bool mqtt_status_send2;  // Habilitar envio de estados
 //------------------------------------------------------------------------
 // Zona EEPROM para contador de reinicios
 //------------------------------------------------------------------------++++++++++++++++++++++++++++++++++++++++++++
-bool produccion = false;                            // mientras el programa este en derarrollo el valor sera false
+bool produccion = true;                             // mientras el programa este en derarrollo el valor sera false
 #define Start_Address 0                             // posicion de inicio en la EEPROM
 #define Restart_Address Start_Address + sizeof(int) // Dirección del dato en el EEPROM
 //------------------------------------------------------------------------
@@ -251,17 +251,6 @@ volatile unsigned long tiempoDeInterrupcion = 0;  // sirve para omitir rebotes e
 volatile unsigned long tiempoDeInterrupcion1 = 0; // sirve para omitir rebotes en el RELAY2
 // void IRAM_ATTR activarAlarmas();
 
-/// variables que se requieren para obtener la informacion del dispositivo remoto
-// String REMOTE_serial, REMOTE_MACWiFi;
-// bool REMOTE_ALRM_STATUS1, REMOTE_ALRM_STATUS2, REMOTE_ALRM_STATUS3, REMOTE_ALRM_STATUS4, REMOTE_ALRM_STATUS5, REMOTE_ALRM_STATUS6, REMOTE_ALRM_STATUS7;
-// bool REMOTE_ALRM_LOGIC1, REMOTE_ALRM_LOGIC2, REMOTE_ALRM_LOGIC3, REMOTE_ALRM_LOGIC4, REMOTE_ALRM_LOGIC5, REMOTE_ALRM_LOGIC6, REMOTE_ALRM_LOGIC7;
-// String REMOTE_ALRM_NAME1, REMOTE_ALRM_NAME2, REMOTE_ALRM_NAME3, REMOTE_ALRM_NAME4, REMOTE_ALRM_NAME5, REMOTE_ALRM_NAME6, REMOTE_ALRM_NAME7;
-// String REMOTE_ALRM_TON1, REMOTE_ALRM_TON2, REMOTE_ALRM_TON3, REMOTE_ALRM_TON4, REMOTE_ALRM_TON5, REMOTE_ALRM_TON6, REMOTE_ALRM_TON7;
-// String REMOTE_ALRM_TOFF1, REMOTE_ALRM_TOFF2, REMOTE_ALRM_TOFF3, REMOTE_ALRM_TOFF4, REMOTE_ALRM_TOFF5, REMOTE_ALRM_TOFF6, REMOTE_ALRM_TOFF7;
-// int REMOTE_ALRM_CONT1, REMOTE_ALRM_CONT2, REMOTE_ALRM_CONT3, REMOTE_ALRM_CONT4, REMOTE_ALRM_CONT5, REMOTE_ALRM_CONT6, REMOTE_ALRM_CONT7; // registra el valor del contador
-// String REMOTE_R_NAME1, REMOTE_R_NAME2;
-// bool REMOTE_R_STATUS1, REMOTE_R_STATUS2, REMOTE_R_LOGIC1, REMOTE_R_LOGIC2;
-
 //-------------------------------------------------------------------
 // variables para actualizar el Firmware
 //----------------------------------------------------------------------------
@@ -270,5 +259,7 @@ size_t content_len; // para la barra de progreso del firmware
 //------------------------------------------------------------------------------
 // Variables necesarias para registrar temperaturas y humedades por 48 hrs
 //------------------------------------------------------------------------------
-int TimeMuestra = 3600; // son segundo
-#define NUM_VALORES 24  // no superar este valor ya que en websocket esta hardcodeado
+int muestraCadamin = 60; // minutos
+#define NUM_VALORES 24    // antes 24
+int diesSeg = 6;
+int minutos = 60;

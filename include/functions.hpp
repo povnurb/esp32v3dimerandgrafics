@@ -5,8 +5,7 @@
 Ticker timerRelay1;       // para el manejo del relay1
 Ticker timerRelay2;       // para el manejo del relay2
 Ticker actualizaciontime; // actualizara el valor de la variable time cada 10 segundos
-Ticker guardatC;          // declaracion de una tarea que guarda el valor en un array de la temperatura
-Ticker guardaHum;
+Ticker muestraTemyHum;    // declaracion de una tarea que guarda el valor en un array de la temperatura
 // falta R_TIMER1 y R_TIMER2 para contabilizar el tiempo que lleva encendido
 
 String releTime(); // es el comparador para encender o apagar los relevadores
@@ -18,6 +17,7 @@ void offRelay1();
 void offRelay2();
 void setDyMsYr();
 void wsMessageSend(String msg, String icon, String Type);
+void muestra();
 
 /**
  * void log Genera mensajes personalizados en el puerto Serial
@@ -177,11 +177,13 @@ bool OnOffRelays(String command)
             if (R_LOGIC1)
             {
                 digitalWrite(RELAY1, HIGH);
+                digitalWrite(TMOSFET1, HIGH);
                 R_STATUS1 = true;
             }
             else
             {
                 digitalWrite(RELAY1, LOW);
+                digitalWrite(TMOSFET1, LOW);
                 R_STATUS1 = false;
             }
             return true;
@@ -191,11 +193,13 @@ bool OnOffRelays(String command)
             if (R_LOGIC2)
             {
                 digitalWrite(RELAY2, HIGH);
+                digitalWrite(TMOSFET2, HIGH);
                 R_STATUS2 = true;
             }
             else
             {
                 digitalWrite(RELAY2, LOW);
+                digitalWrite(TMOSFET2, LOW);
                 R_STATUS2 = false;
             }
             return true;
@@ -219,11 +223,13 @@ bool OnOffRelays(String command)
             if (R_LOGIC1)
             {
                 digitalWrite(RELAY1, LOW);
+                digitalWrite(TMOSFET1, LOW);
                 R_STATUS1 = false;
             }
             else
             {
                 digitalWrite(RELAY1, HIGH);
+                digitalWrite(TMOSFET1, HIGH);
                 R_STATUS1 = true;
             }
             return true;
@@ -233,11 +239,13 @@ bool OnOffRelays(String command)
             if (R_LOGIC2)
             {
                 digitalWrite(RELAY2, LOW);
+                digitalWrite(TMOSFET2, LOW);
                 R_STATUS2 = false;
             }
             else
             {
                 digitalWrite(RELAY2, HIGH);
+                digitalWrite(TMOSFET2, HIGH);
                 R_STATUS2 = true;
             }
             return true;
@@ -746,11 +754,14 @@ void ctrlRelays()
         if (TIMEONRELAY1 == releTime())
         {
             digitalWrite(RELAY1, HIGH);
+            digitalWrite(TMOSFET1, HIGH);
+
             R_STATUS1 = true;
         }
         if (TIMEOFFRELAY1 == releTime())
         {
             digitalWrite(RELAY1, LOW);
+            digitalWrite(TMOSFET1, LOW);
             R_STATUS1 = false;
         }
     }
@@ -759,11 +770,13 @@ void ctrlRelays()
         if (TIMEONRELAY2 == releTime())
         {
             digitalWrite(RELAY2, HIGH);
+            digitalWrite(TMOSFET2, HIGH);
             R_STATUS2 = true;
         }
         if (TIMEOFFRELAY2 == releTime())
         {
             digitalWrite(RELAY2, LOW);
+            digitalWrite(TMOSFET2, LOW);
             R_STATUS2 = false;
         }
     }
@@ -784,24 +797,29 @@ void ctrlRelays()
     if (R_LOGIC1)
     {
         digitalWrite(RELAY1, R_STATUS1);
+        digitalWrite(TMOSFET1, R_STATUS1);
     }
     else
     {
         digitalWrite(RELAY1, !R_STATUS1);
+        digitalWrite(TMOSFET1, !R_STATUS1);
     }
     if (R_LOGIC2)
     {
         digitalWrite(RELAY2, R_STATUS2);
+        digitalWrite(TMOSFET2, R_STATUS2);
     }
     else
     {
         digitalWrite(RELAY2, !R_STATUS2);
+        digitalWrite(TMOSFET2, !R_STATUS2);
     }
 }
-void offRelay1()
+void offRelay1() // checar si aqui tambien para los mosfet
 {
     R_TIMERON1 = false;
     digitalWrite(RELAY1, false);
+    digitalWrite(TMOSFET1, false);
     R_STATUS1 = false;
     timerRelay1.detach();
     releprog1 = false;
@@ -810,8 +828,9 @@ void offRelay2()
 {
     R_TIMERON2 = false;
     digitalWrite(RELAY2, false);
+    digitalWrite(TMOSFET2, false);
     R_STATUS2 = false;
-    timerRelay2.detach();
+    timerRelay2.detach(); // detiene la ejecucion
     releprog2 = false;
 }
 //--------------------------------------------------------------------------------
@@ -1114,36 +1133,35 @@ float tempMax()
 void mostrar()
 {
 
-    if (wifi_mode == WIFI_AP)
+    if (!wifi_mode)
     {
         OLED.clearDisplay();
         OLED.setTextSize(1);
         OLED.setTextColor(WHITE);
         OLED.setCursor(0, 0);
         OLED.println(String(ap_ssid));
-        OLED.println(ipStr(WiFi.softAPIP()));
-        OLED.print(tempC); // no llamar a funciones
-        OLED.print(" C ");
-        OLED.print(humedad); // llamar a variables
-        OLED.println("%");
+        OLED.println(ipStr(WiFi.softAPIP())); // ipStr(WiFi.softAPIP())
+        OLED.println(getDateTime());
+        if (tempC < 2)
+        {
+            OLED.print("WAIT");
+        }
+        else
+        {
+            OLED.print(tempC);
+        }
+        OLED.print(" C   ");
+        if (humedad < 2)
+        {
+            OLED.print("WAIT");
+        }
+        else
+        {
+            OLED.print(humedad);
+        }
+        OLED.println(" %");
         OLED.display();
         log("INFO", "functions.hpp", "Mostrando información en pantalla LCD (AP)");
-    }
-    else if (wifi_mode == WIFI_AP_STA)
-    {
-        OLED.clearDisplay();
-        OLED.setTextSize(1);
-        OLED.setTextColor(WHITE);
-        OLED.setCursor(0, 0);
-        OLED.println(wifi_ssid);
-        OLED.println(ipStr(WiFi.localIP()));
-        OLED.print(Temperatura());
-        OLED.print(" C ");
-        OLED.print(Humedad());
-        OLED.println("%");
-        OLED.print(getDateTime());
-        OLED.display();
-        log("INFO", "functions.hpp", "Mostrando información en pantalla LCD (ESTACION)");
     }
     else
     {
@@ -1223,6 +1241,7 @@ void actRele()
     {
         togle1 = !togle1;
         digitalWrite(RELAY1, true);
+        digitalWrite(TMOSFET1, true);
         R_STATUS1 = true;
         tiempoDeInterrupcion = millis();
     }
@@ -1230,6 +1249,7 @@ void actRele()
     {
         togle1 = !togle1;
         digitalWrite(RELAY1, false);
+        digitalWrite(TMOSFET1, false);
         R_STATUS1 = false;
         tiempoDeInterrupcion = millis();
     }
@@ -1245,6 +1265,7 @@ void actRele()
     {
         togle2 = !togle2;
         digitalWrite(RELAY2, true);
+        digitalWrite(TMOSFET2, true);
         R_STATUS2 = true;
         tiempoDeInterrupcion1 = millis();
     }
@@ -1252,6 +1273,7 @@ void actRele()
     {
         togle2 = !togle2;
         digitalWrite(RELAY2, false);
+        digitalWrite(TMOSFET2, false);
         R_STATUS2 = false;
         tiempoDeInterrupcion1 = millis();
     }
@@ -1507,36 +1529,27 @@ void ejecutarHum()
 }
 
 //----------------------------------------------------------------------------------------------
-// copia del archivos SPIFFS
+// muestra de temperatura y humedad
 //----------------------------------------------------------------------------------------------
-void copia()
+void muestra()
 {
-
-    // Abre el primer archivo en modo lectura
-    File file1 = SPIFFS.open("/especial.json", "r");
-    if (!file1)
+    if (diesSeg >= 6)
     {
-        Serial.println("Failed to open file for reading");
-        return;
+        if (minutos >= muestraCadamin)
+        { // muestraCadamin indica que la muestra se tomara cada tiempo que indica la varible
+            ejecutarTc();
+            ejecutarHum();
+            log("INFO","functions.hpp","linea 1542 aprox");
+            minutos = 0;
+        }
+        else
+        {
+            minutos++;
+        }
+        diesSeg = 0;
     }
-
-    // Abre el segundo archivo en modo escritura
-    File file2 = SPIFFS.open("/settings.json", "w");
-    if (!file2)
+    else
     {
-        Serial.println("Failed to open file for writing");
-        return;
+        diesSeg++;
     }
-
-    // Lee el contenido del primer archivo y escribe en el segundo
-    while (file1.available())
-    {
-        file2.write(file1.read());
-    }
-
-    // Cierra ambos archivos
-    file1.close();
-    file2.close();
-
-    Serial.println("Archivo copiado exitosamente");
 }

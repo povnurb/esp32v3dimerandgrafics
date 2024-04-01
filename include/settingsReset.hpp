@@ -13,7 +13,7 @@ void settingsReset()
      *******************************************************************************/
     strlcpy(LUGAR, "IGL-PTTI", sizeof(LUGAR));
     strlcpy(device_id, DeviceID().c_str(), sizeof(device_id));
-    strlcpy(device_name, extractNumbers(DeviceID()).c_str(), sizeof(device_name));
+    strlcpy(device_name, extractNumbers(DeviceID()).c_str(), sizeof(device_name)); // probar con iglptti
     strlcpy(device_user, "admin", sizeof(device_user));
     strlcpy(device_password, "personal", sizeof(device_password));
     /************************************************************************************************
@@ -163,7 +163,7 @@ void especialReset()
      * a las variables que se encuentran en el archivo globales.hpp                                 *
      * variables para el MQTT:                                                                      *
      * *********************************************************************************************/
-    mqtt_enable = true; // estaba en false
+    mqtt_enable = false; // estaba en false
     strlcpy(mqtt_server, "iotmx.com", sizeof(mqtt_server));
     mqtt_port = 1883;   // verificar
     mqtt_retain = true; // verificar false
@@ -227,7 +227,7 @@ void especialReset()
     // Time settings.json
     // -------------------------------------------------------------------
     time_ajuste = true;
-    strlcpy(time_date, "2024-06-04T14:09", sizeof(time_date));
+    strlcpy(time_date, "2024-06-04T00:00", sizeof(time_date));
     time_z_horaria = -14400;
     strlcpy(time_server, "time.nist.gov", sizeof(time_server));
     log("INFO", "specialReset.hpp", "Se reiniciaron todos los valores de fabrica.");
