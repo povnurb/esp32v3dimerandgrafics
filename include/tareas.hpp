@@ -32,6 +32,7 @@ void TaskMqttReconnect(void *pvParamenters)
     (void)pvParamenters;
     while (1)
     { // loop infinito
+        // vTaskDelay(10 / portTICK_PERIOD_MS); //podria ser necesario
         if ((WiFi.status() == WL_CONNECTED) && (wifi_app == WIFI_AP_STA))
         {
             if (mqtt_server != 0)
@@ -126,7 +127,7 @@ void TaskWsSend(void *pvParameters)
     (void)pvParameters;
     while (1)
     {
-        vTaskDelay(3000 / portTICK_PERIOD_MS); // esto es igual a 1 segundo lo cual hara lo siguiente:
+        vTaskDelay(3000 / portTICK_PERIOD_MS); // esto es igual a 3 segundo lo cual hara lo siguiente:
         wsMessageSend(getJsonIndex(), "", "");
     }
 }

@@ -1469,30 +1469,25 @@ void mostrarValoresTemp()
 
 int pruebaTc()
 {
-    Serial.println(tempC);
-    if ((10 < tempC < 90) && (20 < humedad < 99))
+    int nuevaTemperatura = tempC;
+
+    // Almacenar la nueva temperatura en el array y actualizar el índice
+    vTemp[0] = nuevaTemperatura;
+
+    mostrarValoresTemp();
+    for (int i = NUM_VALORES; i >= 1; i--) // este hace el corrimiento
     {
-        int nuevaTemperatura = tempC;
-        // Almacenar la nueva temperatura en el array y actualizar el índice
-        vTemp[0] = nuevaTemperatura;
-        mostrarValoresTemp();
-        for (int i = NUM_VALORES; i >= 1; i--) // este hace el corrimiento
-        {
-            vTemp[i] = vTemp[i - 1];
-        }
-        return 0;
+        vTemp[i] = vTemp[i - 1];
     }
-    else
-    {
-        return 1;
-    }
+
+    return 0;
 }
+
 void ejecutarTc()
 {
     if (pruebaTc())
     {
-        Serial.println(tempC);
-        log("Error", "functions.hpp", "Error con la medicionde la temperatura");
+        Serial.println("Error");
     }
 }
 //-------------------------------------------------------------------------------
@@ -1515,31 +1510,23 @@ void mostrarValoresHum()
 
 int pruebaHum()
 {
-    Serial.println(humedad);
-    if ((10 < tempC < 90) && (20 < humedad < 99))
+    int nuevaHum = humedad;
+
+    // Almacenar la nueva temperatura en el array y actualizar el índice
+    vHum[0] = nuevaHum;
+    mostrarValoresHum();
+    for (int i = NUM_VALORES; i >= 1; i--) // este hace el corrimiento
     {
-        int nuevaHum = humedad;
-        // Almacenar la nueva temperatura en el array y actualizar el índice
-        vHum[0] = nuevaHum;
-        mostrarValoresHum();
-        for (int i = NUM_VALORES; i >= 1; i--) // este hace el corrimiento
-        {
-            vHum[i] = vHum[i - 1];
-        }
-        return 0;
+        vHum[i] = vHum[i - 1];
     }
-    else
-    {
-        return 1;
-    }
+    return 0;
 }
 void ejecutarHum()
 {
 
     if (pruebaHum())
     {
-        Serial.println(tempC);
-        log("Error", "functions.hpp", "Error con la medicionde la humedad");
+        Serial.println("Error");
     }
 }
 
@@ -1554,6 +1541,7 @@ void muestra() // esta funcion toma una muestra de la temperatura y la humedad
         { // muestraCadamin indica que la muestra se tomara cada tiempo que indica la varible
             ejecutarTc();
             ejecutarHum();
+            log("INFO", "functions.hpp", "linea 1542 aprox");
             minutos = 1;
         }
         else

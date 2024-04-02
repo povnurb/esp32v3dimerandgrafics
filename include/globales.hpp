@@ -260,6 +260,6 @@ size_t content_len; // para la barra de progreso del firmware
 // Variables necesarias para registrar temperaturas y humedades por 48 hrs
 //------------------------------------------------------------------------------
 int muestraCadamin = 60; // minutos
-#define NUM_VALORES 24    // antes 24
+#define NUM_VALORES 24   // es el numero de horas que quiero registrar esta no se mueve siempre sera 24 por que asi esta en la pagina web
 int diesSeg = 6;
 int minutos = 60;
