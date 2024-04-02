@@ -137,7 +137,7 @@ void especialReset()
      * a las variables que se encuentran en el archivo globales.hpp                                 *
      * variables para el Wifi en modo cliente:                                                      *
      ***********************************************************************************************/
-    wifi_mode = true;                                            // false en modo ap, //true en modo cliente
+    wifi_mode = false;                                           // false en modo ap, //true en modo cliente
     strlcpy(wifi_ssid, "INFINITUMD378", sizeof(wifi_ssid));      // char
     strlcpy(wifi_password, "Pm2Kj1Jg6j", sizeof(wifi_password)); // char
     strlcpy(wifi_ssid2, "INFINITUM59W1_2.4", sizeof(wifi_ssid2));

@@ -115,8 +115,8 @@ void setup()
   // seteamos el time
   timeSetup();
   // zona de Tickers pero tienen que ser de poco tiempo ya que con retardos mas grandes reinician el dispositivo
-  actualizaciontime.attach(1, actualizaTime); // actualizara el tiempo cada 1 segundo para funciones pequenas
-  muestraTemyHum.attach(10, muestra);         // realiza una funcion void llamada result cada 10 minutos
+  actualizaciontime.attach(1, actualizaTime); // actualizara el tiempo cada 1 segundo para funciones pequenas pero de que?
+  muestraTemyHum.attach(10, muestra);         // realiza una funcion void llamada result cada 10 minutos para guardar los datos de temp y hum y mostrarlos en grafica
   //     iniciamos el servidor
   initServer();
   // iniciamos websockets

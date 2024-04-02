@@ -144,7 +144,7 @@ bool mqtt_status_send2;  // Habilitar envio de estados
 //------------------------------------------------------------------------
 // Zona EEPROM para contador de reinicios
 //------------------------------------------------------------------------++++++++++++++++++++++++++++++++++++++++++++
-bool produccion = true;                             // mientras el programa este en derarrollo el valor sera false
+bool produccion = true;                            // mientras el programa este en derarrollo el valor sera false
 #define Start_Address 0                             // posicion de inicio en la EEPROM
 #define Restart_Address Start_Address + sizeof(int) // Dirección del dato en el EEPROM
 //------------------------------------------------------------------------
@@ -259,7 +259,7 @@ size_t content_len; // para la barra de progreso del firmware
 //------------------------------------------------------------------------------
 // Variables necesarias para registrar temperaturas y humedades por 48 hrs
 //------------------------------------------------------------------------------
-int muestraCadamin = 60; // minutos
-#define NUM_VALORES 24   // es el numero de horas que quiero registrar esta no se mueve siempre sera 24 por que asi esta en la pagina web
+int muestraCadamin = 30; // minutos jalaba bien con 1
+#define NUM_VALORES 12   // es el numero de horas que quiero registrar esta no se mueve siempre sera 24 por que asi esta en la pagina web
 int diesSeg = 6;
 int minutos = 60;
