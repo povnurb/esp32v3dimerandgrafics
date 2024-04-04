@@ -35,7 +35,7 @@ void setupPintRestore()
     reset_pin = {PINREST, false};
     pinMode(reset_pin.PIN, INPUT_PULLUP);
     attachInterrupt(reset_pin.PIN, int_restore, FALLING); // interrupcion de Alto a bajo
-    Serial.println("Configuración del PINREST");
+    log("INFO", "vue32_reset.hpp", "Configuración del PINREST");
 }
 /* Tipos de Interrupciones
 LOW     Las interrupciones se dan cuando el pin está BAJO
@@ -64,15 +64,17 @@ void resetIntLoop()
             OLED.setCursor(0, 0);
             OLED.println("RESTAURANDO EN:");
             OLED.setTextSize(2);
-            OLED.println(5 - conteo);
+            OLED.println(TREST - conteo);
             OLED.display();
 
             //---------------------------------------
         }
         pin_active = digitalRead(reset_pin.PIN); // En la interrupcion capturatmos el estado de ese PIN
-        if (pin_active == LOW && conteo == 5)
+        if (pin_active == LOW && conteo == TREST)
         {
             // reseteo a Fabrica
+            log("INFO", "functions.hpp", "Borrando datos de temperatura y humedad");
+            dataGraficasReset();
             especialReset(); // verificar por que no lo pone en modo ap
             if (especialSave())
             {

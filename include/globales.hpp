@@ -36,6 +36,7 @@
 #define ALARM_PIN3 25 // GPIO25 entrada de alarma con tierra  ----D25
 #define CLIMAA 26     // GPIO26 entrada con acoplador a 5-24 volts indicarian si sigue operando un compresor1
 #define CLIMAB 27     // GPIO27 entrada con acoplador a 5-24 volts indicarian si sigue operando un compresor2
+#define TREST 10      // tiempo que pasara para restaurart a fabricar
 #define PINREST 34    // pin de reinicio y restauracion
 //--------------------------------------------------------------------------
 // Calcular la capacidad del JSON
@@ -43,6 +44,7 @@
 // Documentacion: https://arduinojson.org/v6/api/json/deserializejson/
 //--------------------------------------------------------------------------
 const size_t capacitySettings = 1024 * 5; // 1024*5 = 5KB
+const size_t capacityData = 512;          // tamaño del documento JSON para la data
 StaticJsonDocument<2000> board;           // verificar con mas capacidad pare espnow
 String jsonStringApi = "{\"info\":\"null\"}";
 //------------------------------------------------------------------
@@ -263,3 +265,5 @@ int muestraCadamin = 10; // minutos jalaba bien con 1 probando con 5 min
 #define NUM_VALORES 12   // es el numero de horas que quiero registrar esta no se mueve siempre sera 24 por que asi esta en la pagina web
 int diesSeg = 6;
 int minutos = 60;
+int vTemp[NUM_VALORES]; // Array para almacenar los valores de temperatura
+int vHum[NUM_VALORES];  // Array para almacenar los valores de temperatura

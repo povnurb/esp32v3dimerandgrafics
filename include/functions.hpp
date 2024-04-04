@@ -9,6 +9,7 @@ Ticker muestraTemyHum; // declaracion de una tarea que guarda el valor en un arr
 // falta R_TIMER1 y R_TIMER2 para contabilizar el tiempo que lleva encendido
 
 String releTime(); // es el comparador para encender o apagar los relevadores
+// declaraciones de funciones
 void settingsReset();
 void especialReset();
 bool especialSave();
@@ -19,7 +20,9 @@ void setDyMsYr();
 void wsMessageSend(String msg, String icon, String Type);
 void muestra();
 void resetIntLoop();
-
+bool dataGraficasRead();
+void dataGraficasReset();
+bool dataGraficasSave();
 /**
  * void log Genera mensajes personalizados en el puerto Serial
  */
@@ -567,6 +570,8 @@ void restore(String origin)
     log("INFO", "functions.hpp", "Reseteando archivo especial a valores de fábrica...");
     especialReset();
     log("INFO", "functions.hpp", "Salvando configuraciones de fábrica...");
+    dataGraficasReset(); // borrando informacion de valores de temperatura y humedad
+    log("INFO", "functions.hpp", "Borrando datos de temperatura y humedad");
     if (settingsSave())
     {
         log("INFO", "functions.hpp", "salvando nuevas configuraciones con valores de fábrica...");
@@ -1276,8 +1281,6 @@ void printProgress(size_t prog, size_t sz)
 // funciones necesarias para guarda un array de la temperatura -------------------------------------Corregir o mejorar
 // --------------------------------------------------------------------------------
 
-int vTemp[NUM_VALORES]; // Array para almacenar los valores de temperatura
-
 // Función para mostrar los últimos valores de temperatura
 void mostrarValoresTemp()
 {
@@ -1322,7 +1325,6 @@ void ejecutarTc()
 //-------------------------------------------------------------------------------
 // funciones necesarias para guarda un array de la Humedad -------------------------------------
 // --------------------------------------------------------------------------------
-int vHum[NUM_VALORES]; // Array para almacenar los valores de temperatura
 
 // Función para mostrar los últimos valores de temperatura
 void mostrarValoresHum()
@@ -1377,6 +1379,7 @@ void muestra() // esta funcion toma una muestra de la temperatura y la humedad
         { // muestraCadamin indica que la muestra se tomara cada tiempo que indica la varible
             ejecutarTc();
             ejecutarHum();
+            dataGraficasSave(); //
             minutos = 1;
         }
         else

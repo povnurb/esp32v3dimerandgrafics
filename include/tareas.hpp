@@ -144,3 +144,15 @@ void TaskRestore(void *pvParameters)
         resetIntLoop();
     }
 }
+//-----------------------------------------------
+// tarea de los valores para la grafica parece no ser necesario se uso un tickers
+//------------------------------------------------
+void TaskMuestra(void *pvParameters)
+{
+    (void)pvParameters;
+    while (1)
+    {
+        vTaskDelay(10000 / portTICK_PERIOD_MS);
+        muestra();
+    }
+}

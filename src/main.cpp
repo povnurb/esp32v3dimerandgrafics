@@ -50,6 +50,7 @@
 #include "websockets.hpp"
 #include "tareas.hpp"
 #include "vue32_reset.hpp"
+#include "spiffsGraficas.hpp"
 
 // put function declarations here:
 
@@ -78,7 +79,9 @@ void setup()
   }
   OLED.clearDisplay();
   dht.begin(); // su funcionalidad se encuentra en functions.hpp
-  // inicializar el SPIFFS
+  //-------------------------------------------------------------------------------------
+  // Inicia zona SPIFFS
+  //--------------------------------------------------------------------------------------
   if (!SPIFFS.begin(true))
   { // si no se puede inicializar ahora el (true) sirve para darle formato
     log("ERROR", "main.cpp", "Falló la inicializacion del SPIFFS");
@@ -101,11 +104,24 @@ void setup()
     especialSave(); // es un buleano
     log("INFO", "main.cpp", "Información de actuadores Salvada.");
   }
+  // Data Graficas
+  //  traer las datas resientes desde json
+  if (!dataGraficasRead()) // si no hay
+  {                        // se crea el archivo con los valores iniciales de reset
+    dataGraficasSave();    // aqui guardamos
+    log("INFO", "spiffsgraficas.hpp", "Información general Salvada.");
+    // encaso que el dataRead se a podido leer no se guarda nada para no andar tocando la memoria
+  }
+
   // especialSave(); //aqui mostramos la información
   // Debuelve la lista de carpetas y archivos del SPIFFS ONLYDEBUG
   // listDir(SPIFFS, "/", 0);
-  gpioDefine();   // definicion de los pines y setear (setup)
-  setupAlarmas(); // definicion de las alarmas
+  //-------------------------------------------------------------------------------------
+  // Termina zona SPIFFS
+  //--------------------------------------------------------------------------------------
+  gpioDefine();       // definicion de los pines y setear (setup)
+  setupPintRestore(); // definicion para el pin de reset y restore
+  setupAlarmas();     // definicion de las alarmas
   // Paso de los estados de los pines de los Relays
   setOnOffSingle(RELAY1, R_STATUS1);
   setOnOffSingle(RELAY2, R_STATUS2);
@@ -139,6 +155,8 @@ void setup()
   xTaskCreate(TaskWsSend, "TaskWsSend", 1024 * 4, NULL, 1, NULL); // mas memoria a WS antes 4 ahora 6
   // Crear una tarea verifique el boton d34 si se requiere una restauracion
   xTaskCreate(TaskRestore, "TaskRestore", 1024 * 4, NULL, 1, NULL);
+  // crea una tarea que toma la muestras para la grafica pero lo hace el core0
+  // xTaskCreatePinnedToCore(TaskMuestra, "TaskMuestra", 1024 * 4, NULL, 1, NULL, 0);
   // crear tarea estado de las alarmas
   // xTaskCreate(TaskAlarms, "TaskAlarms", 1024 * 2, NULL, 1, NULL);
 
