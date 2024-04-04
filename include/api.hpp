@@ -1670,8 +1670,8 @@ void handleApiTime(AsyncWebServerRequest *request)
     json += ",\"time_date\": \"" + String(time_date) + "\""; // 2023-03-07T23:47
     json += ",\"time_z_horaria\": \"" + String(time_z_horaria) + "\"";
     json += ",\"time_server\": \"" + String(time_server) + "\"";
-    json += ",\"time_now\": \"" + String(time_now) + "\""; // 2023-03-07T23:47
-    json += ",\"hora\": \"" + String(hora) + "\"";         // 2023-03-07T23:47
+    json += ",\"time_now\": \"" + String(getDateTime()) + "\""; // 2023-03-07T23:47
+    json += ",\"hora\": \"" + String(releTime()) + "\"";        // 2023-03-07T23:47
     json += "},";
     json += "\"code\": 1 ";
     json += "}";

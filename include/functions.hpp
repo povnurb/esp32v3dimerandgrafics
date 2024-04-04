@@ -2,10 +2,10 @@
 // archivo de funciones que se ocuparán en el programa
 // especialSave() funcion que usaremos para guardar la configuracion cuando reiniciemos por mqtt
 
-Ticker timerRelay1;       // para el manejo del relay1
-Ticker timerRelay2;       // para el manejo del relay2
-Ticker actualizaciontime; // actualizara el valor de la variable time cada 10 segundos
-Ticker muestraTemyHum;    // declaracion de una tarea que guarda el valor en un array de la temperatura
+Ticker timerRelay1; // para el manejo del relay1
+Ticker timerRelay2; // para el manejo del relay2
+// Ticker actualizaciontime; // actualizara el valor de la variable time cada 10 segundos
+Ticker muestraTemyHum; // declaracion de una tarea que guarda el valor en un array de la temperatura
 // falta R_TIMER1 y R_TIMER2 para contabilizar el tiempo que lleva encendido
 
 String releTime(); // es el comparador para encender o apagar los relevadores
@@ -18,7 +18,7 @@ void offRelay2();
 void setDyMsYr();
 void wsMessageSend(String msg, String icon, String Type);
 void muestra();
-
+void resetIntLoop(); // la funcion se encuentra en el vue32_reset.hpp
 /**
  * void log Genera mensajes personalizados en el puerto Serial
  */
@@ -361,168 +361,7 @@ bool especial(String command)
         ALRM_NAME5 = JsonCommand["value"].as<String>();
         return true;
     }
-    /*
-    if (JsonCommand["varible"] == "cambio11")
-    {
-        cambio11 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio21")
-    {
-        cambio21 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio31")
-    {
-        cambio31 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio41")
-    {
-        cambio41 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio51")
-    {
-        cambio51 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio61")
-    {
-        cambio61 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio71")
-    {
-        cambio71 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio81")
-    {
-        cambio81 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio12")
-    {
-        cambio12 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio22")
-    {
-        cambio22 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio32")
-    {
-        cambio32 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio42")
-    {
-        cambio42 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio52")
-    {
-        cambio52 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio62")
-    {
-        cambio62 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio72")
-    {
-        cambio72 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio82")
-    {
-        cambio82 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio13")
-    {
-        cambio13 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio23")
-    {
-        cambio23 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio33")
-    {
-        cambio33 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio43")
-    {
-        cambio43 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio53")
-    {
-        cambio53 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio63")
-    {
-        cambio63 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio73")
-    {
-        cambio73 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio83")
-    {
-        cambio83 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio14")
-    {
-        cambio14 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio24")
-    {
-        cambio24 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio34")
-    {
-        cambio34 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio44")
-    {
-        cambio44 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio54")
-    {
-        cambio54 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio64")
-    {
-        cambio64 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio74")
-    {
-        cambio74 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    if (JsonCommand["varible"] == "cambio84")
-    {
-        cambio84 = JsonCommand["value"].as<String>();
-        return true;
-    }
-    */
+
     if (JsonCommand["varible"] == "CONTRASEÑA")
     {
         // {"protocol":"MQTT", "varible": "CONTRASEÑA", "value":"211179" }
@@ -1104,15 +943,7 @@ float tempMin()
     {
         min2 = min;
     }
-    // if (min < min2)
-    // {
-    //     min2 = min;
-    // }
-    // else if (min == 0)
-    // {
-    //     min2 = Temperatura();
-    // }
-    // Serial.println(min2);
+
     return min2;
 }
 float tempMax()
@@ -1209,15 +1040,6 @@ void mostrar()
         OLED.println(" %");
         OLED.display();
     }
-}
-
-//----------------------------------------------------
-// actulizacion de la variable time_now
-//---------------------------------------------------
-void actualizaTime()
-{
-    time_now = getDateTime();
-    hora = releTime();
 }
 
 //--------------------------------------------------------------------------------
@@ -1457,12 +1279,12 @@ int vTemp[NUM_VALORES]; // Array para almacenar los valores de temperatura
 // Función para mostrar los últimos valores de temperatura
 void mostrarValoresTemp()
 {
-    printf("Valores de temperatura: ");
+    Serial.printf("Valores de temperatura: ");
     for (int i = 0; i < NUM_VALORES; i++)
     {
-        printf("%d ", vTemp[i]);
+        Serial.printf("%d ", vTemp[i]);
     }
-    printf("\n");
+    Serial.printf("\n");
 }
 
 // Función para simular la lectura del sensor de temperatura
@@ -1503,19 +1325,18 @@ int vHum[NUM_VALORES]; // Array para almacenar los valores de temperatura
 // Función para mostrar los últimos valores de temperatura
 void mostrarValoresHum()
 {
-    printf("Valores de Humedad: ");
+    Serial.printf("Valores de Humedad: ");
     for (int i = 0; i < NUM_VALORES; i++)
     {
-        printf("%d ", vHum[i]);
+        Serial.printf("%d ", vHum[i]);
     }
-    printf("\n");
+    Serial.printf("\n");
 }
 
 // Función para simular la lectura del sensor de temperatura
 
 int pruebaHum()
 {
-    Serial.println(humedad);
     if ((10 < tempC < 90) && (20 < humedad < 99))
     {
         int nuevaHum = humedad;

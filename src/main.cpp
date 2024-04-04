@@ -49,7 +49,7 @@
 #include "server.hpp"
 #include "websockets.hpp"
 #include "tareas.hpp"
-
+#include "vue32_reset.hpp"
 // put function declarations here:
 
 void setup()
@@ -103,7 +103,8 @@ void setup()
   // especialSave(); //aqui mostramos la información
   // Debuelve la lista de carpetas y archivos del SPIFFS ONLYDEBUG
   // listDir(SPIFFS, "/", 0);
-  gpioDefine();   // definicion de los pines y setear (setup)
+  gpioDefine(); // definicion de los pines y setear (setup)
+  setupPintRestore();
   setupAlarmas(); // definicion de las alarmas
   // Paso de los estados de los pines de los Relays
   setOnOffSingle(RELAY1, R_STATUS1);
@@ -115,8 +116,7 @@ void setup()
   // seteamos el time
   timeSetup();
   // zona de Tickers pero tienen que ser de poco tiempo ya que con retardos mas grandes reinician el dispositivo
-  actualizaciontime.attach(1, actualizaTime); // actualizara el tiempo cada 1 segundo para funciones pequenas pero de que?
-  muestraTemyHum.attach(10, muestra);         // realiza una funcion void llamada result cada 10 minutos para guardar los datos de temp y hum y mostrarlos en grafica
+  muestraTemyHum.attach(10, muestra); // realiza una funcion void llamada result cada 10 minutos para guardar los datos de temp y hum y mostrarlos en grafica
   //     iniciamos el servidor
   initServer();
   // iniciamos websockets
@@ -136,6 +136,8 @@ void setup()
   xTaskCreate(TaskTimeRele, "TaskTimeRele", 1024 * 2, NULL, 1, NULL);
   // Crear una tarea que envie los mensajes a websockets
   xTaskCreate(TaskWsSend, "TaskWsSend", 1024 * 4, NULL, 1, NULL); // mas memoria a WS antes 4 ahora 6
+  // Crear una tarea verifique el boton d34 si se requiere una restauracion
+  xTaskCreate(TaskRestore, "TaskRestore", 1024 * 4, NULL, 1, NULL);
   // crear tarea estado de las alarmas
   // xTaskCreate(TaskAlarms, "TaskAlarms", 1024 * 2, NULL, 1, NULL);
 

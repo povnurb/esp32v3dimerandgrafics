@@ -36,6 +36,7 @@
 #define ALARM_PIN3 25 // GPIO25 entrada de alarma con tierra  ----D25
 #define CLIMAA 26     // GPIO26 entrada con acoplador a 5-24 volts indicarian si sigue operando un compresor1
 #define CLIMAB 27     // GPIO27 entrada con acoplador a 5-24 volts indicarian si sigue operando un compresor2
+#define PINREST 34    // pin de reinicio y restauracion
 //--------------------------------------------------------------------------
 // Calcular la capacidad del JSON
 // Asistente ArduinoJson: https://arduinojson.org/v6/assistant/
@@ -144,7 +145,7 @@ bool mqtt_status_send2;  // Habilitar envio de estados
 //------------------------------------------------------------------------
 // Zona EEPROM para contador de reinicios
 //------------------------------------------------------------------------++++++++++++++++++++++++++++++++++++++++++++
-bool produccion = true;                            // mientras el programa este en derarrollo el valor sera false
+bool produccion = true;                             // mientras el programa este en derarrollo el valor sera false
 #define Start_Address 0                             // posicion de inicio en la EEPROM
 #define Restart_Address Start_Address + sizeof(int) // Dirección del dato en el EEPROM
 //------------------------------------------------------------------------

@@ -131,3 +131,15 @@ void TaskWsSend(void *pvParameters)
         wsMessageSend(getJsonIndex(), "", "");
     }
 }
+//----------------------------------------------------
+// tarea para verificar si se requiere restaurar de fabrica
+//-----------------------------------------------------------
+void TaskRestore(void *pvParameters)
+{
+    (void)pvParameters;
+    while (1)
+    {
+        vTaskDelay(2000 / portTICK_PERIOD_MS); // esto es igual a 3 segundo lo cual hara lo siguiente:
+        resetIntLoop();
+    }
+}
