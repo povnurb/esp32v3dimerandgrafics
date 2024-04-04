@@ -29,6 +29,7 @@ void TaskWifiReconnect(void *pvParamenters)
 void TaskMqttReconnect(void *pvParamenters)
 {
     // para mantener conectado ya sea en modo ap o ap_sta al wifi
+    ESP_RST_TASK_WDT; // para probar si con esto queda
     (void)pvParamenters;
     while (1)
     { // loop infinito

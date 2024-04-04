@@ -203,13 +203,12 @@ char time_date[18];   // 2022-09-07T23:47
 long time_z_horaria;  // Zona Horaria GMT 0 = 0 -GMT +1 = 3600 - GMT -1 = -3600
 char time_server[39]; // Servidor NTP Elemplo: time.mist.gov
 
-int time_hr;     // Hora 0 -23
-int time_mn;     // Minutos 0 - 59
-int time_sc;     // Segundos 0-59
-int time_dy;     // Días 1 - 31
-int time_mt;     // Meses 1- 12
-int time_yr;     // Año 2023
-String time_now; // Muestra un string de la fecha
+int time_hr; // Hora 0 -23
+int time_mn; // Minutos 0 - 59
+int time_sc; // Segundos 0-59
+int time_dy; // Días 1 - 31
+int time_mt; // Meses 1- 12
+int time_yr; // Año 2023
 String hora;
 
 // NTP Server
@@ -260,7 +259,7 @@ size_t content_len; // para la barra de progreso del firmware
 //------------------------------------------------------------------------------
 // Variables necesarias para registrar temperaturas y humedades por 48 hrs
 //------------------------------------------------------------------------------
-int muestraCadamin = 30; // minutos jalaba bien con 1
+int muestraCadamin = 10; // minutos jalaba bien con 1 probando con 5 min
 #define NUM_VALORES 12   // es el numero de horas que quiero registrar esta no se mueve siempre sera 24 por que asi esta en la pagina web
 int diesSeg = 6;
 int minutos = 60;

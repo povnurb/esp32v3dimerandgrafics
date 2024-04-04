@@ -18,7 +18,8 @@ void offRelay2();
 void setDyMsYr();
 void wsMessageSend(String msg, String icon, String Type);
 void muestra();
-void resetIntLoop(); // la funcion se encuentra en el vue32_reset.hpp
+void resetIntLoop();
+
 /**
  * void log Genera mensajes personalizados en el puerto Serial
  */
@@ -992,7 +993,8 @@ void mostrar()
         }
         OLED.println(" %");
         OLED.display();
-        log("INFO", "functions.hpp", "Mostrando información en pantalla LCD (AP)");
+        log("INFO", "functions.hpp", "MODO PUNTO DE ACCESO");
+        Serial.flush();
     }
     else
     {
@@ -1291,7 +1293,7 @@ void mostrarValoresTemp()
 
 int pruebaTc()
 {
-    Serial.println(tempC);
+    // Serial.println(tempC);
     if ((10 < tempC < 90) && (20 < humedad < 99))
     {
         int nuevaTemperatura = tempC;
