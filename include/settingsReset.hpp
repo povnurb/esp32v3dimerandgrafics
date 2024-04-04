@@ -21,7 +21,7 @@ void settingsReset()
      * a las variables que se encuentran en el archivo globales.hpp                                 *
      * variables para el Wifi en modo cliente:                                                      *
      ***********************************************************************************************/
-    wifi_mode = true;                                            // false en modo ap, //true en modo cliente
+    wifi_mode = false;                                           // false en modo ap, //true en modo cliente
     strlcpy(wifi_ssid, "INFINITUM59W1_2.4", sizeof(wifi_ssid));  // char
     strlcpy(wifi_password, "unJvpTX5Vp", sizeof(wifi_password)); // char
     strlcpy(wifi_ssid2, "INFINITUMD378", sizeof(wifi_ssid2));
@@ -47,7 +47,7 @@ void settingsReset()
      * a las variables que se encuentran en el archivo globales.hpp                                 *
      * variables para el MQTT:                                                                      *
      * *********************************************************************************************/
-    mqtt_enable = true; // estaba en false
+    mqtt_enable = false; // estaba en false
     strlcpy(mqtt_server, "iotmx.com", sizeof(mqtt_server));
     mqtt_port = 1883;   // verificar
     mqtt_retain = true; // verificar false

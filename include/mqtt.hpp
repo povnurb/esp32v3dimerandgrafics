@@ -134,6 +134,7 @@ void mqtt_publish()
 {
     String topic = PathMqttTopic("device");
     log("INFO", "mqtt.hpp", "publicando en: " + topic);
+    Serial.flush();
     mqtt_data = Json();
     // c_str() convierte un string en char
     mqttClient.publish(topic.c_str(), mqtt_data.c_str(), mqtt_retain);

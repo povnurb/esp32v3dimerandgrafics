@@ -18,6 +18,7 @@ void offRelay2();
 void setDyMsYr();
 void wsMessageSend(String msg, String icon, String Type);
 void muestra();
+void resetIntLoop();
 
 /**
  * void log Genera mensajes personalizados en el puerto Serial
@@ -1161,7 +1162,8 @@ void mostrar()
         }
         OLED.println(" %");
         OLED.display();
-        log("INFO", "functions.hpp", "Mostrando información en pantalla LCD (AP)");
+        log("INFO", "functions.hpp", "MODO PUNTO DE ACCESO");
+        Serial.flush();
     }
     else
     {
@@ -1209,15 +1211,6 @@ void mostrar()
         OLED.println(" %");
         OLED.display();
     }
-}
-
-//----------------------------------------------------
-// actulizacion de la variable time_now
-//---------------------------------------------------
-void actualizaTime()
-{
-    time_now = getDateTime();
-    hora = releTime();
 }
 
 //--------------------------------------------------------------------------------
@@ -1457,19 +1450,19 @@ int vTemp[NUM_VALORES]; // Array para almacenar los valores de temperatura
 // Función para mostrar los últimos valores de temperatura
 void mostrarValoresTemp()
 {
-    printf("Valores de temperatura: ");
+    Serial.printf("Valores de temperatura: ");
     for (int i = 0; i < NUM_VALORES; i++)
     {
-        printf("%d ", vTemp[i]);
+        Serial.printf("%d ", vTemp[i]);
     }
-    printf("\n");
+    Serial.printf("\n");
 }
 
 // Función para simular la lectura del sensor de temperatura
 
 int pruebaTc()
 {
-    Serial.println(tempC);
+    // Serial.println(tempC);
     if ((10 < tempC < 90) && (20 < humedad < 99))
     {
         int nuevaTemperatura = tempC;
@@ -1503,12 +1496,12 @@ int vHum[NUM_VALORES]; // Array para almacenar los valores de temperatura
 // Función para mostrar los últimos valores de temperatura
 void mostrarValoresHum()
 {
-    printf("Valores de Humedad: ");
+    Serial.printf("Valores de Humedad: ");
     for (int i = 0; i < NUM_VALORES; i++)
     {
-        printf("%d ", vHum[i]);
+        Serial.printf("%d ", vHum[i]);
     }
-    printf("\n");
+    Serial.printf("\n");
 }
 
 // Función para simular la lectura del sensor de temperatura

@@ -49,7 +49,7 @@
 #include "server.hpp"
 #include "websockets.hpp"
 #include "tareas.hpp"
-
+#include "vue32_reset.hpp"
 // put function declarations here:
 
 void setup()
@@ -103,7 +103,9 @@ void setup()
   // especialSave(); //aqui mostramos la información
   // Debuelve la lista de carpetas y archivos del SPIFFS ONLYDEBUG
   // listDir(SPIFFS, "/", 0);
-  gpioDefine();   // definicion de los pines y setear (setup)
+  gpioDefine(); // definicion de los pines y setear (setup)
+  // definicion del setup del boton de interrupciones
+  setupPintRestore();
   setupAlarmas(); // definicion de las alarmas
   // Paso de los estados de los pines de los Relays
   setOnOffSingle(RELAY1, R_STATUS1);
@@ -115,8 +117,7 @@ void setup()
   // seteamos el time
   timeSetup();
   // zona de Tickers pero tienen que ser de poco tiempo ya que con retardos mas grandes reinician el dispositivo
-  actualizaciontime.attach(1, actualizaTime); // actualizara el tiempo cada 1 segundo para funciones pequenas pero de que?
-  muestraTemyHum.attach(10, muestra);         // realiza una funcion void llamada result cada 10 minutos para guardar los datos de temp y hum y mostrarlos en grafica
+  // muestraTemyHum.attach(10, muestra); // realiza una funcion void llamada result cada 10 minutos para guardar los datos de temp y hum y mostrarlos en grafica
   //     iniciamos el servidor
   initServer();
   // iniciamos websockets
@@ -125,7 +126,7 @@ void setup()
   xTaskCreatePinnedToCore(TaskWifiReconnect, "TaskWifiReconnect", 1024 * 6, NULL, 2, NULL, 0); // se para la tarea al core 0
   // xTaskCreate(TaskWifiReconnect, "TaskWifiReconnect", 1024 * 6, NULL, 2, NULL);
   //  crear Tarea de reconexión MQTT
-  xTaskCreate(TaskMqttReconnect, "TaskMqttReconnect", 1024 * 6, NULL, 2, NULL);
+  xTaskCreate(TaskMqttReconnect, "TaskMqttReconnect", 1024 * 6, NULL, 2, NULL); // se cambio a 8 en vez de 6
   // LED MQTT Task
   xTaskCreate(TaskMQTTLed, "TaskMQTTLed", 1024 * 2, NULL, 1, NULL); // le baje a solo 1024 y falla
   // crear Tarea mostrar pantalla LCD
@@ -135,7 +136,11 @@ void setup()
   // crea tarea para ponerle horario a los relevadore
   xTaskCreate(TaskTimeRele, "TaskTimeRele", 1024 * 2, NULL, 1, NULL);
   // Crear una tarea que envie los mensajes a websockets
-  xTaskCreate(TaskWsSend, "TaskWsSend", 1024 * 4, NULL, 1, NULL); // mas memoria a WS antes 4 ahora 6
+  xTaskCreate(TaskWsSend, "TaskWsSend", 1024 * 4, NULL, 1, NULL);
+  // Crear una tarea verifique el boton d34 si se requiere una restauracion
+  xTaskCreate(TaskRestore, "TaskRestore", 1024 * 4, NULL, 1, NULL);
+  // crea una tarea que toma la muestras para la grafica pero lo hace el core0
+  xTaskCreatePinnedToCore(TaskMuestra, "TaskMuestra", 1024 * 4, NULL, 1, NULL, 0);
   // crear tarea estado de las alarmas
   // xTaskCreate(TaskAlarms, "TaskAlarms", 1024 * 2, NULL, 1, NULL);
 
@@ -156,7 +161,8 @@ void loop()
   ctrlRelays();           // checa el estado de los relays para prenderlos o apagarlos
   statusAlarmVariables(); // actualiza el estado de las variables de las alarmas
   contadorAlarmas();      // cuenta la cantidad de alarmas y le pone la fecha
-  // setupPinActivarAlarmas(); o crear una tarea o interrupcion
+
+  Serial.flush();
 }
 
 // put function definitions here:

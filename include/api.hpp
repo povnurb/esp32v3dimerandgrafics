@@ -127,34 +127,34 @@ void handleApiIndex(AsyncWebServerRequest *request)
 // url: /api/espnow
 // Método: GET
 //--------------------------------------------------------
-void handleApiEspNow(AsyncWebServerRequest *request)
-{
-    // agregar el usuario y contraseña
-    if (security)
-    {
-        if (!request->authenticate(device_user, device_password))
-        {
-            return request->requestAuthentication(); // aqui se queda en circulos seria bueno agregar un contador para que salga del bucle
-        }
-    }
-    String json = "";
+// void handleApiEspNow(AsyncWebServerRequest *request)
+// {
+//     // agregar el usuario y contraseña
+//     if (security)
+//     {
+//         if (!request->authenticate(device_user, device_password))
+//         {
+//             return request->requestAuthentication(); // aqui se queda en circulos seria bueno agregar un contador para que salga del bucle
+//         }
+//     }
+//     String json = "";
 
-    json = "{";
-    json += "\"serial\": \"" + DeviceID() + "\"";
-    json += ",\"device\": \"" + platform() + "\"";
-    WiFi.status() == WL_CONNECTED ? json += ",\"wifiQuality\":" + String(getRSSIasQuality(WiFi.RSSI())) : json += ",\"wifiQuality\": 0";
-    WiFi.status() == WL_CONNECTED ? json += ",\"wifiStatus\": true" : json += ",\"wifiStatus\": false";
-    WiFi.status() == WL_CONNECTED ? json += ",\"rssiStatus\":" + String(WiFi.RSSI()) : json += ",\"rssiStatus\": 0";
-    mqttClient.connected() ? json += ",\"mqttStatus\": true" : json += ",\"mqttStatus\": false";
-    json += ",\"MiMAC\": \"" + String(WiFi.macAddress()) + "\"";
-    json += ",\"ESPNOW\":";
-    json += jsonStringApi; // informacion enviada por el protocolo espnow
-    json += "}";
+//     json = "{";
+//     json += "\"serial\": \"" + DeviceID() + "\"";
+//     json += ",\"device\": \"" + platform() + "\"";
+//     WiFi.status() == WL_CONNECTED ? json += ",\"wifiQuality\":" + String(getRSSIasQuality(WiFi.RSSI())) : json += ",\"wifiQuality\": 0";
+//     WiFi.status() == WL_CONNECTED ? json += ",\"wifiStatus\": true" : json += ",\"wifiStatus\": false";
+//     WiFi.status() == WL_CONNECTED ? json += ",\"rssiStatus\":" + String(WiFi.RSSI()) : json += ",\"rssiStatus\": 0";
+//     mqttClient.connected() ? json += ",\"mqttStatus\": true" : json += ",\"mqttStatus\": false";
+//     json += ",\"MiMAC\": \"" + String(WiFi.macAddress()) + "\"";
+//     json += ",\"ESPNOW\":";
+//     json += jsonStringApi; // informacion enviada por el protocolo espnow
+//     json += "}";
 
-    request->addInterestingHeader("API ESP32 Server"); // este es el header se agrega
-    // send(estado,aplicacion,formato)
-    request->send(200, dataType, json);
-}
+//     request->addInterestingHeader("API ESP32 Server"); // este es el header se agrega
+//     // send(estado,aplicacion,formato)
+//     request->send(200, dataType, json);
+// }
 
 //---------------------------------------------------------
 // Leer parámetros de configuracion wifi
@@ -1386,27 +1386,27 @@ void handleApiPostRelays(AsyncWebServerRequest *request, uint8_t *data, size_t l
 // Método: POST
 // -------------------------------------------------------------------
 
-void handleApiPostDimmer(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total)
-{
-    if (security)
-    {
-        if (!request->authenticate(device_user, device_password))
-            return request->requestAuthentication();
-    }
-    // capturamos la data en string
-    String bodyContent = GetBodyContent(data, len);
-    // Validar que sea un JSON
-    StaticJsonDocument<384> doc;
-    DeserializationError error = deserializeJson(doc, bodyContent);
-    if (error)
-    {
-        request->send(400, dataType, "{ \"status\": \"Error de JSON enviado\" }");
-        return;
-    };
+// void handleApiPostDimmer(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total)
+// {
+//     if (security)
+//     {
+//         if (!request->authenticate(device_user, device_password))
+//             return request->requestAuthentication();
+//     }
+//     // capturamos la data en string
+//     String bodyContent = GetBodyContent(data, len);
+//     // Validar que sea un JSON
+//     StaticJsonDocument<384> doc;
+//     DeserializationError error = deserializeJson(doc, bodyContent);
+//     if (error)
+//     {
+//         request->send(400, dataType, "{ \"status\": \"Error de JSON enviado\" }");
+//         return;
+//     };
 
-    dimmer(bodyContent);
-    request->send(200, dataType, "{ \"dimmer\": true, \"value\": \"" + String(dim) + "\" }");
-}
+//     dimmer(bodyContent);
+//     request->send(200, dataType, "{ \"dimmer\": true, \"value\": \"" + String(dim) + "\" }");
+// }
 
 //*****************************************************************************
 // Agregado por Eduardo Sanchez
@@ -1670,8 +1670,8 @@ void handleApiTime(AsyncWebServerRequest *request)
     json += ",\"time_date\": \"" + String(time_date) + "\""; // 2023-03-07T23:47
     json += ",\"time_z_horaria\": \"" + String(time_z_horaria) + "\"";
     json += ",\"time_server\": \"" + String(time_server) + "\"";
-    json += ",\"time_now\": \"" + String(time_now) + "\""; // 2023-03-07T23:47
-    json += ",\"hora\": \"" + String(hora) + "\"";         // 2023-03-07T23:47
+    json += ",\"time_now\": \"" + String(getDateTime()) + "\""; // 2023-03-07T23:47
+    json += ",\"hora\": \"" + String(releTime()) + "\"";        // 2023-03-07T23:47
     json += "},";
     json += "\"code\": 1 ";
     json += "}";

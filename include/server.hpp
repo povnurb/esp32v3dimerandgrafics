@@ -32,7 +32,7 @@ void initServer()
     // Parametros de configuración espnow API
     // url: /api/espnow
     // Método: GET
-    server.on("/api/espnow", HTTP_GET, handleApiEspNow); // handleApiIndex es una función que se encuentra en el archivo api.hpp
+    // server.on("/api/espnow", HTTP_GET, handleApiEspNow); // handleApiIndex es una función que se encuentra en el archivo api.hpp
 
     //------------------------------------------------------------------
     // Parámetros de configuración WiFi
@@ -193,8 +193,8 @@ void initServer()
     // url: /api/device/dimmer
     // Método: POST
     // -------------------------------------------------------------------
-    server.on(
-        "/api/device/dimmer", HTTP_POST, [](AsyncWebServerRequest *request) {}, NULL, handleApiPostDimmer);
+    // server.on(
+    //     "/api/device/dimmer", HTTP_POST, [](AsyncWebServerRequest *request) {}, NULL, handleApiPostDimmer);
 
     // -------------------------------------------------------------------
     // logout o cerrar secion
