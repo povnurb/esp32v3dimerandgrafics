@@ -980,7 +980,7 @@ void handleApiDownload(AsyncWebServerRequest *request)
     }
 
     log("INFO", "api.hpp", "Descarga del archivo settings.json");
-    AsyncWebServerResponse *response = request->beginResponse(SPIFFS, "/settings.json", dataType, true); // el true es para descargar
+    AsyncWebServerResponse *response = request->beginResponse(SPIFFS, "/especial.json", dataType, true); // el true es para descargar
     request->send(response);
 }
 

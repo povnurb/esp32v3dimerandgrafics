@@ -45,7 +45,8 @@
 //--------------------------------------------------------------------------
 const size_t capacitySettings = 1024 * 5; // 1024*5 = 5KB
 const size_t capacityData = 512;          // tamaño del documento JSON para la data
-StaticJsonDocument<2000> board;           // verificar con mas capacidad pare espnow
+// const size_t capacityDate = 512;          // tamaño del documento JSON para la data
+StaticJsonDocument<2000> board; // verificar con mas capacidad pare espnow
 String jsonStringApi = "{\"info\":\"null\"}";
 //------------------------------------------------------------------
 // Versión de firmware desde las variables de entorno platformio.ini
@@ -198,10 +199,13 @@ int dim;                  // valor del dimer que se le pasa al canal
 //----------------------------------------------------
 //   Zona time
 //----------------------------------------------------
-ESP32Time rtc; // Clase ESP32Time
+ESP32Time rtc;   // Clase ESP32Time
+tmElements_t tm; // objeto de tiempo para el modulo RTC DS1307
+int Hour, Minute, Second, Day, Month, Year;
 
-bool time_ajuste;     // 1- Manual , 0- Automático internet SRV NTP
-char time_date[18];   // 2022-09-07T23:47
+bool time_ajuste;   // 1- Manual , 0- Automático internet SRV NTP
+char time_date[18]; // 2022-09-07T23:47
+// char time_dateSalvado[18]; // 2022-09-07T23:47 para usar en spiffsDate.hpp
 long time_z_horaria;  // Zona Horaria GMT 0 = 0 -GMT +1 = 3600 - GMT -1 = -3600
 char time_server[39]; // Servidor NTP Elemplo: time.mist.gov
 

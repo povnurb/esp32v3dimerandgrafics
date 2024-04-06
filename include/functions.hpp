@@ -711,30 +711,18 @@ void timeSetup()
 
     setDyMsYr();
 
-    if (time_ajuste)
-    {
-        rtc.setTime(time_sc, time_mn, time_hr, time_dy, time_mt, time_yr);
-        log("INFO", "functions.hpp", "RTC set OK en Manual");
-        // datos desde el Internet
-    }
-    else
-    {
-        if ((WiFi.status() == WL_CONNECTED) && (wifi_mode == WIFI_STA))
-        {
-            /* WiFi Conectada */
-            ntpClient.begin();
-            ntpClient.setPoolServerName(time_server); // servidor
-            ntpClient.setTimeOffset(time_z_horaria);  // zona horaria
-            ntpClient.update();
-            log("INFO", "functions.hpp", "RTC set OK en Automatico (horario)");
-        }
-        else
-        {
-            /* Si no hay conexión a WiFi - No Internet */
-            rtc.setTime(time_sc, time_mn, time_hr, time_dy, time_mt, time_yr);
-            log("INFO", "functions.hpp", "RTC set OK Sin Conexión a internet");
-        }
-    }
+    rtc.setTime(tm.Second, tm.Minute, tm.Hour, tm.Day, tm.Month, tm.Year);
+    log("INFO", "functions.hpp", "RTC set OK en Manual");
+    // datos desde el Internet
+    /*
+    tm.Hour = str_date.substring(11, 13).toInt();
+    tm.Minute = str_date.substring(14, 16).toInt();
+    tm.Second = 0;
+    tm.Day = str_date.substring(8, 10).toInt();
+    tm.Month = str_date.substring(5, 7).toInt();
+    tm.Year = str_date.substring(0, 4).toInt();
+
+    */
 }
 
 // -------------------------------------------------------------------
@@ -744,69 +732,50 @@ void setDyMsYr()
 {
     // 2022-09-07T23:47
     String str_date = time_date;
-    time_sc = 0;
-    time_mn = str_date.substring(14, 16).toInt(); // 47
-    time_hr = str_date.substring(11, 13).toInt(); // 23
-    time_dy = str_date.substring(8, 10).toInt();
-    time_mt = str_date.substring(5, 7).toInt();
-    time_yr = str_date.substring(0, 4).toInt(); // 2023
+    // Serial.println(time_date);
+    // Serial.println(String(str_date));
+    // time_sc = 0;
+    // time_mn = str_date.substring(14, 16).toInt(); // -2
+    // time_hr = str_date.substring(11, 13).toInt(); // -2
+    // time_dy = str_date.substring(8, 10).toInt();-2
+    // time_mt = str_date.substring(5, 7).toInt();-2
+    // time_yr = str_date.substring(0, 4).toInt(); // 2023  -2
+    tm.Hour = str_date.substring(11, 13).toInt(); // lo pasan a numeros enteros
+    tm.Minute = str_date.substring(14, 16).toInt();
+    tm.Second = 0;
+    tm.Day = str_date.substring(8, 10).toInt();
+    tm.Month = str_date.substring(5, 7).toInt();
+    tm.Year = str_date.substring(0, 4).toInt();
+    // tm.Year = CalendarYrToTm(Year);
+    RTC.write(tm); // escribe los valores
 }
 
 String getDateTime()
 {
-
+    RTC.read(tm); // es necesario leer si no no lo hace
     char fecha[20];
-    int dia = 0;
-    int mes = 0;
-    int anio = 0;
-    int hora = 0;
-    int minuto = 0;
-    int segundo = 0;
+    int dia;
+    int mes;
+    int anio;
+    int hora;
+    int minuto;
+    int segundo;
 
-    if (time_ajuste)
-    { // Manual
-        /* RTC */
-        dia = rtc.getDay();
-        mes = rtc.getMonth() + 1;
-        anio = rtc.getYear();
-        hora = rtc.getHour(true);
-        minuto = rtc.getMinute();
-        segundo = rtc.getSecond();
-    }
-    else
-    { // Automatico
-        // if((WiFi.status() == WL_CONNECTED) && (wifi_mode == WIFI_STA)){
-        if ((WiFi.status() == WL_CONNECTED) && (wifi_mode == WIFI_AP_STA))
-        {
-            /* NTP */
-            if (ntpClient.isTimeSet())
-            {
-                String formattedTime = ntpClient.getFormattedTime();
-                // FORMAR FECHA DD-MM-YYYY DESDE EPOCH
-                time_t epochTime = ntpClient.getEpochTime();
-                struct tm *now = gmtime((time_t *)&epochTime);
-                anio = now->tm_year + 1900;
-                mes = now->tm_mon + 1;
-                dia = now->tm_mday;
-                // 12:00:00
-                hora = ntpClient.getHours();
-                minuto = ntpClient.getMinutes();
-                segundo = ntpClient.getSeconds();
-            }
-        }
-        else
-        {
-            /* RTC */
-            dia = rtc.getDay();
-            mes = rtc.getMonth() + 1;
-            anio = rtc.getYear();
-            hora = rtc.getHour(true);
-            minuto = rtc.getMinute();
-            segundo = rtc.getSecond();
-        }
-    }
+    dia = tm.Day;
+    // Serial.println(dia);
+    mes = tm.Month;
+    // Serial.println(mes);
+    anio = tmYearToCalendar(tm.Year) - 18; // no se porque pero se tiene que restar solo tm.year da 72
+
+    // Serial.println(anio);
+    hora = tm.Hour;
+    // Serial.println(hora);
+    minuto = tm.Minute;
+    // Serial.println(minuto);
+    segundo = tm.Second;
+
     // sprintf( fecha, "%.2d-%.2d-%.4d %.2d:%.2d:%.2d", dia, mes, anio, hora, minuto, segundo);
-    sprintf(fecha, "%.2d-%.2d-%.4d %.2d:%.2d", dia, mes, anio, hora, minuto);
+    sprintf(fecha, "%.2d-%.2d-%.2d %.2d:%.2d", dia, mes, anio, hora, minuto);
     return String(fecha);
 }
 
@@ -821,33 +790,13 @@ String releTime()
     if (time_ajuste)
     { // Manual
         /* RTC */
-        hora = rtc.getHour(true);
-        minuto = rtc.getMinute();
+        hora = tm.Hour;
+        minuto = tm.Minute;
     }
     else
-    { // Automatico
-        if ((WiFi.status() == WL_CONNECTED) && (wifi_mode == WIFI_AP_STA))
-        {
-            /* NTP */
-            if (ntpClient.isTimeSet())
-            {
-                String formattedTime = ntpClient.getFormattedTime();
-                // FORMAR FECHA DD-MM-YYYY DESDE EPOCH
-                time_t epochTime = ntpClient.getEpochTime();
-                struct tm *now = gmtime((time_t *)&epochTime);
-
-                // 12:00:00
-                hora = ntpClient.getHours();
-                minuto = ntpClient.getMinutes();
-            }
-        }
-        else
-        {
-            /* RTC */
-
-            hora = rtc.getHour(true);
-            minuto = rtc.getMinute();
-        }
+    {
+        hora = tm.Hour;
+        minuto = tm.Minute;
     }
     // sprintf( hora, "%.2d-%.2d-%.4d %.2d:%.2d:%.2d", dia, mes, anio, hora, minuto, segundo);
     sprintf(horas, "%.2d:%.2d", hora, minuto);

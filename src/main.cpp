@@ -13,6 +13,8 @@
 // #include <esp_now.h>     //libreria de protocolo esp_now que permite la comunicacion entre dispositivos esp
 #include <TimeLib.h>
 #include <Ticker.h> //para los timer de los relays
+#include <DS1307RTC.h>
+#include <Wire.h>
 
 //******************************************************************************************************
 // Configuracion del sensor de temperatura DS18B20
@@ -51,6 +53,7 @@
 #include "tareas.hpp"
 #include "vue32_reset.hpp"
 #include "spiffsGraficas.hpp"
+// #include "spiffsDate.hpp" //a un no se si hacer
 
 // put function declarations here:
 
