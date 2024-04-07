@@ -38,6 +38,9 @@
 #define CLIMAB 27     // GPIO27 entrada con acoplador a 5-24 volts indicarian si sigue operando un compresor2
 #define TREST 10      // tiempo que pasara para restaurart a fabricar
 #define PINREST 34    // pin de reinicio y restauracion
+#define ACTRELE1 35   // Botón de interrupción para relevador2
+#define BOTON2 33     // para activar todas las alarmas pero aun no se usa
+#define ACTRELE2 32   // Botón de interrupción para relevador2
 //--------------------------------------------------------------------------
 // Calcular la capacidad del JSON
 // Asistente ArduinoJson: https://arduinojson.org/v6/assistant/
@@ -199,8 +202,8 @@ int dim;                  // valor del dimer que se le pasa al canal
 //----------------------------------------------------
 //   Zona time
 //----------------------------------------------------
-ESP32Time rtc;   // Clase ESP32Time
-tmElements_t tm; // objeto de tiempo para el modulo RTC DS1307
+RTC_DS1307 rtc; // Clase RTC_DS1307
+DateTime tm;    // objeto de tiempo para el modulo RTC DS1307
 int Hour, Minute, Second, Day, Month, Year;
 
 bool time_ajuste;   // 1- Manual , 0- Automático internet SRV NTP
@@ -246,9 +249,7 @@ Adafruit_SSD1306 OLED(SCREEN_WIDTH, SCREEN_HEIGHT);
 // -----------------------------------------------------------------------
 // Activacion de Alarmas de manera local atravez de la interupcion (boton 34)
 // -----------------------------------------------------------------------
-#define ACTRELE1 35 // Botón de interrupción para relevador2
-#define BOTON2 34
-#define ACTRELE2 32 // Botón de interrupción para relevador2
+
 volatile bool togle = true;
 volatile bool togle1 = true;                      // para el relevador1 en local
 volatile bool togle2 = true;                      // para el relevador2 en local

@@ -1238,6 +1238,8 @@ void handleApiPostRestart(AsyncWebServerRequest *request)
         if (!request->authenticate(device_user, device_password))
             return request->requestAuthentication();
     }
+    // para ajustar el tiempo
+    rtc.adjust(DateTime(time_yr, time_mt, time_dy, time_hr, time_mn, 0)); // para colocar la hora en el dispositivo
     // Retornamos la respuesta
     request->send(200, dataType, "{ \"restart\": true }");
     // Reiniciar el ESP32

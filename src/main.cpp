@@ -13,7 +13,7 @@
 // #include <esp_now.h>     //libreria de protocolo esp_now que permite la comunicacion entre dispositivos esp
 #include <TimeLib.h>
 #include <Ticker.h> //para los timer de los relays
-#include <DS1307RTC.h>
+#include <RTClib.h>
 #include <Wire.h>
 
 //******************************************************************************************************
@@ -62,7 +62,7 @@ void setup()
   // rtc_wdt_disable(); // para probar ya que este desactiva el perro guardian y podria bloquear el codigo
   //  put your setup code here, to run once:
   Serial.begin(115200);
-
+  rtc.begin(); // iniciamos el reloj de tiempo real
   log("INFO", "main.cpp", "Iniciando el setup");
   if (produccion) // cuando ya este en funcionamiento se le pone true
   {               // en el archivo globales linea 88 aprox

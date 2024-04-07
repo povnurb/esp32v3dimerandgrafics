@@ -711,7 +711,7 @@ void timeSetup()
 
     setDyMsYr();
 
-    rtc.setTime(tm.Second, tm.Minute, tm.Hour, tm.Day, tm.Month, tm.Year);
+    // rtc.adjust(DateTime(time_yr, time_mt, time_dy, time_hr, time_mn, 0));
     log("INFO", "functions.hpp", "RTC set OK en Manual");
     // datos desde el Internet
     /*
@@ -734,45 +734,44 @@ void setDyMsYr()
     String str_date = time_date;
     // Serial.println(time_date);
     // Serial.println(String(str_date));
-    // time_sc = 0;
-    // time_mn = str_date.substring(14, 16).toInt(); // -2
-    // time_hr = str_date.substring(11, 13).toInt(); // -2
-    // time_dy = str_date.substring(8, 10).toInt();-2
-    // time_mt = str_date.substring(5, 7).toInt();-2
-    // time_yr = str_date.substring(0, 4).toInt(); // 2023  -2
-    tm.Hour = str_date.substring(11, 13).toInt(); // lo pasan a numeros enteros
-    tm.Minute = str_date.substring(14, 16).toInt();
-    tm.Second = 0;
-    tm.Day = str_date.substring(8, 10).toInt();
-    tm.Month = str_date.substring(5, 7).toInt();
-    tm.Year = str_date.substring(0, 4).toInt();
+    time_sc = 0;
+    time_mn = str_date.substring(14, 16).toInt(); // -2
+    time_hr = str_date.substring(11, 13).toInt(); // -2
+    time_dy = str_date.substring(8, 10).toInt();  //-2
+    time_mt = str_date.substring(5, 7).toInt();   //-2
+    time_yr = str_date.substring(0, 4).toInt();   // 2023  -2
+    // tm.Hour = str_date.substring(11, 13).toInt(); // lo pasan a numeros enteros
+    // tm.Minute = str_date.substring(14, 16).toInt();
+    // tm.Second = 0;
+    // tm.Day = str_date.substring(8, 10).toInt();
+    // tm.Month = str_date.substring(5, 7).toInt();
+    // tm.Year = str_date.substring(0, 4).toInt();
     // tm.Year = CalendarYrToTm(Year);
-    RTC.write(tm); // escribe los valores
 }
 
 String getDateTime()
 {
-    RTC.read(tm); // es necesario leer si no no lo hace
+
+    tm = rtc.now();
     char fecha[20];
     int dia;
     int mes;
-    int anio;
+    long anio;
     int hora;
     int minuto;
     int segundo;
 
-    dia = tm.Day;
+    dia = tm.day();
     // Serial.println(dia);
-    mes = tm.Month;
+    mes = tm.month();
     // Serial.println(mes);
-    anio = tmYearToCalendar(tm.Year) - 18; // no se porque pero se tiene que restar solo tm.year da 72
-
+    anio = tm.year(); // no se porque pero se tiene que restar solo tm.year da 72
     // Serial.println(anio);
-    hora = tm.Hour;
+    hora = tm.hour();
     // Serial.println(hora);
-    minuto = tm.Minute;
+    minuto = tm.minute();
     // Serial.println(minuto);
-    segundo = tm.Second;
+    // segundo = tm.second();
 
     // sprintf( fecha, "%.2d-%.2d-%.4d %.2d:%.2d:%.2d", dia, mes, anio, hora, minuto, segundo);
     sprintf(fecha, "%.2d-%.2d-%.2d %.2d:%.2d", dia, mes, anio, hora, minuto);
@@ -790,13 +789,13 @@ String releTime()
     if (time_ajuste)
     { // Manual
         /* RTC */
-        hora = tm.Hour;
-        minuto = tm.Minute;
+        hora = tm.hour();
+        minuto = tm.minute();
     }
     else
     {
-        hora = tm.Hour;
-        minuto = tm.Minute;
+        hora = tm.hour();
+        minuto = tm.minute();
     }
     // sprintf( hora, "%.2d-%.2d-%.4d %.2d:%.2d:%.2d", dia, mes, anio, hora, minuto, segundo);
     sprintf(horas, "%.2d:%.2d", hora, minuto);
