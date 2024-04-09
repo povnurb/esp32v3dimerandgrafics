@@ -8,7 +8,7 @@
 #include <SPIFFS.h>    //donde se tomaran los metodos para almacenar informacion
 #include <WiFi.h>      //metodos para la conexion del dispositivo a una red wifi
 #include <DNSServer.h>
-#include <ESPmDNS.h>
+#include <ESPmDNS.h>     //para https://misala.local
 #include <ArduinoJson.h> //metodos para manejar archivos JSON
 // #include <esp_now.h>     //libreria de protocolo esp_now que permite la comunicacion entre dispositivos esp
 #include <TimeLib.h>
@@ -138,7 +138,7 @@ void setup()
   // zona de Tickers pero tienen que ser de poco tiempo ya que con retardos mas grandes reinician el dispositivo
   // actualizaciontime.attach(1, actualizaTime); // actualizara el tiempo cada 1 segundo para funciones pequenas pero de que?
   muestraTemyHum.attach(10, muestra); // realiza una funcion void llamada result cada 10 minutos para guardar los datos de temp y hum y mostrarlos en grafica
-  muestraDimer.attach(10, serialDimer);
+  muestraDimer.attach(3, serialDimer);
   //     iniciamos el servidor
   initServer();
   // iniciamos websockets

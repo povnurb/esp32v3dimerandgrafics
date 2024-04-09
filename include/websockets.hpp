@@ -1,5 +1,5 @@
 long lastWSend = 0;
-
+// agregar un interruptor para activar WS
 // declaración de funciones
 void ProcessRequest(AsyncWebSocketClient *client, String request);
 // para la otra usar la libreria Arduinowebsocket o investigar la de espresift para activar el wss:

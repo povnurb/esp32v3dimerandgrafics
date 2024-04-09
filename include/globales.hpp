@@ -265,18 +265,20 @@ volatile unsigned long tiempoDeInterrupcion1 = 0; // sirve para omitir rebotes e
 //----------------------------------------------------------------------------
 size_t content_len; // para la barra de progreso del firmware
 #define U_PART U_SPIFFS
-//------------------------------------------------------------------------------
-// Variables necesarias para registrar temperaturas y humedades por 48 hrs
-//------------------------------------------------------------------------------
-int muestraCadamin = 10; // minutos jalaba bien con 1 probando con 5 min
-#define NUM_VALORES 12   // es el numero de horas que quiero registrar esta no se mueve siempre sera 24 por que asi esta en la pagina web
-int diesSeg = 6;
-int minutos = 60;
-int vTemp[NUM_VALORES]; // Array para almacenar los valores de temperatura
-int vHum[NUM_VALORES];  // Array para almacenar los valores de temperatura
 //---------------------------------------------------------------------
 // zona de variables del dimmer
 //-------------------------------------------------------------------
 dimmerLamp dimmerReal(INAC, DIMMER); // se crea onjeto Dimmer
 int outVal = 0;
 int dutyCycle = 50; // ciclo de trabajo salidas PWM
+int muestraDimerOLED;
+int timeMuestraOLED = 2000; // es el tiempo en milisegundos que mostrara en pantalla el valor del Tiempo en el OLED
+//------------------------------------------------------------------------------
+// Variables necesarias para registrar temperaturas y humedades por 48 hrs
+//------------------------------------------------------------------------------
+int muestraCadamin;    // minutos jalaba bien con 1 probando con 5 min
+#define NUM_VALORES 13 // es el numero de muestras que quiero registrar esta no se mueve siempre sera 24 por que asi esta en la pagina web
+int diesSeg = 6;
+int minutos = 60;
+int vTemp[NUM_VALORES]; // Array para almacenar los valores de temperatura
+int vHum[NUM_VALORES];  // Array para almacenar los valores de temperatura

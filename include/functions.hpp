@@ -1358,10 +1358,16 @@ void muestra() // esta funcion toma una muestra de la temperatura y la humedad
             ejecutarHum();
             dataGraficasSave(); //
             minutos = 1;
+            // Serial.println(minutos);
+            // Serial.println(muestraCadamin);
+            // Serial.println(dutyCycle);
         }
         else
         {
             minutos++;
+            // Serial.println(minutos);
+            // Serial.println(muestraCadamin);
+            // Serial.println(dutyCycle);
         }
         diesSeg = 1; // por que ya pasaron los primeros 10 segundos
     }
