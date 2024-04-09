@@ -73,8 +73,8 @@ bool dataGraficasSave()
         log("ERROR", "spiffsGraficas.hpp", "no se puede obteber informacion de la data de temperaturas o no existe");
         return false;
     }
-    mostrarValoresTemp();
-    mostrarValoresHum();
+    // mostrarValoresTemp();
+    // mostrarValoresHum();
     return true;
 }
 bool dataGraficasRead()

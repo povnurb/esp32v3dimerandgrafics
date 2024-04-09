@@ -134,7 +134,7 @@ bool settingsSave()
         // TIME settings.json
         // -------------------------------------------------------------------
         jsonSettings["time_ajuste"] = time_ajuste;
-        jsonSettings["time_date"] = time_date;
+        jsonSettings["time_date"] = fechaActual();
         jsonSettings["time_z_horaria"] = time_z_horaria;
         jsonSettings["time_server"] = time_server;
         jsonSettings["file_version"] = "3.0.0";
@@ -156,7 +156,7 @@ bool especialSave()
     DynamicJsonDocument jsonEspecial(capacitySettings); // capacidad definida en globales.hpp (5KB)
     // jsonEspecial es el nombre del nuevo documento JSON
     // acontinuacion una variable de tipo File que se llama de la libreria SPIFFS que se llamará especial
-    File especial = SPIFFS.open("/especial.json", "w+"); // modo lectura (w+) con el path / que es en raiz y el nombre es especial con la extención json
+    File especial = SPIFFS.open("/especial.json", "w+"); // modo escritura (w+) con el path / que es en raiz y el nombre es especial con la extención json
     // mas info sobre SPIFFS https://www.diarioelectronicohoy.com/blog/funcionalidad-de-spiffs
     if (especial)
     { // si se puede abrir el archivo en modo lectura

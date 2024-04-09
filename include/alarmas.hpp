@@ -409,30 +409,31 @@ void activarAlarma()
 //------------------------------------------------------------------------------------------------------------
 // Setup pin Alarmas por interrupcion boton en sitio
 // ----------------------------------------------------------------------------------------------------------
-void setupPinActivarAlarmas()
-{
-    pinMode(BOTON2, INPUT_PULLUP);
-    attachInterrupt(digitalPinToInterrupt(BOTON2), activarAlarmas, FALLING); // Flanco de bajada
-}
-void IRAM_ATTR activarAlarmas()
-{
-    if (millis() - tiempoDeInterrupcion > tiempoDeRebote)
-    {
-        Serial.println("Interrupción34");
-        if (togle)
-        {
-            Serial.println("Activando Alarmas");
-            digitalWrite(15, HIGH); // cuando se activa el pin15 se activan las alarmas
-        }
-        else
-        {
-            Serial.println("Desactivando Alarmas");
-            digitalWrite(15, LOW);
-        }
-        tiempoDeInterrupcion = millis();
-        togle ^= true;
-    }
-}
+// void setupPinActivarAlarmas()
+// {
+//     pinMode(BOTON2, INPUT_PULLUP);
+//     attachInterrupt(digitalPinToInterrupt(BOTON2), activarAlarmas, FALLING); // Flanco de bajada
+// }
+// void IRAM_ATTR activarAlarmas()
+// {
+//     if (millis() - tiempoDeInterrupcion > tiempoDeRebote)
+//     {
+//         Serial.println("Interrupción34");
+//         if (togle)
+//         {
+//             Serial.println("Activando Alarmas");
+//             digitalWrite(15, HIGH); // cuando se activa el pin15 se activan las alarmas
+//         }
+//         else
+//         {
+//             Serial.println("Desactivando Alarmas");
+//             digitalWrite(15, LOW);
+//         }
+//         tiempoDeInterrupcion = millis();
+//         togle ^= true;
+//     }
+// }
+
 // nueva funcion estatus
 void statusAlarmVariables()
 { // modifica el estado de las variables

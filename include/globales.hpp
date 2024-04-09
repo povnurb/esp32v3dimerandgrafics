@@ -39,8 +39,10 @@
 #define TREST 10      // tiempo que pasara para restaurart a fabricar
 #define PINREST 34    // pin de reinicio y restauracion
 #define ACTRELE1 35   // Botón de interrupción para relevador2
-#define BOTON2 33     // para activar todas las alarmas pero aun no se usa
+#define ACTFECHA 33   // para actualizar la fecha
 #define ACTRELE2 32   // Botón de interrupción para relevador2
+#define INPOT 36      // entrada del valor del potenciometro
+#define INAC 18       // Pin de Entrada de Corriente alterna para el dimer
 //--------------------------------------------------------------------------
 // Calcular la capacidad del JSON
 // Asistente ArduinoJson: https://arduinojson.org/v6/assistant/
@@ -272,3 +274,9 @@ int diesSeg = 6;
 int minutos = 60;
 int vTemp[NUM_VALORES]; // Array para almacenar los valores de temperatura
 int vHum[NUM_VALORES];  // Array para almacenar los valores de temperatura
+//---------------------------------------------------------------------
+// zona de variables del dimmer
+//-------------------------------------------------------------------
+dimmerLamp dimmerReal(INAC, DIMMER); // se crea onjeto Dimmer
+int outVal = 0;
+int dutyCycle = 50; // ciclo de trabajo salidas PWM

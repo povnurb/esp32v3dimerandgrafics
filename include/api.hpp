@@ -123,40 +123,6 @@ void handleApiIndex(AsyncWebServerRequest *request)
 }
 
 //---------------------------------------------------------
-// leer información proporcionada por otros dispositivos atravez de protocolo espnow y mesh
-// url: /api/espnow
-// Método: GET
-//--------------------------------------------------------
-// void handleApiEspNow(AsyncWebServerRequest *request)
-// {
-//     // agregar el usuario y contraseña
-//     if (security)
-//     {
-//         if (!request->authenticate(device_user, device_password))
-//         {
-//             return request->requestAuthentication(); // aqui se queda en circulos seria bueno agregar un contador para que salga del bucle
-//         }
-//     }
-//     String json = "";
-
-//     json = "{";
-//     json += "\"serial\": \"" + DeviceID() + "\"";
-//     json += ",\"device\": \"" + platform() + "\"";
-//     WiFi.status() == WL_CONNECTED ? json += ",\"wifiQuality\":" + String(getRSSIasQuality(WiFi.RSSI())) : json += ",\"wifiQuality\": 0";
-//     WiFi.status() == WL_CONNECTED ? json += ",\"wifiStatus\": true" : json += ",\"wifiStatus\": false";
-//     WiFi.status() == WL_CONNECTED ? json += ",\"rssiStatus\":" + String(WiFi.RSSI()) : json += ",\"rssiStatus\": 0";
-//     mqttClient.connected() ? json += ",\"mqttStatus\": true" : json += ",\"mqttStatus\": false";
-//     json += ",\"MiMAC\": \"" + String(WiFi.macAddress()) + "\"";
-//     json += ",\"ESPNOW\":";
-//     json += jsonStringApi; // informacion enviada por el protocolo espnow
-//     json += "}";
-
-//     request->addInterestingHeader("API ESP32 Server"); // este es el header se agrega
-//     // send(estado,aplicacion,formato)
-//     request->send(200, dataType, json);
-// }
-
-//---------------------------------------------------------
 // Leer parámetros de configuracion wifi
 // url: /api/connection/wifi
 // Método: GET
@@ -978,9 +944,13 @@ void handleApiDownload(AsyncWebServerRequest *request)
         if (!request->authenticate(device_user, device_password))
             return request->requestAuthentication();
     }
-
+    // hacer una funcion que salve la hora actual en el formato 2024-06-04T00:00 abrir el archivo Json especial y guardar
+    Serial.println(fechaActual());
+    settingsSave();
+    //-----------------------------------------------------------------------------------------------
     log("INFO", "api.hpp", "Descarga del archivo settings.json");
-    AsyncWebServerResponse *response = request->beginResponse(SPIFFS, "/especial.json", dataType, true); // el true es para descargar
+    Serial.flush();
+    AsyncWebServerResponse *response = request->beginResponse(SPIFFS, "/settings.json", dataType, true); // el true es para descargar
     request->send(response);
 }
 
@@ -1124,6 +1094,7 @@ void handleApiEspecialUpload(AsyncWebServerRequest *request, String filename, si
         opened2 = false;
         log("INFO", "api.hpp", "Carga del archivo " + filename + " completada");
         // Esperar la transmisión de los datos seriales
+
         Serial.flush();
         // Reiniciar el ESP32
         ESP.restart(); // necesario para guardar las configuraciones
@@ -1239,7 +1210,10 @@ void handleApiPostRestart(AsyncWebServerRequest *request)
             return request->requestAuthentication();
     }
     // para ajustar el tiempo
-    rtc.adjust(DateTime(time_yr, time_mt, time_dy, time_hr, time_mn, 0)); // para colocar la hora en el dispositivo
+    if (!digitalRead(ACTFECHA))
+    {
+        rtc.adjust(DateTime(time_yr, time_mt, time_dy, time_hr, time_mn, 0)); // para colocar la hora en el dispositivo
+    }
     // Retornamos la respuesta
     request->send(200, dataType, "{ \"restart\": true }");
     // Reiniciar el ESP32

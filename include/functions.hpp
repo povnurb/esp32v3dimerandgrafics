@@ -6,6 +6,7 @@ Ticker timerRelay1; // para el manejo del relay1
 Ticker timerRelay2; // para el manejo del relay2
 // Ticker actualizaciontime; // actualizara el valor de la variable time cada 10 segundos
 Ticker muestraTemyHum; // declaracion de una tarea que guarda el valor en un array de la temperatura
+Ticker muestraDimer;
 // falta R_TIMER1 y R_TIMER2 para contabilizar el tiempo que lleva encendido
 
 String releTime(); // es el comparador para encender o apagar los relevadores
@@ -17,8 +18,10 @@ bool settingsSave();
 void offRelay1();
 void offRelay2();
 void setDyMsYr();
+String fechaActual();
 void wsMessageSend(String msg, String icon, String Type);
 void muestra();
+void serialDimer();
 void resetIntLoop();
 bool dataGraficasRead();
 void dataGraficasReset();
@@ -125,6 +128,7 @@ void gpioDefine()
     pinMode(CLIMAB, INPUT_PULLUP);
     pinMode(ACTRELE1, INPUT_PULLUP); // GPIO 35
     pinMode(ACTRELE2, INPUT_PULLUP); // GPIO 32
+    pinMode(ACTFECHA, INPUT_PULLUP); // GPIO 33 seteo de la fecha
     // PWM (DIMMER) dimerizar el led o foco o motor
     ledcSetup(ledChannel, freq, resolution);
     ledcAttachPin(DIMMER, ledChannel);
@@ -777,7 +781,32 @@ String getDateTime()
     sprintf(fecha, "%.2d-%.2d-%.2d %.2d:%.2d", dia, mes, anio, hora, minuto);
     return String(fecha);
 }
-
+// funcion que manda la hora actual en el archivo json en automatico
+String fechaActual()
+{
+    tm = rtc.now();
+    char fecha[20];
+    int dia;
+    int mes;
+    long anio;
+    int hora;
+    int minuto;
+    int segundo;
+    dia = tm.day();
+    // Serial.println(dia);
+    mes = tm.month();
+    // Serial.println(mes);
+    anio = tm.year(); // no se porque pero se tiene que restar solo tm.year da 72
+    // Serial.println(anio);
+    hora = tm.hour();
+    // Serial.println(hora);
+    minuto = tm.minute();
+    // Serial.println(minuto);
+    // segundo = tm.second();
+    // 2024-04-08T14:47
+    sprintf(fecha, "%.4d-%.2d-%.2dT%.2d:%.2d", anio, mes, dia, hora, minuto);
+    return String(fecha);
+}
 // horario de encendido y apagado del relevador
 String releTime()
 {

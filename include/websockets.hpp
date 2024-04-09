@@ -2,10 +2,10 @@ long lastWSend = 0;
 
 // declaración de funciones
 void ProcessRequest(AsyncWebSocketClient *client, String request);
-
+// para la otra usar la libreria Arduinowebsocket o investigar la de espresift para activar el wss:
 //-----------------------------------------------------------------------------
-// funcion predefinida en la libreria de WebSockets
-// Eventos del websocket
+//  funcion predefinida en la libreria de WebSockets
+//  Eventos del websocket
 //--------------------------------------------------------------------
 void onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len)
 {
@@ -110,6 +110,7 @@ void ProcessRequest(AsyncWebSocketClient *client, String request)
 // -------------------------------------------------------------------
 // Inicializar el Websocket
 // -------------------------------------------------------------------
+// mas información //https://techtutorialsx.com/2018/08/14/esp32-async-http-web-server-websockets-introduction/
 void initWebsockets()
 {
     ws.onEvent(onWsEvent);

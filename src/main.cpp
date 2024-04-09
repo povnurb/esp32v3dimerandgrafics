@@ -36,7 +36,7 @@
 #include <Adafruit_I2CDevice.h> //by Adafruit
 #include <Adafruit_GFX.h>       // para la pantalla de lcd
 #include <Adafruit_SSD1306.h>   //by Adafruit
-
+#include <RBDdimmer.h>          //para el dimmer
 //-------------------------------------------------------
 // Archivos *.hpp -fragmentar el código
 //-------------------------------------------------------
@@ -53,6 +53,7 @@
 #include "tareas.hpp"
 #include "vue32_reset.hpp"
 #include "spiffsGraficas.hpp"
+#include "dimer.hpp"
 // #include "spiffsDate.hpp" //a un no se si hacer
 
 // put function declarations here:
@@ -115,7 +116,7 @@ void setup()
     log("INFO", "spiffsgraficas.hpp", "Información general Salvada.");
     // encaso que el dataRead se a podido leer no se guarda nada para no andar tocando la memoria
   }
-
+  dimmerReal.begin(NORMAL_MODE, ON); // dimmer initialisation: name.begin(MODE, STATE)
   // especialSave(); //aqui mostramos la información
   // Debuelve la lista de carpetas y archivos del SPIFFS ONLYDEBUG
   // listDir(SPIFFS, "/", 0);
@@ -137,6 +138,7 @@ void setup()
   // zona de Tickers pero tienen que ser de poco tiempo ya que con retardos mas grandes reinician el dispositivo
   // actualizaciontime.attach(1, actualizaTime); // actualizara el tiempo cada 1 segundo para funciones pequenas pero de que?
   muestraTemyHum.attach(10, muestra); // realiza una funcion void llamada result cada 10 minutos para guardar los datos de temp y hum y mostrarlos en grafica
+  muestraDimer.attach(10, serialDimer);
   //     iniciamos el servidor
   initServer();
   // iniciamos websockets
