@@ -25,7 +25,7 @@
 */
 #define RELAY1 4      // GPIO04 para el relay
 #define RELAY2 2      // GPIO02 para el relay
-#define DIMMER 5      // GPIO05 se modificara por comando por eso no se define
+#define DIMMER 5      // GPIO05 para el dimmer salida del PWM
 #define WIFILED 12    // GPIO12 LED INDICADOR WIFI
 #define MQTTLED 14    // GPIO14 LED INDICADOR MQTT
 #define BUZZER 15     // GPIO15 ZUMBADOR
@@ -267,8 +267,9 @@ size_t content_len; // para la barra de progreso del firmware
 #define U_PART U_SPIFFS
 //---------------------------------------------------------------------
 // zona de variables del dimmer
-//-------------------------------------------------------------------
-dimmerLamp dimmerReal(INAC, DIMMER); // se crea onjeto Dimmer
+//--------------------i-----------------------------------------------
+dimmerLamp dimmerReal(INAC, DIMMER); // GPIO18 es igual al 30 por libreria se crea onjeto Dimmer y el 29 pin de salida GPIO 5
+// dimmerLamp dimmerReal(DIMMER, INAC); // para mi que este pude ser un problema
 int outVal = 0;
 int dutyCycle = 50; // ciclo de trabajo salidas PWM
 int muestraDimerOLED;

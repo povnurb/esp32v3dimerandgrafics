@@ -138,7 +138,7 @@ void setup()
   // zona de Tickers pero tienen que ser de poco tiempo ya que con retardos mas grandes reinician el dispositivo
   // actualizaciontime.attach(1, actualizaTime); // actualizara el tiempo cada 1 segundo para funciones pequenas pero de que?
   muestraTemyHum.attach(10, muestra); // realiza una funcion void llamada result cada 10 minutos para guardar los datos de temp y hum y mostrarlos en grafica
-  muestraDimer.attach(3, serialDimer);
+  muestraDimer.attach(2, serialDimer);
   //     iniciamos el servidor
   initServer();
   // iniciamos websockets

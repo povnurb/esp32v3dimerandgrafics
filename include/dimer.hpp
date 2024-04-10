@@ -1,8 +1,9 @@
 // crear una tarea para el valor de lectura del potenciometro de cada 100 milisegundos
-
-// changing the LED brightness with PWM
-// ledcWrite(0, dutyCycle);
-// ledcWrite(1, dutyCycle);
+// https://www.youtube.com/watch?v=bvKoG7kB8Z8
+// este circuito cuando la señal pasa por cero genera un pulso
+// changing the LED brightness with PWM configuracion del PWM en el setup()
+// ledcWrite(0, dutyCycle);//el 0 es un canal
+// ledcWrite(1, dutyCycle);//el 1 es otro canal
 
 void serialDimer()
 {

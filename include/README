@@ -71,3 +71,6 @@ https://gcc.gnu.org/onlinedocs/cpp/Header-Files.html
 * {"output":"BUZZER","value": false}
 
 ## codigos sacado de functions.hpp lineas 220
+
+- pendiente PWM
+- Pendiente que se salve cuando se mandan comandos por MQTT
