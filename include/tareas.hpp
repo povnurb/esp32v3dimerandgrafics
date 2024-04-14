@@ -5,7 +5,7 @@
 //---------------------------------------------------------------
 void TaskWifiReconnect(void *pvParamenters)
 {
-    esp_task_wdt_reset(); // agregado
+    esp_task_wdt_reset();
     //  para mantener conectado ya sea en modo ap o ap_sta al wifi
     vTaskDelay(10 / portTICK_PERIOD_MS); // podria ser necesario
     (void)pvParamenters;
@@ -33,8 +33,8 @@ void TaskMqttReconnect(void *pvParamenters)
     // para mantener conectado ya sea en modo ap o ap_sta al wifi
     (void)pvParamenters;
     while (1)
-    {                                        // loop infinito
-        esp_task_wdt_reset();                // agregado
+    { // loop infinito
+        esp_task_wdt_reset();
         vTaskDelay(10 / portTICK_PERIOD_MS); // podria ser necesario
         if ((WiFi.status() == WL_CONNECTED) && (wifi_app == WIFI_AP_STA))
         {
@@ -66,6 +66,7 @@ void TaskMqttReconnect(void *pvParamenters)
 // ----------------------------------------------------------------------
 void TaskMQTTLed(void *pvParameters)
 {
+    esp_task_wdt_reset();
     (void)pvParameters;
     while (1)
     {
@@ -92,6 +93,7 @@ void TaskLCD(void *pvParameters)
     (void)pvParameters;
     while (1)
     {
+        esp_task_wdt_reset();
         mostrar();
         // Serial.println(tempC);
         // vTaskDelay(1000 / portTICK_PERIOD_MS); // probar con 200 o con 1000 y sustituir todo
@@ -103,6 +105,7 @@ void TaskLCD(void *pvParameters)
 // ----------------------------------------------------------------------
 void Taskrelcambio(void *pvParameters)
 {
+    esp_task_wdt_reset();
     (void)pvParameters;
     while (1)
     {
@@ -115,6 +118,7 @@ void Taskrelcambio(void *pvParameters)
 // --------------------------------------------------------------------
 void TaskTimeRele(void *pvParameters)
 {
+    esp_task_wdt_reset();
     (void)pvParameters;
     while (1)
     {
@@ -130,6 +134,7 @@ void TaskWsSend(void *pvParameters)
     (void)pvParameters;
     while (1)
     {
+        esp_task_wdt_reset();
         vTaskDelay(3000 / portTICK_PERIOD_MS); // esto es igual a 3 segundo lo cual hara lo siguiente:
         wsMessageSend(getJsonIndex(), "", "");
     }
@@ -139,6 +144,7 @@ void TaskWsSend(void *pvParameters)
 //-----------------------------------------------------------
 void TaskRestore(void *pvParameters)
 {
+    esp_task_wdt_reset();
     (void)pvParameters;
     while (1)
     {
@@ -154,6 +160,7 @@ void TaskMuestra(void *pvParameters)
     (void)pvParameters;
     while (1)
     {
+        esp_task_wdt_reset();
         vTaskDelay(10000 / portTICK_PERIOD_MS);
         muestra();
     }
@@ -163,6 +170,7 @@ void TaskMuestra(void *pvParameters)
 // --------------------------------------------------------------------
 void TaskVerRelay(void *pvParameters)
 {
+    esp_task_wdt_reset();
     (void)pvParameters;
     while (1)
     {
@@ -178,7 +186,7 @@ void TaskSerialDimer(void *pvParameters)
     (void)pvParameters;
     while (1)
     {
-        // vTaskDelay(2000 / portTICK_PERIOD_MS);
+        esp_task_wdt_reset();
         vTaskDelay(1000);
         serialDimer(); // muestra el valor del potenciometro
     }

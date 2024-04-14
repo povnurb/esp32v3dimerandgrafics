@@ -37,6 +37,12 @@ Read more about using header files in official GCC documentation:
 
 https://gcc.gnu.org/onlinedocs/cpp/Header-Files.html
 
+## para poner la hora deseada
+
+- bajar un documento json de la aplicación
+- modificar la hora deseada casi al final del document
+- subir el documento llamado settings y cuando se este cargando oprimir el boton D33
+
 ## los topicos para mandar a encender por mqtt son para el relay1:
 
 - MQTTusuario/serial/command =>siguiente ejemplo:
