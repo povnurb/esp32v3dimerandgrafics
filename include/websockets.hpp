@@ -143,7 +143,7 @@ void wsMessageSend(String msg, String icon, String Type)
 String getJsonIndex()
 {
     String response = "";
-    DynamicJsonDocument jsonDoc(3000);
+    DynamicJsonDocument jsonDoc(3500); // antes 3000
     jsonDoc["type"] = "data";
     jsonDoc["activeTime"] = longTimeStr(millis() / 1000);
     // jsonDoc["ramAvailable"] = ESP.getFreeHeap();

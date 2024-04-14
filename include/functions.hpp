@@ -949,80 +949,128 @@ void mostrar()
 
     if (!wifi_mode)
     {
-        OLED.clearDisplay();
-        OLED.setTextSize(1);
-        OLED.setTextColor(WHITE);
-        OLED.setCursor(0, 0);
-        OLED.println(String(ap_ssid));
-        OLED.println(ipStr(WiFi.softAPIP())); // ipStr(WiFi.softAPIP())
-        OLED.println(getDateTime());
-        if (tempC < 2)
+        if (muestraDimerOLED != dutyCycle)
         {
-            OLED.print("WAIT");
+            // meter un tiempo de muestra en pantalla OLED
+            timeOled = millis();
+            do
+            {
+                muestraDimerOLED = dutyCycle;
+                // crear una tarea de 10 segundos mostrando el valor en el display
+                OLED.clearDisplay();
+                OLED.setTextSize(1);
+                OLED.setTextColor(WHITE);
+                OLED.setCursor(0, 0);
+                OLED.println("Muestras cada:");
+                OLED.setTextSize(3);
+                OLED.print(" ");
+                OLED.print(dutyCycle);
+                OLED.println(" Min.");
+                OLED.display();
+                dim = outVal;
+            } while (millis() - timeOled >= timeMuestraOLED);
         }
         else
         {
-            OLED.print(tempC);
+            OLED.clearDisplay();
+            OLED.setTextSize(1);
+            OLED.setTextColor(WHITE);
+            OLED.setCursor(0, 0);
+            OLED.println(String(ap_ssid));
+            OLED.println(ipStr(WiFi.softAPIP())); // ipStr(WiFi.softAPIP())
+            OLED.println(getDateTime());
+            if (tempC < 2)
+            {
+                OLED.print("WAIT");
+            }
+            else
+            {
+                OLED.print(tempC);
+            }
+            OLED.print(" C   ");
+            if (humedad < 2)
+            {
+                OLED.print("WAIT");
+            }
+            else
+            {
+                OLED.print(humedad);
+            }
+            OLED.println(" %");
+            OLED.display();
+            log("INFO", "functions.hpp", "MODO PUNTO DE ACCESO");
         }
-        OLED.print(" C   ");
-        if (humedad < 2)
-        {
-            OLED.print("WAIT");
-        }
-        else
-        {
-            OLED.print(humedad);
-        }
-        OLED.println(" %");
-        OLED.display();
-        log("INFO", "functions.hpp", "MODO PUNTO DE ACCESO");
         Serial.flush();
     }
     else
     {
-        OLED.clearDisplay();
-        OLED.setTextSize(1);
-        OLED.setTextColor(WHITE);
-        OLED.setCursor(0, 0);
-        OLED.println(ipStr(WiFi.localIP()));
-        if (!digitalRead(26))
+        if (muestraDimerOLED != dutyCycle)
         {
-            OLED.print(ALRM_NAME4);
-            OLED.println(" OPERANDO");
-        }
-        else if (!digitalRead(27))
-        {
-            OLED.print(ALRM_NAME5);
-            OLED.println(" OPERANDO");
-        }
-        else if (!digitalRead(27) && !digitalRead(27))
-        {
-            OLED.println("2 CLIMAS OPERANDO");
-        }
-        else
-        {
-            OLED.println("CLIMAS NO OPERANDO");
-        }
-        OLED.println(getDateTime());
-        if (tempC < 2)
-        {
-            OLED.print("WAIT");
+            // meter un tiempo de muestra en pantalla OLED
+            timeOled = millis();
+            do
+            {
+                muestraDimerOLED = dutyCycle;
+                // crear una tarea de 10 segundos mostrando el valor en el display
+                OLED.clearDisplay();
+                OLED.setTextSize(1);
+                OLED.setTextColor(WHITE);
+                OLED.setCursor(0, 0);
+                OLED.println("Muestras cada:");
+                OLED.setTextSize(3);
+                OLED.print(" ");
+                OLED.print(dutyCycle);
+                OLED.println(" Min.");
+                OLED.display();
+                dim = outVal;
+            } while (millis() - timeOled >= timeMuestraOLED);
         }
         else
         {
-            OLED.print(tempC);
+            OLED.clearDisplay();
+            OLED.setTextSize(1);
+            OLED.setTextColor(WHITE);
+            OLED.setCursor(0, 0);
+            OLED.println(ipStr(WiFi.localIP()));
+            if (!digitalRead(26))
+            {
+                OLED.print(ALRM_NAME4);
+                OLED.println(" OPERANDO");
+            }
+            else if (!digitalRead(27))
+            {
+                OLED.print(ALRM_NAME5);
+                OLED.println(" OPERANDO");
+            }
+            else if (!digitalRead(27) && !digitalRead(27))
+            {
+                OLED.println("2 CLIMAS OPERANDO");
+            }
+            else
+            {
+                OLED.println("CLIMAS NO OPERANDO");
+            }
+            OLED.println(getDateTime());
+            if (tempC < 2)
+            {
+                OLED.print("WAIT");
+            }
+            else
+            {
+                OLED.print(tempC);
+            }
+            OLED.print(" C   ");
+            if (humedad < 2)
+            {
+                OLED.print("WAIT");
+            }
+            else
+            {
+                OLED.print(humedad);
+            }
+            OLED.println(" %");
+            OLED.display();
         }
-        OLED.print(" C   ");
-        if (humedad < 2)
-        {
-            OLED.print("WAIT");
-        }
-        else
-        {
-            OLED.print(humedad);
-        }
-        OLED.println(" %");
-        OLED.display();
     }
 }
 
@@ -1271,10 +1319,10 @@ void mostrarValoresTemp()
 
 // Función para simular la lectura del sensor de temperatura
 
-int pruebaTc()
+bool pruebaTc()
 {
     // Serial.println(tempC);
-    if ((10 < tempC < 90) && (20 < humedad < 99))
+    if (10 < tempC < 90)
     {
         int nuevaTemperatura = tempC;
         // Almacenar la nueva temperatura en el array y actualizar el índice
@@ -1284,11 +1332,11 @@ int pruebaTc()
         {
             vTemp[i] = vTemp[i - 1];
         }
-        return 0;
+        return false;
     }
     else
     {
-        return 1;
+        return true;
     }
 }
 void ejecutarTc()
@@ -1316,9 +1364,9 @@ void mostrarValoresHum()
 
 // Función para simular la lectura del sensor de temperatura
 
-int pruebaHum()
+bool pruebaHum()
 {
-    if ((10 < tempC < 90) && (20 < humedad < 99))
+    if (20 < humedad < 99)
     {
         int nuevaHum = humedad;
         // Almacenar la nueva temperatura en el array y actualizar el índice
@@ -1328,11 +1376,11 @@ int pruebaHum()
         {
             vHum[i] = vHum[i - 1];
         }
-        return 0;
+        return false;
     }
     else
     {
-        return 1;
+        return true;
     }
 }
 void ejecutarHum()
@@ -1356,7 +1404,10 @@ void muestra() // esta funcion toma una muestra de la temperatura y la humedad
         { // muestraCadamin indica que la muestra se tomara cada tiempo que indica la varible
             ejecutarTc();
             ejecutarHum();
-            dataGraficasSave(); //
+            if ((10 < tempC < 90) && (20 < humedad < 99))
+            {
+                dataGraficasSave(); //
+            }
             minutos = 1;
             // Serial.println(minutos);
             // Serial.println(muestraCadamin);

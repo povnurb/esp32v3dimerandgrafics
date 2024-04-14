@@ -2,27 +2,25 @@
 // para ver los datos en el explorador
 // el dispositivo se reinicia supongo que es por que ya empieza a saturarse de información
 #include <Arduino.h>
-// #include "soc/rtc_wdt.h" //para desactivar el perro guardian
-#include <esp32-hal.h> //probando para evitar que se reinicie el dispositivo
-#include <EEPROM.h>    //aqui se guardara el contador de reinicios
-#include <SPIFFS.h>    //donde se tomaran los metodos para almacenar informacion
-#include <WiFi.h>      //metodos para la conexion del dispositivo a una red wifi
+#include <EEPROM.h> //aqui se guardara el contador de reinicios
+#include <SPIFFS.h> //donde se tomaran los metodos para almacenar informacion
+#include <WiFi.h>   //metodos para la conexion del dispositivo a una red wifi
 #include <DNSServer.h>
-#include <ESPmDNS.h>     //para https://misala.local
-#include <ArduinoJson.h> //metodos para manejar archivos JSON
-// #include <esp_now.h>     //libreria de protocolo esp_now que permite la comunicacion entre dispositivos esp
+#include <ESPmDNS.h>      //para por ejemplo: https://misala.local
+#include <ArduinoJson.h>  //metodos para manejar archivos JSON
+#include <esp_task_wdt.h> //libreria de perro guardia
 #include <TimeLib.h>
 #include <Ticker.h> //para los timer de los relays
 #include <RTClib.h>
 #include <Wire.h>
-
+#include <ESPAsyncWebServer.h>
 //******************************************************************************************************
-// Configuracion del sensor de temperatura DS18B20
-// #include <OneWire.h>// descomentar para el sensor de temperatura DS18B20
-// #include <DallasTemperature.h>// descomentar para el sensor de temperatura DS18B20
-// #define ONE_WIRE_BUS 13 //no compatible con la tarjeta por eso hay que cambiar el pin sugerencia el 4
-// OneWire oneWire(ONE_WIRE_BUS);
-// DallasTemperature sensor(&oneWire)
+//  Configuracion del sensor de temperatura DS18B20
+//  #include <OneWire.h>// descomentar para el sensor de temperatura DS18B20
+//  #include <DallasTemperature.h>// descomentar para el sensor de temperatura DS18B20
+//  #define ONE_WIRE_BUS 13 //no compatible con la tarjeta por eso hay que cambiar el pin sugerencia el 4
+//  OneWire oneWire(ONE_WIRE_BUS);
+//  DallasTemperature sensor(&oneWire)
 //*******************************************************************************************************
 
 // Libreria para el RTC del ESP32
@@ -54,7 +52,6 @@
 #include "vue32_reset.hpp"
 #include "spiffsGraficas.hpp"
 #include "dimer.hpp"
-// #include "spiffsDate.hpp" //a un no se si hacer
 
 // put function declarations here:
 
@@ -126,7 +123,7 @@ void setup()
   gpioDefine();       // definicion de los pines y setear (setup)
   setupPintRestore(); // definicion para el pin de reset y restore
   setupAlarmas();     // definicion de las alarmas
-  // Paso de los estados de los pines de los Relays
+  // Inicio de los estados de los pines de los Relays al iniciar el programa
   setOnOffSingle(RELAY1, R_STATUS1);
   setOnOffSingle(RELAY2, R_STATUS2);
   // Pasar el dato del dimmer
@@ -137,37 +134,42 @@ void setup()
   timeSetup();
   // zona de Tickers pero tienen que ser de poco tiempo ya que con retardos mas grandes reinician el dispositivo
   // actualizaciontime.attach(1, actualizaTime); // actualizara el tiempo cada 1 segundo para funciones pequenas pero de que?
-  muestraTemyHum.attach(10, muestra); // realiza una funcion void llamada result cada 10 minutos para guardar los datos de temp y hum y mostrarlos en grafica
-  muestraDimer.attach(2, serialDimer);
-  //     iniciamos el servidor
+  // muestraTemyHum.attach(10, muestra); // realiza una funcion void llamada result cada 10 segundos para guardar los datos de temp y hum y mostrarlos en grafica
+  // muestraDimer.attach(2, serialDimer);
+  // iniciamos el servidor
   initServer();
   // iniciamos websockets
   initWebsockets();
   // crear Tarea Reconexión WIFI
   xTaskCreatePinnedToCore(TaskWifiReconnect, "TaskWifiReconnect", 1024 * 6, NULL, 2, NULL, 0); // se para la tarea al core 0
   // xTaskCreate(TaskWifiReconnect, "TaskWifiReconnect", 1024 * 6, NULL, 2, NULL);
+
+  // Crear una tarea que envie los mensajes a websockets
+  xTaskCreate(TaskWsSend, "TaskWsSend", 1024 * 4, NULL, 1, NULL); // mas memoria a WS antes 4 ahora 6
+  // crea una tarea que toma la muestras para la grafica pero lo hace el core0
+  xTaskCreatePinnedToCore(TaskMuestra, "TaskMuestra", 1024 * 4, NULL, 1, NULL, 0);
+  // crea una tarea que muestra el valor del potenciometro
+  xTaskCreatePinnedToCore(TaskSerialDimer, "TaskSerialDimer", 1024 * 4, NULL, 1, NULL, 1);
+
+  //----------------------------------probado--------
+  // crear Tarea mostrar pantalla LCD
+  xTaskCreate(TaskLCD, "TaskLCD", 1024 * 4, NULL, 1, NULL); // necesita 4 * 1024 errores con menos
   //  crear Tarea de reconexión MQTT
   xTaskCreate(TaskMqttReconnect, "TaskMqttReconnect", 1024 * 6, NULL, 2, NULL); // se cambio a 8 en vez de 6
   // LED MQTT Task
-  xTaskCreate(TaskMQTTLed, "TaskMQTTLed", 1024 * 2, NULL, 1, NULL); // le baje a solo 1024 y falla
-  // crear Tarea mostrar pantalla LCD
-  xTaskCreate(TaskLCD, "TaskLCD", 1024 * 4, NULL, 1, NULL); // necesita 4 * 1024 errores con menos
+  xTaskCreate(TaskMQTTLed, "TaskMQTTLed", 1024 * 2, NULL, 1, NULL); // 1 le baje a solo 1024 y falla
   // crear Tarea cambio de estado rele de manera local
-  xTaskCreate(Taskrelcambio, "Taskrelcambio", 1024 * 2, NULL, 1, NULL);
+  xTaskCreate(Taskrelcambio, "Taskrelcambio", 1024 * 2, NULL, 1, NULL); // 2
   // crea tarea para ponerle horario a los relevadore
-  xTaskCreate(TaskTimeRele, "TaskTimeRele", 1024 * 2, NULL, 1, NULL);
-  // Crear una tarea que envie los mensajes a websockets
-  xTaskCreate(TaskWsSend, "TaskWsSend", 1024 * 4, NULL, 1, NULL); // mas memoria a WS antes 4 ahora 6
+  xTaskCreate(TaskTimeRele, "TaskTimeRele", 1024 * 2, NULL, 1, NULL); // 3
   // Crear una tarea verifique el boton d34 si se requiere una restauracion
-  xTaskCreate(TaskRestore, "TaskRestore", 1024 * 4, NULL, 1, NULL);
-  // crea una tarea que toma la muestras para la grafica pero lo hace el core0
-  // xTaskCreatePinnedToCore(TaskMuestra, "TaskMuestra", 1024 * 4, NULL, 1, NULL, 0);
+  xTaskCreate(TaskRestore, "TaskRestore", 1024 * 4, NULL, 1, NULL); // 4
+  // Tarea que verifica el estado de los relays
+  xTaskCreate(TaskVerRelay, "TaskVerRelay", 1024 * 2, NULL, 1, NULL); // 5
+
   // crear tarea estado de las alarmas
   // xTaskCreate(TaskAlarms, "TaskAlarms", 1024 * 2, NULL, 1, NULL);
 
-  // setupEspnow();                        // hasta que este wifi configurado pero hace falta su task
-  // esp_now_register_recv_cb(OnDataRecv); // no se si va o no va
-  //  timer de los relays
   //-------------------------------Interrupciones-------------------------------------------------------
   /*pinMode(ACTRELE1, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(ACTRELE1), funcDeInterrupcion1, RISING); // Flanco de subida
@@ -178,8 +180,6 @@ void setup()
 void loop()
 {
 
-  // ESP_RST_TASK_WDT;       // reiniciar el perro guardian  por si alguna tarea dura mas tiempo del esperado al no reiniciarlo el reiniciara el dispositivo
-  ctrlRelays();           // checa el estado de los relays para prenderlos o apagarlos
   statusAlarmVariables(); // actualiza el estado de las variables de las alarmas
   contadorAlarmas();      // cuenta la cantidad de alarmas y le pone la fecha
 

@@ -1,7 +1,6 @@
 // en este archivo se manejarán las peticiones del servidor
 
 #pragma once
-#include "ESPAsyncWebServer.h"
 #include <Update.h> //para actializar el fimware
 
 AsyncWebServer server(80);          // iniciamos el servidor en el puerto 80

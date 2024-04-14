@@ -37,7 +37,7 @@ Read more about using header files in official GCC documentation:
 
 https://gcc.gnu.org/onlinedocs/cpp/Header-Files.html
 
-## los topidos para mandar a encender por mqtt son para el relay1:
+## los topicos para mandar a encender por mqtt son para el relay1:
 
 - MQTTusuario/serial/command =>siguiente ejemplo:
 - lalo/ESP32A11B5AE04002/command
@@ -74,3 +74,11 @@ https://gcc.gnu.org/onlinedocs/cpp/Header-Files.html
 
 - pendiente PWM
 - Pendiente que se salve cuando se mandan comandos por MQTT
+
+## Correciones en el programa
+
+- corregir que el medidor DHT22 que no de valores raros podriamos dejarlo en un hpp aparte (no hay sensor?)
+- Corregir los reinicios
+- separar en mas archivos .hpp (particionar)
+- mejorar los log a logError,logDepuracion,logInfo y ponerles if
+- activar por medio de interruptor el WS

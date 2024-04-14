@@ -49,9 +49,8 @@
 // Documentacion: https://arduinojson.org/v6/api/json/deserializejson/
 //--------------------------------------------------------------------------
 const size_t capacitySettings = 1024 * 5; // 1024*5 = 5KB
-const size_t capacityData = 512;          // tamaño del documento JSON para la data
-// const size_t capacityDate = 512;          // tamaño del documento JSON para la data
-StaticJsonDocument<2000> board; // verificar con mas capacidad pare espnow
+const size_t capacityData = 512;          // tamaño del documento JSON para la data 512 antes
+// StaticJsonDocument<2000> board;           // verificar con mas capacidad pare espnow
 String jsonStringApi = "{\"info\":\"null\"}";
 //------------------------------------------------------------------
 // Versión de firmware desde las variables de entorno platformio.ini
@@ -270,10 +269,11 @@ size_t content_len; // para la barra de progreso del firmware
 //--------------------i-----------------------------------------------
 dimmerLamp dimmerReal(INAC, DIMMER); // GPIO18 es igual al 30 por libreria se crea onjeto Dimmer y el 29 pin de salida GPIO 5
 // dimmerLamp dimmerReal(DIMMER, INAC); // para mi que este pude ser un problema
+int timeOled;
 int outVal = 0;
 int dutyCycle = 50; // ciclo de trabajo salidas PWM
 int muestraDimerOLED;
-int timeMuestraOLED = 2000; // es el tiempo en milisegundos que mostrara en pantalla el valor del Tiempo en el OLED
+int timeMuestraOLED = 3000; // es el tiempo en milisegundos que mostrara en pantalla el valor del Tiempo en el OLED
 //------------------------------------------------------------------------------
 // Variables necesarias para registrar temperaturas y humedades por 48 hrs
 //------------------------------------------------------------------------------

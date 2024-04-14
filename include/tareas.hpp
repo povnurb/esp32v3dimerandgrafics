@@ -5,7 +5,9 @@
 //---------------------------------------------------------------
 void TaskWifiReconnect(void *pvParamenters)
 {
-    // para mantener conectado ya sea en modo ap o ap_sta al wifi
+    esp_task_wdt_reset(); // agregado
+    //  para mantener conectado ya sea en modo ap o ap_sta al wifi
+    vTaskDelay(10 / portTICK_PERIOD_MS); // podria ser necesario
     (void)pvParamenters;
     while (1)
     { // loop infinito
@@ -29,11 +31,11 @@ void TaskWifiReconnect(void *pvParamenters)
 void TaskMqttReconnect(void *pvParamenters)
 {
     // para mantener conectado ya sea en modo ap o ap_sta al wifi
-    ESP_RST_TASK_WDT; // para probar si con esto queda
     (void)pvParamenters;
     while (1)
-    { // loop infinito
-        // vTaskDelay(10 / portTICK_PERIOD_MS); //podria ser necesario
+    {                                        // loop infinito
+        esp_task_wdt_reset();                // agregado
+        vTaskDelay(10 / portTICK_PERIOD_MS); // podria ser necesario
         if ((WiFi.status() == WL_CONNECTED) && (wifi_app == WIFI_AP_STA))
         {
             if (mqtt_server != 0)
@@ -52,6 +54,7 @@ void TaskMqttReconnect(void *pvParamenters)
                         lasMsg = millis();
                         mqtt_publish();
                         log("INFO", "tareas.hpp", "Mensaje enviado por MQTT...");
+                        Serial.flush();
                     }
                 }
             }
@@ -92,7 +95,7 @@ void TaskLCD(void *pvParameters)
         mostrar();
         // Serial.println(tempC);
         // vTaskDelay(1000 / portTICK_PERIOD_MS); // probar con 200 o con 1000 y sustituir todo
-        vTaskDelay(200);
+        vTaskDelay(1000);
     }
 }
 // ----------------------------------------------------------------------
@@ -124,7 +127,6 @@ void TaskTimeRele(void *pvParameters)
 //----------------------------------------------------------
 void TaskWsSend(void *pvParameters)
 {
-    ESP_RST_TASK_WDT;
     (void)pvParameters;
     while (1)
     {
@@ -154,5 +156,30 @@ void TaskMuestra(void *pvParameters)
     {
         vTaskDelay(10000 / portTICK_PERIOD_MS);
         muestra();
+    }
+}
+// ---------------------------------------------------------------------
+// Tarea que verifica el estado de los relays
+// --------------------------------------------------------------------
+void TaskVerRelay(void *pvParameters)
+{
+    (void)pvParameters;
+    while (1)
+    {
+        vTaskDelay(10 / portTICK_PERIOD_MS);
+        ctrlRelays(); // activa los relevadores de manera local
+    }
+}
+// ---------------------------------------------------------------------
+// Tarea que verifica el estado del potenciometro
+// --------------------------------------------------------------------
+void TaskSerialDimer(void *pvParameters)
+{
+    (void)pvParameters;
+    while (1)
+    {
+        // vTaskDelay(2000 / portTICK_PERIOD_MS);
+        vTaskDelay(1000);
+        serialDimer(); // muestra el valor del potenciometro
     }
 }

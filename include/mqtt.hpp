@@ -248,7 +248,6 @@ String Json()
 
 void mqttloop()
 {
-    ESP_RST_TASK_WDT; // probar
     if (mqtt_enable)
     {
         if (!mqttClient.connected())

@@ -127,6 +127,7 @@ void wifi_setup()
 byte w = 0;
 void wifiLoop()
 {
+    
     unsigned long currentMillis = millis();
     if (WiFi.status() != WL_CONNECTED && (currentMillis - previousMillisWIFI >= intervalWIFI))
     {
