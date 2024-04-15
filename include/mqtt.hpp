@@ -270,3 +270,81 @@ void mqttloop()
         }
     }
 }
+//----------------------------------------------------------------------------------------------------------
+// parametros de configuraccion Index
+// Método: GET
+// para la api y MQTT
+//  url: /api/index
+// Mejor manera de armar un Json y que la otra manera consume muchos recursos
+String apiGetIndex(String IPv4, String Browser)
+{
+    String response = "";
+    DynamicJsonDocument jsonDoc(2048);
+    // general
+    jsonDoc["serial"] = DeviceID();
+    jsonDoc["LUGAR"] = LUGAR;
+    jsonDoc["device"] = platform();
+    jsonDoc["wifiQuality"] = WiFi.status() == WL_CONNECTED ? getRSSIasQuality(WiFi.RSSI()) : 0;
+    jsonDoc["wifiStatus"] = WiFi.status() == WL_CONNECTED ? true : false;
+    jsonDoc["rssiStatus"] = WiFi.status() == WL_CONNECTED ? WiFi.RSSI() : 0;
+    jsonDoc["mqttStatus"] = mqttClient.connected() ? true : false;
+    jsonDoc["reboots"] = device_restart;
+    jsonDoc["activeTime"] = longTimeStr(millis() / 1000);
+    // WIFI
+    JsonObject wifiObj = jsonDoc.createNestedObject("wifi");
+    wifiObj["Estado_WiFi"] = WiFi.status() == WL_CONNECTED ? "ONLINE" : "OFFLINE";
+    wifiObj["SSID_WiFi"] = wifi_mode == WIFI_STA ? wifi_ssid : ap_ssid;
+    wifiObj["IPv4_WiFi"] = wifi_mode == WIFI_STA ? ipStr(WiFi.localIP()) : ipStr(WiFi.softAPIP());
+    wifiObj["MAC_WiFi"] = WiFi.macAddress();
+    // MQTT
+    JsonObject mqttObj = jsonDoc.createNestedObject("mqtt");
+    mqttObj["Estado_MQTT"] = mqttClient.connected() ? "ONLINE" : "OFFLINE";
+    mqttObj["Servidor_MQTT"] = mqttClient.connected() ? mqtt_server : "server not connected";
+    mqttObj["Usuario_MQTT"] = mqtt_user;
+    mqttObj["Cliente_ID_MQTT"] = mqtt_id;
+    // INFO
+    JsonObject infoObj = jsonDoc.createNestedObject("info");
+    infoObj["Identificación"] = device_name;
+    infoObj["Número_de_Serie"] = DeviceID();
+    infoObj["mDNS_Url"] = String("http://" + String(device_name) + ".local/");
+    infoObj["Dirección_IP_del_Cliente"] = IPv4; // IPv4;
+    infoObj["Navegador_del_Cliente"] = Browser; // Browser;
+    infoObj["Versión_del_Firmware"] = device_fw_version;
+    infoObj["Versión_del_Hardware"] = device_hw_version;
+    infoObj["CPU_FREQ_MHz"] = getCpuFrequencyMhz();
+    infoObj["RAM_SIZE_KB"] = ESP.getHeapSize() / 1024;
+    infoObj["SPIFFS_SIZE_KB"] = SPIFFS.totalBytes() / 1024;
+    infoObj["FLASH_SIZE_MB"] = ESP.getFlashChipSize() / (1024.0 * 1024);
+    infoObj["Fabricante"] = device_manufacture;
+    infoObj["Tiempo_de_Actividad_del_Sistema"] = longTimeStr(millis() / 1000);
+    infoObj["Cantidad_de_Reinicios"] = device_restart;
+    // GENERAL
+    jsonDoc["spiffsUsed"] = SPIFFS.usedBytes() / 1024;
+    jsonDoc["ramAvailable"] = ESP.getFreeHeap() / 1024;
+    jsonDoc["cpuTemp"] = String(TempCPUValue());
+    jsonDoc["tC"] = String(Temperatura());
+    jsonDoc["hum"] = String(Humedad());
+    jsonDoc["tmin"] = String(tempMin()); // tempMin()
+    jsonDoc["tmax"] = String(tempMax());
+    jsonDoc["BUZZER_STATUS"] = BUZZER_STATUS;
+    // Relays arrays de objetos
+    StaticJsonDocument<512> obj1; // Buffer
+    StaticJsonDocument<512> obj2; // Buffer
+    JsonObject relay1 = obj1.to<JsonObject>();
+    relay1["R_NAME1"] = R_NAME1;
+    relay1["R_STATUS1"] = R_STATUS1 ? true : false;
+    relay1["R_LOGIC1"] = R_LOGIC1;
+    relay1["R_DESCRIPTION1"] = R_DESCRIPTION1;
+    JsonObject relay2 = obj2.to<JsonObject>();
+    relay2["R_NAME2"] = R_NAME2;
+    relay2["R_STATUS2"] = R_STATUS2 ? true : false;
+    relay2["R_LOGIC2"] = R_LOGIC2;
+    relay2["R_DESCRIPTION2"] = R_DESCRIPTION2;
+
+    JsonArray relays = jsonDoc.createNestedArray("relays");
+    relays.add(relay1); // se agrega objeto 1 dentro del array
+    relays.add(relay2); // se agrega objeto 1 dentro del array
+    jsonDoc["dimmer"] = dim;
+    serializeJson(jsonDoc, response);
+    return response;
+}

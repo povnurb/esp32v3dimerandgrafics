@@ -52,74 +52,75 @@ void handleApiIndex(AsyncWebServerRequest *request)
             return request->requestAuthentication(); // aqui se queda en circulos seria bueno agregar un contador para que salga del bucle
         }
     }
-    String json = "";
+    // String json = "";
 
-    json = "{";
-    json += "\"serial\": \"" + DeviceID() + "\"";
-    json += ",\"LUGAR\": \"" + String(LUGAR) + "\"";
-    json += ",\"device\": \"" + platform() + "\"";
-    WiFi.status() == WL_CONNECTED ? json += ",\"wifiQuality\":" + String(getRSSIasQuality(WiFi.RSSI())) : json += ",\"wifiQuality\": 0";
-    WiFi.status() == WL_CONNECTED ? json += ",\"wifiStatus\": true" : json += ",\"wifiStatus\": false";
-    WiFi.status() == WL_CONNECTED ? json += ",\"rssiStatus\":" + String(WiFi.RSSI()) : json += ",\"rssiStatus\": 0";
-    mqttClient.connected() ? json += ",\"mqttStatus\": true" : json += ",\"mqttStatus\": false";
-    json += ",\"reboots\":" + String(device_restart);
-    json += ",\"activeTime\": \"" + String(longTimeStr(millis() / 1000)) + "\"";
-    json += ",\"wifi\":{";
-    WiFi.status() == WL_CONNECTED ? json += "\"Estado_WiFi\": \"ONLINE\" " : json += "\"Estado_WiFi\": \"OFFLINE\"";
-    wifi_mode ? json += ",\"SSID_WiFi\": \"" + String(wifi_ssid) + "\"" : json += ",\"SSID_WiFi\": \"" + String(ap_ssid) + "\"";
-    wifi_mode ? json += ",\"IPv4_WiFi\": \"" + ipStr(WiFi.localIP()) + "\"" : json += ",\"IPv4_WiFi\": \"" + ipStr(WiFi.softAPIP()) + "\"";
-    json += ",\"MAC_WiFi\": \"" + String(WiFi.macAddress()) + "\"";
-    json += "},";
-    json += "\"mqtt\":{";
-    mqttClient.connected() ? json += "\"Estado_MQTT\": \"ONLINE\" " : json += "\"Estado_MQTT\": \"OFFLINE\"";
-    mqttClient.connected() ? json += ",\"Servidor_MQTT\": \"" + String(mqtt_server) + "\"" : json += ",\"Servidor_MQTT\": \"server not connected\"";
-    json += ",\"Usuario_MQTT\": \"" + String(mqtt_user) + "\"";
-    json += ",\"Cliente_ID_MQTT\": \"" + String(mqtt_id) + "\"";
-    json += "},";
-    json += "\"info\":{";
-    json += "\"Identificación\": \"" + String(device_name) + "\"";
-    json += ",\"Número_de_Serie\": \"" + DeviceID() + "\"";
-    json += ",\"mDNS_Url\":  \"" + String("http://" + String(device_name) + ".local/") + "\"";
-    json += ",\"Dirección_IP_del_Cliente\": \"" + ipStr(request->client()->remoteIP()) + "\"";
-    json += ",\"Navegador_del_Cliente\": \"" + String(request->getHeader("User-Agent")->value().c_str()) + "\"";
-    json += ",\"Versión_del_Firmware\": \"" + String(device_fw_version) + "\"";
-    json += ",\"Versión_del_Hardware\": \"" + String(device_hw_version) + "\"";
-    json += ",\"CPU_FREQ_MHz\":" + String(getCpuFrequencyMhz());
-    json += ",\"RAM_SIZE_KB\":" + String(ESP.getHeapSize() / 1024);
-    json += ",\"SPIFFS_SIZE_KB\":" + String(SPIFFS.totalBytes() / 1024);
-    json += ",\"FLASH_SIZE_MB\":" + String(ESP.getFlashChipSize() / (1024.0 * 1024), 2);
-    json += ",\"Fabricante\": \"" + String(device_manufacture) + "\"";
-    json += ",\"Tiempo_de_Actividad_del_Sistema\": \"" + String(longTimeStr(millis() / 1000)) + "\"";
-    json += ",\"Cantidad_de_Reinicios\":" + String(device_restart);
-    json += "}";
-    json += ",\"spiffsUsed\":" + String(SPIFFS.usedBytes() / 1024);
-    json += ",\"ramAvailable\":" + String(ESP.getFreeHeap() / 1024);
-    json += ",\"cpuTemp\":" + String(TempCPUValue());
-    isnan(Temperatura()) ? json += ",\"tC\":\"Checar_Sensor\"" : json += ",\"tC\":" + String(Temperatura());
-    json += ",\"hum\":" + String(Humedad());
-    json += ",\"tmin\":" + String(tempMin()); // tempMin()
-    json += ",\"tmax\":" + String(tempMax());
-    BUZZER_STATUS ? json += ",\"BUZZER_STATUS\": true" : json += ",\"BUZZER_STATUS\": false";
-    json += ",\"relays\":[";
-    json += "{";
-    json += "\"R_NAME1\": \"" + String(R_NAME1) + "\"";
-    R_STATUS1 ? json += ",\"R_STATUS1\": true" : json += ",\"R_STATUS1\": false";
-    R_LOGIC1 ? json += ",\"R_LOGIC1\": true" : json += ",\"R_LOGIC1\": false";
-    json += ",\"R_DESCRIPTION1\": \"" + String(R_DESCRIPTION1) + "\"";
-    json += "},";
-    json += "{";
-    json += "\"R_NAME2\": \"" + String(R_NAME2) + "\"";
-    R_STATUS2 ? json += ",\"R_STATUS2\": true" : json += ",\"R_STATUS2\": false";
-    R_LOGIC2 ? json += ",\"R_LOGIC2\": true" : json += ",\"R_LOGIC2\": false";
-    json += ",\"R_DESCRIPTION2\": \"" + String(R_DESCRIPTION2) + "\"";
-    json += "}";
-    json += "]";
-    json += ",\"dimmer\":" + String(dim);
-    json += "}";
+    // json = "{";
+    // json += "\"serial\": \"" + DeviceID() + "\"";
+    // json += ",\"LUGAR\": \"" + String(LUGAR) + "\"";
+    // json += ",\"device\": \"" + platform() + "\"";
+    // WiFi.status() == WL_CONNECTED ? json += ",\"wifiQuality\":" + String(getRSSIasQuality(WiFi.RSSI())) : json += ",\"wifiQuality\": 0";
+    // WiFi.status() == WL_CONNECTED ? json += ",\"wifiStatus\": true" : json += ",\"wifiStatus\": false";
+    // WiFi.status() == WL_CONNECTED ? json += ",\"rssiStatus\":" + String(WiFi.RSSI()) : json += ",\"rssiStatus\": 0";
+    // mqttClient.connected() ? json += ",\"mqttStatus\": true" : json += ",\"mqttStatus\": false";
+    // json += ",\"reboots\":" + String(device_restart);
+    // json += ",\"activeTime\": \"" + String(longTimeStr(millis() / 1000)) + "\"";
+    // json += ",\"wifi\":{";
+    // WiFi.status() == WL_CONNECTED ? json += "\"Estado_WiFi\": \"ONLINE\" " : json += "\"Estado_WiFi\": \"OFFLINE\"";
+    // wifi_mode ? json += ",\"SSID_WiFi\": \"" + String(wifi_ssid) + "\"" : json += ",\"SSID_WiFi\": \"" + String(ap_ssid) + "\"";
+    // wifi_mode ? json += ",\"IPv4_WiFi\": \"" + ipStr(WiFi.localIP()) + "\"" : json += ",\"IPv4_WiFi\": \"" + ipStr(WiFi.softAPIP()) + "\"";
+    // json += ",\"MAC_WiFi\": \"" + String(WiFi.macAddress()) + "\"";
+    // json += "},";
+    // json += "\"mqtt\":{";
+    // mqttClient.connected() ? json += "\"Estado_MQTT\": \"ONLINE\" " : json += "\"Estado_MQTT\": \"OFFLINE\"";
+    // mqttClient.connected() ? json += ",\"Servidor_MQTT\": \"" + String(mqtt_server) + "\"" : json += ",\"Servidor_MQTT\": \"server not connected\"";
+    // json += ",\"Usuario_MQTT\": \"" + String(mqtt_user) + "\"";
+    // json += ",\"Cliente_ID_MQTT\": \"" + String(mqtt_id) + "\"";
+    // json += "},";
+    // json += "\"info\":{";
+    // json += "\"Identificación\": \"" + String(device_name) + "\"";
+    // json += ",\"Número_de_Serie\": \"" + DeviceID() + "\"";
+    // json += ",\"mDNS_Url\":  \"" + String("http://" + String(device_name) + ".local/") + "\"";
+    // json += ",\"Dirección_IP_del_Cliente\": \"" + ipStr(request->client()->remoteIP()) + "\"";
+    // json += ",\"Navegador_del_Cliente\": \"" + String(request->getHeader("User-Agent")->value().c_str()) + "\"";
+    // json += ",\"Versión_del_Firmware\": \"" + String(device_fw_version) + "\"";
+    // json += ",\"Versión_del_Hardware\": \"" + String(device_hw_version) + "\"";
+    // json += ",\"CPU_FREQ_MHz\":" + String(getCpuFrequencyMhz());
+    // json += ",\"RAM_SIZE_KB\":" + String(ESP.getHeapSize() / 1024);
+    // json += ",\"SPIFFS_SIZE_KB\":" + String(SPIFFS.totalBytes() / 1024);
+    // json += ",\"FLASH_SIZE_MB\":" + String(ESP.getFlashChipSize() / (1024.0 * 1024), 2);
+    // json += ",\"Fabricante\": \"" + String(device_manufacture) + "\"";
+    // json += ",\"Tiempo_de_Actividad_del_Sistema\": \"" + String(longTimeStr(millis() / 1000)) + "\"";
+    // json += ",\"Cantidad_de_Reinicios\":" + String(device_restart);
+    // json += "}";
+    // json += ",\"spiffsUsed\":" + String(SPIFFS.usedBytes() / 1024);
+    // json += ",\"ramAvailable\":" + String(ESP.getFreeHeap() / 1024);
+    // json += ",\"cpuTemp\":" + String(TempCPUValue());
+    // isnan(Temperatura()) ? json += ",\"tC\":\"Checar_Sensor\"" : json += ",\"tC\":" + String(Temperatura());
+    // json += ",\"hum\":" + String(Humedad());
+    // json += ",\"tmin\":" + String(tempMin()); // tempMin()
+    // json += ",\"tmax\":" + String(tempMax());
+    // BUZZER_STATUS ? json += ",\"BUZZER_STATUS\": true" : json += ",\"BUZZER_STATUS\": false";
+    // json += ",\"relays\":[";
+    // json += "{";
+    // json += "\"R_NAME1\": \"" + String(R_NAME1) + "\"";
+    // R_STATUS1 ? json += ",\"R_STATUS1\": true" : json += ",\"R_STATUS1\": false";
+    // R_LOGIC1 ? json += ",\"R_LOGIC1\": true" : json += ",\"R_LOGIC1\": false";
+    // json += ",\"R_DESCRIPTION1\": \"" + String(R_DESCRIPTION1) + "\"";
+    // json += "},";
+    // json += "{";
+    // json += "\"R_NAME2\": \"" + String(R_NAME2) + "\"";
+    // R_STATUS2 ? json += ",\"R_STATUS2\": true" : json += ",\"R_STATUS2\": false";
+    // R_LOGIC2 ? json += ",\"R_LOGIC2\": true" : json += ",\"R_LOGIC2\": false";
+    // json += ",\"R_DESCRIPTION2\": \"" + String(R_DESCRIPTION2) + "\"";
+    // json += "}";
+    // json += "]";
+    // json += ",\"dimmer\":" + String(dim);
+    // json += "}";
 
     request->addInterestingHeader("API ESP32 Server"); // este es el header se agrega
     // send(estado,aplicacion,formato)
-    request->send(200, dataType, json);
+    // request->send(200, dataType, json);
+    request->send(200, dataType, apiGetIndex(ipStr(request->client()->remoteIP()), String(request->getHeader("User-Agent")->value().c_str())));
 }
 
 //---------------------------------------------------------
@@ -1404,29 +1405,29 @@ void handleApiMQTT2(AsyncWebServerRequest *request)
 
     String json = "";
     json = "{";
-    json += "\"serial\": \"" + DeviceID() + "\"";
-    json += ",\"device\": \"" + platform() + "\"";
-    WiFi.status() == WL_CONNECTED ? json += ",\"wifiQuality\":" + String(getRSSIasQuality(WiFi.RSSI())) : json += ",\"wifiQuality\": 0";
-    WiFi.status() == WL_CONNECTED ? json += ",\"wifiStatus\": true" : json += ",\"wifiStatus\": false";
-    WiFi.status() == WL_CONNECTED ? json += ",\"rssiStatus\":" + String(WiFi.RSSI()) : json += ",\"rssiStatus\": 0";
-    mqttClient.connected() ? json += ",\"mqttStatus\": true" : json += ",\"mqttStatus\": false";
-    json += ",\"mqtt2\":{";
-    mqtt2_status ? json += "\"mqtt2_status\": true" : json += "\"mqtt2_status\": false";
-    mqtt_enable2 ? json += ",\"mqtt_enable2\": true" : json += ",\"mqtt_enable2\": false";
-    json += ",\"mqtt_server2\": \"" + String(mqtt_server2) + "\"";
-    json += ",\"mqtt_port2\":" + String(mqtt_port2);
-    mqtt_retain2 ? json += ",\"mqtt_retain2\": true" : json += ",\"mqtt_retain2\": false";
-    json += ",\"mqtt_qos2\":" + String(mqtt_qos2);
-    json += ",\"mqtt_id2\": \"" + String(mqtt_id2) + "\"";
-    json += ",\"mqtt_user2\": \"" + String(mqtt_user2) + "\"";
-    json += ",\"mqtt_password2\": \"" + String(mqtt_password2) + "\"";
-    json += ",\"mqtt_extraTopic\": \"" + String(mqtt_extraTopic) + "\"";
-    mqtt_clean_sessions2 ? json += ",\"mqtt_clean_sessions2\": true" : json += ",\"mqtt_clean_sessions2\": false";
-    mqtt_time_send2 ? json += ",\"mqtt_time_send2\": true" : json += "\"mqtt_time_send2\": false";
-    json += ",\"mqtt_time_interval\":" + String(mqtt_time_interval2 / 1000); // 60000 / 1000 = 30s
-    mqtt_status_send2 ? json += ",\"mqtt_status_send2\": true" : json += ",\"mqtt_status_send2\": false";
-    json += "},";
-    json += "\"code\": 1 ";
+    // json += "\"serial\": \"" + DeviceID() + "\"";
+    // json += ",\"device\": \"" + platform() + "\"";
+    // WiFi.status() == WL_CONNECTED ? json += ",\"wifiQuality\":" + String(getRSSIasQuality(WiFi.RSSI())) : json += ",\"wifiQuality\": 0";
+    // WiFi.status() == WL_CONNECTED ? json += ",\"wifiStatus\": true" : json += ",\"wifiStatus\": false";
+    // WiFi.status() == WL_CONNECTED ? json += ",\"rssiStatus\":" + String(WiFi.RSSI()) : json += ",\"rssiStatus\": 0";
+    // mqttClient.connected() ? json += ",\"mqttStatus\": true" : json += ",\"mqttStatus\": false";
+    // json += ",\"mqtt2\":{";
+    // mqtt2_status ? json += "\"mqtt2_status\": true" : json += "\"mqtt2_status\": false";
+    // mqtt_enable2 ? json += ",\"mqtt_enable2\": true" : json += ",\"mqtt_enable2\": false";
+    // json += ",\"mqtt_server2\": \"" + String(mqtt_server2) + "\"";
+    // json += ",\"mqtt_port2\":" + String(mqtt_port2);
+    // mqtt_retain2 ? json += ",\"mqtt_retain2\": true" : json += ",\"mqtt_retain2\": false";
+    // json += ",\"mqtt_qos2\":" + String(mqtt_qos2);
+    // json += ",\"mqtt_id2\": \"" + String(mqtt_id2) + "\"";
+    // json += ",\"mqtt_user2\": \"" + String(mqtt_user2) + "\"";
+    // json += ",\"mqtt_password2\": \"" + String(mqtt_password2) + "\"";
+    // json += ",\"mqtt_extraTopic\": \"" + String(mqtt_extraTopic) + "\"";
+    // mqtt_clean_sessions2 ? json += ",\"mqtt_clean_sessions2\": true" : json += ",\"mqtt_clean_sessions2\": false";
+    // mqtt_time_send2 ? json += ",\"mqtt_time_send2\": true" : json += "\"mqtt_time_send2\": false";
+    // json += ",\"mqtt_time_interval\":" + String(mqtt_time_interval2 / 1000); // 60000 / 1000 = 30s
+    // mqtt_status_send2 ? json += ",\"mqtt_status_send2\": true" : json += ",\"mqtt_status_send2\": false";
+    // json += "},";
+    // json += "\"code\": 1 ";
     json += "}";
 
     request->addInterestingHeader("API ESP32 Server");
@@ -1548,66 +1549,66 @@ void handleApiPostMQTT2(AsyncWebServerRequest *request, uint8_t *data, size_t le
     //  -------------------------------------------------------------------
     String s = "";
     // MQTT Enable
-    mqtt_enable2 = doc["mqtt_enable2"].as<bool>();
-    // MQTT Server
-    if (doc["mqtt_server2"] != "")
-    {
-        s = doc["mqtt_server2"].as<String>();
-        s.trim();
-        strlcpy(mqtt_server2, s.c_str(), sizeof(mqtt_server2));
-        s = "";
-    }
-    // MQTT Port
-    if (doc["mqtt_port2"] != "")
-    {
-        mqtt_port2 = doc["mqtt_port2"].as<int>();
-    }
-    // MQTT Retain
-    mqtt_retain2 = doc["mqtt_retain2"].as<bool>();
-    // MQTT QOS 0-1-2
-    mqtt_qos2 = doc["mqtt_qos2"].as<int>();
-    // MQTT ID
-    if (doc["mqtt_id2"] != "")
-    {
-        s = doc["mqtt_id2"].as<String>();
-        s.trim();
-        strlcpy(mqtt_id2, s.c_str(), sizeof(mqtt_id2));
-        s = "";
-    }
-    // MQTT User
-    if (doc["mqtt_user2"] != "")
-    {
-        s = doc["mqtt_user2"].as<String>();
-        s.trim();
-        strlcpy(mqtt_user2, s.c_str(), sizeof(mqtt_user2));
-        s = "";
-    }
-    // MQTT Password
-    if (doc["mqtt_password2"] != "")
-    {
-        s = doc["mqtt_password2"].as<String>();
-        s.trim();
-        strlcpy(mqtt_password2, s.c_str(), sizeof(mqtt_password2));
-        s = "";
-    }
-    if (doc["mqtt_extraTopic"] != "")
-    {
-        s = doc["mqtt_extraTopic"].as<String>();
-        s.trim();
-        strlcpy(mqtt_extraTopic, s.c_str(), sizeof(mqtt_extraTopic));
-        s = "";
-    }
-    // mqtt_clean_sessions
-    mqtt_clean_sessions2 = doc["mqtt_clean_sessions2"].as<bool>();
-    // -------------------------------------------------------------------
-    // MQTT Envio de datos settings.json
-    // -------------------------------------------------------------------
-    // mqtt_time_send
-    mqtt_time_send2 = doc["mqtt_time_send2"].as<bool>();
-    // mqtt_time_interval
-    mqtt_time_interval2 = doc["mqtt_time_interval2"].as<int>() * 1000; // 60 * 1000 = 60000 = 60s
-    // mqtt_status_send
-    mqtt_status_send2 = doc["mqtt_status_send2"].as<bool>();
+    // mqtt_enable2 = doc["mqtt_enable2"].as<bool>();
+    // // MQTT Server
+    // if (doc["mqtt_server2"] != "")
+    // {
+    //     s = doc["mqtt_server2"].as<String>();
+    //     s.trim();
+    //     strlcpy(mqtt_server2, s.c_str(), sizeof(mqtt_server2));
+    //     s = "";
+    // }
+    // // MQTT Port
+    // if (doc["mqtt_port2"] != "")
+    // {
+    //     mqtt_port2 = doc["mqtt_port2"].as<int>();
+    // }
+    // // MQTT Retain
+    // mqtt_retain2 = doc["mqtt_retain2"].as<bool>();
+    // // MQTT QOS 0-1-2
+    // mqtt_qos2 = doc["mqtt_qos2"].as<int>();
+    // // MQTT ID
+    // if (doc["mqtt_id2"] != "")
+    // {
+    //     s = doc["mqtt_id2"].as<String>();
+    //     s.trim();
+    //     strlcpy(mqtt_id2, s.c_str(), sizeof(mqtt_id2));
+    //     s = "";
+    // }
+    // // MQTT User
+    // if (doc["mqtt_user2"] != "")
+    // {
+    //     s = doc["mqtt_user2"].as<String>();
+    //     s.trim();
+    //     strlcpy(mqtt_user2, s.c_str(), sizeof(mqtt_user2));
+    //     s = "";
+    // }
+    // // MQTT Password
+    // if (doc["mqtt_password2"] != "")
+    // {
+    //     s = doc["mqtt_password2"].as<String>();
+    //     s.trim();
+    //     strlcpy(mqtt_password2, s.c_str(), sizeof(mqtt_password2));
+    //     s = "";
+    // }
+    // if (doc["mqtt_extraTopic"] != "")
+    // {
+    //     s = doc["mqtt_extraTopic"].as<String>();
+    //     s.trim();
+    //     strlcpy(mqtt_extraTopic, s.c_str(), sizeof(mqtt_extraTopic));
+    //     s = "";
+    // }
+    // // mqtt_clean_sessions
+    // mqtt_clean_sessions2 = doc["mqtt_clean_sessions2"].as<bool>();
+    // // -------------------------------------------------------------------
+    // // MQTT Envio de datos settings.json
+    // // -------------------------------------------------------------------
+    // // mqtt_time_send
+    // mqtt_time_send2 = doc["mqtt_time_send2"].as<bool>();
+    // // mqtt_time_interval
+    // mqtt_time_interval2 = doc["mqtt_time_interval2"].as<int>() * 1000; // 60 * 1000 = 60000 = 60s
+    // // mqtt_status_send
+    // mqtt_status_send2 = doc["mqtt_status_send2"].as<bool>();
     // Save Settings.json
     if (especialSave())
     {
@@ -1635,21 +1636,21 @@ void handleApiTime(AsyncWebServerRequest *request)
     }
     String json = "";
     json = "{";
-    json += "\"serial\": \"" + DeviceID() + "\"";
-    json += ",\"device\": \"" + platform() + "\"";
-    WiFi.status() == WL_CONNECTED ? json += ",\"wifiQuality\":" + String(getRSSIasQuality(WiFi.RSSI())) : json += ",\"wifiQuality\": 0";
-    WiFi.status() == WL_CONNECTED ? json += ",\"wifiStatus\": true" : json += ",\"wifiStatus\": false";
-    WiFi.status() == WL_CONNECTED ? json += ",\"rssiStatus\":" + String(WiFi.RSSI()) : json += ",\"rssiStatus\": 0";
-    mqttClient.connected() ? json += ",\"mqttStatus\": true" : json += ",\"mqttStatus\": false";
-    json += ",\"time\":{";
-    time_ajuste ? json += "\"time_ajuste\": true" : json += "\"time_ajuste\": false";
-    json += ",\"time_date\": \"" + String(time_date) + "\""; // 2023-03-07T23:47
-    json += ",\"time_z_horaria\": \"" + String(time_z_horaria) + "\"";
-    json += ",\"time_server\": \"" + String(time_server) + "\"";
-    json += ",\"time_now\": \"" + String(getDateTime()) + "\""; // 2023-03-07T23:47
-    json += ",\"hora\": \"" + String(releTime()) + "\"";        // 2023-03-07T23:47
-    json += "},";
-    json += "\"code\": 1 ";
+    // json += "\"serial\": \"" + DeviceID() + "\"";
+    // json += ",\"device\": \"" + platform() + "\"";
+    // WiFi.status() == WL_CONNECTED ? json += ",\"wifiQuality\":" + String(getRSSIasQuality(WiFi.RSSI())) : json += ",\"wifiQuality\": 0";
+    // WiFi.status() == WL_CONNECTED ? json += ",\"wifiStatus\": true" : json += ",\"wifiStatus\": false";
+    // WiFi.status() == WL_CONNECTED ? json += ",\"rssiStatus\":" + String(WiFi.RSSI()) : json += ",\"rssiStatus\": 0";
+    // mqttClient.connected() ? json += ",\"mqttStatus\": true" : json += ",\"mqttStatus\": false";
+    // json += ",\"time\":{";
+    // time_ajuste ? json += "\"time_ajuste\": true" : json += "\"time_ajuste\": false";
+    // json += ",\"time_date\": \"" + String(time_date) + "\""; // 2023-03-07T23:47
+    // json += ",\"time_z_horaria\": \"" + String(time_z_horaria) + "\"";
+    // json += ",\"time_server\": \"" + String(time_server) + "\"";
+    // json += ",\"time_now\": \"" + String(getDateTime()) + "\""; // 2023-03-07T23:47
+    // json += ",\"hora\": \"" + String(releTime()) + "\"";        // 2023-03-07T23:47
+    // json += "},";
+    // json += "\"code\": 1 ";
     json += "}";
     request->send(200, dataType, json);
 }
@@ -1679,28 +1680,28 @@ void handleApiPostTime(AsyncWebServerRequest *request, uint8_t *data, size_t len
     // -------------------------------------------------------------------
     String s = "";
     // Manual - Internet true/false
-    time_ajuste = doc["time_ajuste"].as<bool>();
-    // Fecha - Hora
-    if (doc["time_date"] != "")
-    {
-        s = doc["time_date"].as<String>();
-        s.trim();
-        strlcpy(time_date, s.c_str(), sizeof(time_date));
-        s = "";
-    }
-    // Numero de la zona Horaria
-    if (doc["time_z_horaria"] != "")
-    {
-        time_z_horaria = doc["time_z_horaria"].as<float>() * 3600;
-    }
-    // Servidor NTP
-    if (doc["time_server"] != "")
-    {
-        s = doc["time_server"].as<String>();
-        s.trim();
-        strlcpy(time_server, s.c_str(), sizeof(time_server));
-        s = "";
-    }
+    // time_ajuste = doc["time_ajuste"].as<bool>();
+    // // Fecha - Hora
+    // if (doc["time_date"] != "")
+    // {
+    //     s = doc["time_date"].as<String>();
+    //     s.trim();
+    //     strlcpy(time_date, s.c_str(), sizeof(time_date));
+    //     s = "";
+    // }
+    // // Numero de la zona Horaria
+    // if (doc["time_z_horaria"] != "")
+    // {
+    //     time_z_horaria = doc["time_z_horaria"].as<float>() * 3600;
+    // }
+    // // Servidor NTP
+    // if (doc["time_server"] != "")
+    // {
+    //     s = doc["time_server"].as<String>();
+    //     s.trim();
+    //     strlcpy(time_server, s.c_str(), sizeof(time_server));
+    //     s = "";
+    // }
 
     // Save Settings.json
     if (especialSave())

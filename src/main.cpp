@@ -6,9 +6,9 @@
 #include <SPIFFS.h> //donde se tomaran los metodos para almacenar informacion
 #include <WiFi.h>   //metodos para la conexion del dispositivo a una red wifi
 #include <DNSServer.h>
-#include <ESPmDNS.h>      //para por ejemplo: https://misala.local
-#include <ArduinoJson.h>  //metodos para manejar archivos JSON
-#include <esp_task_wdt.h> //libreria de perro guardia
+#include <ESPmDNS.h>     //para por ejemplo: https://misala.local
+#include <ArduinoJson.h> //metodos para manejar archivos JSON
+// #include <esp_task_wdt.h> //libreria de perro guardia
 #include <TimeLib.h>
 #include <Ticker.h> //para los timer de los relays
 #include <RTClib.h>
@@ -29,14 +29,14 @@
 #include <NTPClient.h> //servidor que nos da la hora local
 
 /*Librerias agregadas para nuevas funcionalidades (LALO)*/
-#include <Adafruit_Sensor.h>    //by Adafruit
+//#include <Adafruit_Sensor.h>    //by Adafruit
 #include <DHT.h>                //by Adafruit
 #include <Adafruit_I2CDevice.h> //by Adafruit
 #include <Adafruit_GFX.h>       // para la pantalla de lcd
 #include <Adafruit_SSD1306.h>   //by Adafruit
 #include <RBDdimmer.h>          //para el dimmer
 //-------------------------------------------------------
-// Archivos *.hpp -fragmentar el código
+//  Archivos *.hpp -fragmentar el código
 //-------------------------------------------------------
 #include "globales.hpp" //antes "esp32a_definitions_variables.hpp"
 #include "alarmas.hpp"
@@ -114,11 +114,11 @@ void setup()
     // encaso que el dataRead se a podido leer no se guarda nada para no andar tocando la memoria
   }
   dimmerReal.begin(NORMAL_MODE, ON); // dimmer initialisation: name.begin(MODE, STATE)
-  // especialSave(); //aqui mostramos la información
-  // Debuelve la lista de carpetas y archivos del SPIFFS ONLYDEBUG
-  // listDir(SPIFFS, "/", 0);
+  //  especialSave(); //aqui mostramos la información
+  //  Debuelve la lista de carpetas y archivos del SPIFFS ONLYDEBUG
+  //  listDir(SPIFFS, "/", 0);
   //-------------------------------------------------------------------------------------
-  // Termina zona SPIFFS
+  //  Termina zona SPIFFS
   //--------------------------------------------------------------------------------------
   gpioDefine();       // definicion de los pines y setear (setup)
   setupPintRestore(); // definicion para el pin de reset y restore

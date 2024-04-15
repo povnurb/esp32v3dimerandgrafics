@@ -26,6 +26,7 @@ void resetIntLoop();
 bool dataGraficasRead();
 void dataGraficasReset();
 bool dataGraficasSave();
+
 /**
  * void log Genera mensajes personalizados en el puerto Serial
  */
@@ -897,9 +898,16 @@ void contadorAlarmas()
 // Temperaturas y humedad
 //  objeto DHT
 DHT dht(DHTPIN, DHT22);
-float Temperatura()
-{
-    tempC = dht.readTemperature();
+float Temperatura()//para la otra mandar un String
+{   
+    if (isnan(dht.readTemperature()))
+    {
+        tempC = 0;
+    }
+    else
+    {
+        tempC = dht.readTemperature();
+    }
     return tempC;
 }
 float Humedad()

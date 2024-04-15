@@ -7,7 +7,7 @@
 
 void serialDimer()
 {
-    dutyCycle = map(analogRead(INPOT), 1, 4096, 1, 16); // imprime de 1 a 15
+    dutyCycle = map(analogRead(INPOT), 1, 4096, 1, maxTimeMin + 1);
     // realiza la lectura de potenciometro para actualizar la salida del Dimmer
     outVal = map(analogRead(INPOT), 1, 4096, 0, 101); // analogRead(analog_pin),
     // min_analog, max_analog, 100%, 0%); // es el ciclo de trabajo

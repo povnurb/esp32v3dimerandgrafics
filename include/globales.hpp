@@ -268,15 +268,16 @@ size_t content_len; // para la barra de progreso del firmware
 // zona de variables del dimmer
 //--------------------i-----------------------------------------------
 dimmerLamp dimmerReal(INAC, DIMMER); // GPIO18 es igual al 30 por libreria se crea onjeto Dimmer y el 29 pin de salida GPIO 5
-// dimmerLamp dimmerReal(DIMMER, INAC); // para mi que este pude ser un problema
+// dimmerLamp dimmerReal(DIMMER, INAC); // para mi que este pude ser solucion de un problema futuro
 int timeOled;
 int outVal = 0;
-int dutyCycle = 50; // ciclo de trabajo salidas PWM
+int dutyCycle = 30; // ciclo de trabajo salidas PWM
 int muestraDimerOLED;
 int timeMuestraOLED = 3000; // es el tiempo en milisegundos que mostrara en pantalla el valor del Tiempo en el OLED
 //------------------------------------------------------------------------------
 // Variables necesarias para registrar temperaturas y humedades por 48 hrs
 //------------------------------------------------------------------------------
+int maxTimeMin = 15;   // maximo tiempo que mide el potenciometro y comparte el maximo ciclo de trabajo
 int muestraCadamin;    // minutos jalaba bien con 1 probando con 5 min
 #define NUM_VALORES 13 // es el numero de muestras que quiero registrar esta no se mueve siempre sera 24 por que asi esta en la pagina web
 int diesSeg = 6;
